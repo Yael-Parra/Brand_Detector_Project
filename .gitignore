@@ -10,3 +10,7 @@ pyproject.toml
 # pychache
 *.pyc
 __pycache__/
+
+.yolov10.pt 
+
+runs/
