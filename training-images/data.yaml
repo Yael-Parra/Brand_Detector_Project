@@ -1,0 +1,6 @@
+path: /Users/trabajo/Documents/PROYECTOS-F5/Brand_Detector_Project/training-images
+train: images/train
+val: images/val
+
+nc: 1
+names: ["mercedes"]
