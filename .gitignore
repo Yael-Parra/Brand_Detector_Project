@@ -10,3 +10,6 @@ pyproject.toml
 # pychache
 *.pyc
 __pycache__/
+
+Car_Brand_Logos/
+
