@@ -3,10 +3,10 @@ import cv2
 import imutils
 # Cargamos el modelo YOLO
 # model = YOLO("yolo11n.pt")
-model = YOLO("best.pt")
+model = YOLO("best2.pt")
 # Especificar la URL del video
 # source = "https://www.youtube.com/watch?v=SWo_7mELz-o&t"
-source = "https://www.youtube.com/watch?v=7_srED6k0bE&ab_channel=RTVENoticias"
+source = "https://www.youtube.com/watch?v=V0UgilNwhKs"
 
 # Realizamos la inferencia de YOLO ... aki se tiene que añadir las configuraciones
 results = model(source, stream=True)
