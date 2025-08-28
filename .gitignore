@@ -10,3 +10,5 @@ pyproject.toml
 # pychache
 *.pyc
 __pycache__/
+
+customLogoMercedez-6/
