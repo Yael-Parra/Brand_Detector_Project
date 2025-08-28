@@ -3,7 +3,7 @@ import cv2
 # Cargamos la imagen de entrada
 image = cv2.imread("data/perrito.bmp")
 # Cargamos el modelo YOLO
-model = YOLO("yolo11n.pt")
+model = YOLO("best.pt")
 
 # Realizamos la inferencia sobre la imagen
 results = model(image)
