@@ -3,8 +3,10 @@ import cv2
 import time
 
 # Cargamos el modelo YOLO
-model = YOLO("best.pt")
+#model = YOLO("best.pt")
 #model = YOLO("yolo11n.pt")
+model = YOLO("../runs/detect/train4/weights/best.pt")
+
 
 # Diccionario para almacenar el tiempo de aparición de cada etiqueta
 label_times = {}
