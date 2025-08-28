@@ -10,3 +10,9 @@ pyproject.toml
 # pychache
 *.pyc
 __pycache__/
+
+data/uploads/
+
+runs/
+
+.DS_Store
