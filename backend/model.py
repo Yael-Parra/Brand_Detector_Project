@@ -17,6 +17,7 @@ results = model.train(data=data_path,epochs=50,imgsz=640)
 custom_model =YOLO("/content/runs/detect/train/weights/best.pt")
 
 # Realizamos predicciones sobre algunas imagenes
-res = custom_model.predict(source="C:/Users/Administrator/Desktop/proyecto_12/Brand_Detector_Project/backend/customLogoMercedez-2/train/images/_m4q9449_webp.rf.fea34810bf11852e430d6c024d29c365.jpg")
+res= custom_model.predict(source="/content/customLogoMercedez-2/test/images")
+
 # Vizualizacion de los resultados de las detecciones
 res[28].show()
