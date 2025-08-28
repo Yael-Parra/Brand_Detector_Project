@@ -13,3 +13,4 @@ torchvision==0.23.0
 ultralytics==8.3.187
 ultralytics-thop==2.0.16
 imutils==0.5.4
+yt-dlp>=2025.8.27
