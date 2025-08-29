@@ -10,6 +10,27 @@ from loguru import logger
 from datetime import datetime
 
 class VideoProcessor:
+    def send_results_to_backend(self, api_url: str = "http://localhost:8000/predict/url"):
+        """Envía los resultados al backend para guardarlos en la base de datos."""
+        import requests
+        metrics = self.get_processing_metrics()
+        video_info = metrics['video_info']
+        detections = metrics['detection_results']
+        # Adaptar el formato para el endpoint /predict/url
+        data = {
+            'url': video_info['name'] if video_info['type'] == 'url' else '',
+            'duration_sec': int(video_info['total_video_time_segs']) or 10
+        }
+        # Si es un archivo local, podrías usar /predict/mp4, pero aquí solo para url
+        try:
+            response = requests.post(api_url, data=data)
+            if response.status_code == 200:
+                print("\n[BACKEND] Video y detecciones guardados en la base de datos.")
+                print("Respuesta backend:", response.json())
+            else:
+                print(f"\n[BACKEND] Error al guardar en backend: {response.status_code} {response.text}")
+        except Exception as e:
+            print(f"\n[BACKEND] Error de conexión al backend: {e}")
     def __init__(self, model_path, video_source):
         self.model = YOLO(model_path)
         self.source = video_source
@@ -343,31 +364,29 @@ if __name__ == "__main__":
     # Lista de videos para probar
     videos_to_test = [
         "https://www.youtube.com/watch?v=oaExWXqwkqg",
-        "https://www.youtube.com/watch?v=FKdlUnVvX7Q",
-        "https://www.youtube.com/watch?v=siO1ZpNYNN4",
-        "https://www.youtube.com/watch?v=75k9zt8iad0",
-        "https://www.youtube.com/watch?v=j5b80kjVQcU",
-        "https://www.youtube.com/watch?v=aPgSFJt2lqE",
-        "https://www.youtube.com/watch?v=xw6fehnxMjU"
+        #"https://www.youtube.com/watch?v=FKdlUnVvX7Q",
+        #"https://www.youtube.com/watch?v=siO1ZpNYNN4",
+        #"https://www.youtube.com/watch?v=75k9zt8iad0",
+        #"https://www.youtube.com/watch?v=j5b80kjVQcU",
+        #"https://www.youtube.com/watch?v=aPgSFJt2lqE",
+        #"https://www.youtube.com/watch?v=xw6fehnxMjU"
     ]
     
     for video_url in videos_to_test:
         print(f"\n{'='*60}")
         print(f"Probando: {video_url}")
         print(f"{'='*60}")
-        
         processor = VideoProcessor("best.pt", video_url)
         success = processor.process_video()
-        
         if success:
-            # OBTENER MÉTRICAS (para que la API las use después)
             metrics = processor.get_processing_metrics()
             print("\nDatos listos para guardar en BD:")
             print(f"Tipo: {metrics['video_info']['type']}")
             print(f"Nombre: {metrics['video_info']['name']}")
             print(f"Duración: {metrics['video_info']['total_video_time_segs']} segundos")
             print("Detecciones:", metrics['detection_results'])
-            
+            # Enviar resultados al backend automáticamente
+            processor.send_results_to_backend()
             logger.success(f"Éxito con {video_url}")
             print(f"✓ Éxito con {video_url}")
         else:
