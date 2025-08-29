@@ -1,6 +1,3 @@
-# =============================
-# Imports y configuración
-# =============================
 import os
 import time
 import uuid
@@ -19,6 +16,8 @@ from pydantic import BaseModel
 
 from .database.db_io import connect, disconnect, insert_video, insert_detection
 from .services.yolo_service import analyze_mp4, analyze_stream_url, analyze_webcam, get_model
+
+from pydantic import BaseModel, HttpUrl, Field
 
 # =============================
 # Constantes y utilidades
@@ -306,3 +305,8 @@ def finish_session(
         "processed_secs": total_secs,
         "detections": detections_list,
     }
+
+
+from .routes.youtube_video import router as youtube_router
+
+app.include_router(youtube_router)

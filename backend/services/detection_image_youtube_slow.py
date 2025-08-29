@@ -361,20 +361,11 @@ class VideoProcessor:
 
 # Uso
 if __name__ == "__main__":
-    # Lista de videos para probar
-    videos_to_test = [
-        "https://www.youtube.com/watch?v=oaExWXqwkqg",
-        #"https://www.youtube.com/watch?v=FKdlUnVvX7Q",
-        #"https://www.youtube.com/watch?v=siO1ZpNYNN4",
-        #"https://www.youtube.com/watch?v=75k9zt8iad0",
-        #"https://www.youtube.com/watch?v=j5b80kjVQcU",
-        #"https://www.youtube.com/watch?v=aPgSFJt2lqE",
-        #"https://www.youtube.com/watch?v=xw6fehnxMjU"
-    ]
-    
-    for video_url in videos_to_test:
+    import sys
+    if len(sys.argv) > 1:
+        video_url = sys.argv[1]
         print(f"\n{'='*60}")
-        print(f"Probando: {video_url}")
+        print(f"Procesando video recibido por argumento: {video_url}")
         print(f"{'='*60}")
         processor = VideoProcessor("best.pt", video_url)
         success = processor.process_video()
@@ -385,13 +376,14 @@ if __name__ == "__main__":
             print(f"Nombre: {metrics['video_info']['name']}")
             print(f"Duración: {metrics['video_info']['total_video_time_segs']} segundos")
             print("Detecciones:", metrics['detection_results'])
-            # Enviar resultados al backend automáticamente
             processor.send_results_to_backend()
             logger.success(f"Éxito con {video_url}")
             print(f"✓ Éxito con {video_url}")
         else:
             logger.warning(f"✗ Falló {video_url}")
             print(f"✗ Falló {video_url}")
+    else:
+        print("Por favor, proporciona una URL de YouTube como argumento al ejecutar el script.")
 
 
 # Videos probados:
