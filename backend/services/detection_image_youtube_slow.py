@@ -8,29 +8,28 @@ import sys
 from pathlib import Path
 from loguru import logger
 from datetime import datetime
+import requests
 
 class VideoProcessor:
     def send_results_to_backend(self, api_url: str = "http://localhost:8000/predict/url"):
-        """Envía los resultados al backend para guardarlos en la base de datos."""
-        import requests
         metrics = self.get_processing_metrics()
-        video_info = metrics['video_info']
-        detections = metrics['detection_results']
-        # Adaptar el formato para el endpoint /predict/url
+        video_info = metrics["video_info"]
+        detections = metrics["detection_results"]
+
         data = {
-            'url': video_info['name'] if video_info['type'] == 'url' else '',
-            'duration_sec': int(video_info['total_video_time_segs']) or 10
+            "type": video_info["type"],
+            "name": video_info["name"],
+            "duration_sec": int(video_info["total_video_time_segs"]) or 0,
+            "fps_estimated": (
+                metrics["total_frames_processed"] / video_info["total_video_time_segs"]
+                if video_info["total_video_time_segs"] > 0 else 0.0
+            ),
+            "detections": detections,
         }
-        # Si es un archivo local, podrías usar /predict/mp4, pero aquí solo para url
-        try:
-            response = requests.post(api_url, data=data)
-            if response.status_code == 200:
-                print("\n[BACKEND] Video y detecciones guardados en la base de datos.")
-                print("Respuesta backend:", response.json())
-            else:
-                print(f"\n[BACKEND] Error al guardar en backend: {response.status_code} {response.text}")
-        except Exception as e:
-            print(f"\n[BACKEND] Error de conexión al backend: {e}")
+
+        resp = requests.post(api_url, json=data, timeout=30)
+        print("\n[BACKEND]", resp.status_code, resp.text)
+
     def __init__(self, model_path, video_source):
         self.model = YOLO(model_path)
         self.source = video_source
