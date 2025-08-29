@@ -13,3 +13,10 @@ __pycache__/
 
 #frontend 
 node_modules/
+
+# logs
+data/uploads/
+
+runs/
+
+.DS_Store
