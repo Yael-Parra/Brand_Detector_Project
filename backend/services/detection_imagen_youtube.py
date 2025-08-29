@@ -6,7 +6,7 @@ import imutils
 model = YOLO("best.pt")
 # Especificar la URL del video
 # source = "https://www.youtube.com/watch?v=SWo_7mELz-o&t"
-source = "https://youtu.be/gp25D-k0UTs"
+source = "https://www.youtube.com/watch?v=oaExWXqwkqg"
 
 # Realizamos la inferencia de YOLO ... aki se tiene que añadir las configuraciones
 results = model(source, stream=True)
