@@ -15,9 +15,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from .database.db_io import connect, disconnect, insert_video, insert_detection
-from .services.yolo_service import analyze_mp4, analyze_stream_url, analyze_webcam, get_model
+from .services.yolo_service import get_model
 
-from pydantic import BaseModel, HttpUrl, Field
+from pydantic import BaseModel
 
 # =============================
 # Constantes y utilidades
@@ -106,89 +106,64 @@ def health():
     return {"status": "ok"}
 
 
-@app.post("/predict/mp4")
-def predict_mp4(file: UploadFile = File(...)):
-    """Sube un MP4, corre YOLO frame a frame y guarda resultados."""
-    if not file.filename.lower().endswith(".mp4"):
-        raise HTTPException(status_code=400, detail="Se espera un archivo .mp4")
-    dest = UPLOAD_DIR / file.filename
-    dest.write_bytes(file.file.read())
-    try:
-        fps, total_secs, summary = analyze_mp4(str(dest))
-    except Exception as e:
-        try:
-            dest.unlink(missing_ok=True)
-        except Exception:
-            pass
-        raise HTTPException(status_code=500, detail=str(e))
-    id_video = persist_results(
-        vtype="mp4",
-        name=file.filename,
-        fps=fps,
-        total_secs=total_secs,
-        summary=summary,
-    )
-    return JSONResponse({
-        "id_video": id_video,
-        "type": "mp4",
-        "name": file.filename,
-        "fps": fps,
-        "total_video_time_segs": total_secs,
-        "detections": summary,
-    })
+# @app.post("/predict/mp4")
+# def predict_mp4(file: UploadFile = File(...)):
+#     """Sube un MP4, corre YOLO frame a frame y guarda resultados."""
+#     if not file.filename.lower().endswith(".mp4"):
+#         raise HTTPException(status_code=400, detail="Se espera un archivo .mp4")
+#     dest = UPLOAD_DIR / file.filename
+#     dest.write_bytes(file.file.read())
+#     try:
+#         fps, total_secs, summary = analyze_mp4(str(dest))
+#     except Exception as e:
+#         try:
+#             dest.unlink(missing_ok=True)
+#         except Exception:
+#             pass
+#         raise HTTPException(status_code=500, detail=str(e))
+#     id_video = persist_results(
+#         vtype="mp4",
+#         name=file.filename,
+#         fps=fps,
+#         total_secs=total_secs,
+#         summary=summary,
+#     )
+#     return JSONResponse({
+#         "id_video": id_video,
+#         "type": "mp4",
+#         "name": file.filename,
+#         "fps": fps,
+#         "total_video_time_segs": total_secs,
+#         "detections": summary,
+#     })
 
 
-@app.post("/predict/url")
-def predict_url(
-    url: str = Form(..., description="YouTube/RTSP/HTTP de video"),
-    duration_sec: int = Form(15, ge=3, le=120)
-):
-    try:
-        fps, elapsed, summary = analyze_stream_url(url, duration_sec=duration_sec)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    id_video = persist_results(
-        vtype="url",
-        name=url,
-        fps=fps,
-        total_secs=elapsed,
-        summary=summary,
-    )
-    return {
-        "id_video": id_video,
-        "type": "url",
-        "name": url,
-        "fps_estimated": fps,
-        "processed_secs": elapsed,
-        "detections": summary,
-    }
 
-
-@app.post("/predict/streaming")
-def predict_streaming(
-    duration_sec: int = Form(10, ge=3, le=120),
-    camera_index: int = Form(0)
-):
-    try:
-        fps, elapsed, summary = analyze_webcam(camera_index=camera_index, duration_sec=duration_sec)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    name = f"camera_{camera_index}"
-    id_video = persist_results(
-        vtype="streaming",
-        name=name,
-        fps=fps,
-        total_secs=elapsed,
-        summary=summary,
-    )
-    return {
-        "id_video": id_video,
-        "type": "streaming",
-        "name": name,
-        "fps_estimated": fps,
-        "processed_secs": elapsed,
-        "detections": summary,
-    }
+# @app.post("/predict/streaming")
+# def predict_streaming(
+#     duration_sec: int = Form(10, ge=3, le=120),
+#     camera_index: int = Form(0)
+# ):
+#     try:
+#         fps, elapsed, summary = analyze_webcam(camera_index=camera_index, duration_sec=duration_sec)
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
+#     name = f"camera_{camera_index}"
+#     id_video = persist_results(
+#         vtype="streaming",
+#         name=name,
+#         fps=fps,
+#         total_secs=elapsed,
+#         summary=summary,
+#     )
+#     return {
+#         "id_video": id_video,
+#         "type": "streaming",
+#         "name": name,
+#         "fps_estimated": fps,
+#         "processed_secs": elapsed,
+#         "detections": summary,
+#     }
 
 
 # =============================
@@ -308,5 +283,7 @@ def finish_session(
 
 
 from .routes.youtube_video import router as youtube_router
+from .routes.upload_image import router as upload_image_router
 
 app.include_router(youtube_router)
+app.include_router(upload_image_router)
