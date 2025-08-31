@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 3
+names: ['logo_mazda', 'logo_mercedez', 'logo_toyota']
+
+roboflow:
+  workspace: test1mrm
+  project: customlogomercedez-hxxq6
+  version: 8
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/test1mrm/customlogomercedez-hxxq6/dataset/8

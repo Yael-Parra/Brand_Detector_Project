@@ -4,7 +4,7 @@ import imutils
 # Cargamos el modelo YOLO
 # model = YOLO("yolo11n.pt")
 # model = YOLO("best.pt")
-model = YOLO("../runs/detect/train4/weights/best.pt")
+model = YOLO("../runs/detect/train5/weights/best.pt")
 
 # Especificar la URL del video
 # source = "https://www.youtube.com/watch?v=SWo_7mELz-o&t"
