@@ -1,4 +1,6 @@
+import sys
 import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import time
 import uuid
 import threading
@@ -14,8 +16,10 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from .database.db_io import connect, disconnect, insert_video, insert_detection
+#from backend.database.db_io import connect, disconnect, insert_video, insert_detection
+
 from .services.yolo_service import get_model
+from .routes import youtube_video_v2
 
 from pydantic import BaseModel
 
@@ -32,6 +36,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Incluir routers
+app.include_router(youtube_video_v2.router)
 
 UPLOAD_DIR = Path("data/uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
