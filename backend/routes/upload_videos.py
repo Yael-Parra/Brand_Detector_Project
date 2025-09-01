@@ -22,7 +22,7 @@ async def predict_mp4(file: UploadFile = File(...)):
 		temp_video_path = temp_video.name
 
 	# Cargar modelo YOLO
-	model = YOLO("best.pt")
+	model = YOLO("best_v5.pt")
 	cap = cv2.VideoCapture(temp_video_path)
 	label_frames = {}
 	frame_idx = 0

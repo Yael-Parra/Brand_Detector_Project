@@ -21,7 +21,7 @@ async def process_image(file: UploadFile = File(...)):
 	image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 	if image is None:
 		raise HTTPException(status_code=400, detail="Imagen inválida")
-	model = YOLO("best.pt")
+	model = YOLO("best_v5.pt")
 	results = model(image)
 	detections = []
 	for result in results:

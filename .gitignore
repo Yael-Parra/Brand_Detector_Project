@@ -18,3 +18,5 @@ runs/
 .DS_Store
 
 temp_videos/
+
+venv2/
