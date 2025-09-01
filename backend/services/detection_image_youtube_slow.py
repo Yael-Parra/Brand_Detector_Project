@@ -31,7 +31,7 @@ class VideoProcessor:
         print("\n[BACKEND]", resp.status_code, resp.text)
 
     def __init__(self, model_path, video_source):
-        self.model = YOLO(model_path)
+        self.model = YOLO("best_v5.pt")
         self.source = video_source
         self.speed_multiplier = 0.5  # Velocidad lenta por defecto
         self.paused = False
