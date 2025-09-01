@@ -7,7 +7,7 @@ import cv2
 import base64
 from fastapi.responses import JSONResponse
 #from ..models import ImageUploadResponse
-from ..services.yolo_service import get_model
+from ultralytics import YOLO
 
 router = APIRouter()
 
@@ -21,7 +21,7 @@ async def process_image(file: UploadFile = File(...)):
 	image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 	if image is None:
 		raise HTTPException(status_code=400, detail="Imagen inválida")
-	model = get_model()
+	model = YOLO("best.pt")
 	results = model(image)
 	detections = []
 	for result in results:
