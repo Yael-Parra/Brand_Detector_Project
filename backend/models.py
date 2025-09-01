@@ -15,3 +15,6 @@ class PredictUrlRequest(BaseModel):
     duration_sec: int = Field(..., ge=0)
     fps_estimated: float = Field(..., ge=0)
     detections: Dict[str, Any]
+
+class SessionIdReq(BaseModel):
+    session_id: str

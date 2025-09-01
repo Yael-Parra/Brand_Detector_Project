@@ -371,13 +371,13 @@ if __name__ == "__main__":
         if success:
             metrics = processor.get_processing_metrics()
             print("\nDatos listos para guardar en BD:")
-            print(f"Tipo: {metrics['video_info']['type']}")
-            print(f"Nombre: {metrics['video_info']['name']}")
+            print(f"Tipo: {metrics['video_info']['type']}\n")
+            print(f"Nombre: {metrics['video_info']['name']}\n")
             print(f"Duración: {metrics['video_info']['total_video_time_segs']} segundos")
-            print("Detecciones:", metrics['detection_results'])
+            print("Detecciones:", metrics['detection_results'], "\n")
             processor.send_results_to_backend()
             logger.success(f"Éxito con {video_url}")
-            print(f"✓ Éxito con {video_url}")
+            print(f"✓ Éxito con {video_url}\n")
         else:
             logger.warning(f"✗ Falló {video_url}")
             print(f"✗ Falló {video_url}")
