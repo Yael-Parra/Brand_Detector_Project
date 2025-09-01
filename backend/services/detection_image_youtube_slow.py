@@ -366,7 +366,7 @@ if __name__ == "__main__":
         print(f"\n{'='*60}")
         print(f"Procesando video recibido por argumento: {video_url}")
         print(f"{'='*60}")
-        processor = VideoProcessor("best.pt", video_url)
+        processor = VideoProcessor("../best.pt", video_url)
         success = processor.process_video()
         if success:
             metrics = processor.get_processing_metrics()

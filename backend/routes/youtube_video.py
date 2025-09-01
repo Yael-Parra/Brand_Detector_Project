@@ -5,9 +5,9 @@
 from fastapi import APIRouter
 import subprocess
 import sys
-from ..models import YoutubeRequest, PredictUrlRequest
+from models import YoutubeRequest, PredictUrlRequest
 from fastapi import HTTPException
-from ..main import persist_results
+from main import persist_results
 
 
 router = APIRouter()
@@ -21,7 +21,7 @@ def process_youtube(data: YoutubeRequest):
     try:
         result = subprocess.run([
             sys.executable,
-            "backend/services/detection_image_youtube_slow.py",
+            "services/detection_image_youtube_slow.py",
             data.url
         ], capture_output=True, text=True, timeout=600)
         if result.returncode == 0:
