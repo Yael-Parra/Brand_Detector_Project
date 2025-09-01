@@ -9,6 +9,7 @@ export default function AppPage({data, setData, setJobId, jobId}){
   const [youtubeUrl, setYoutubeUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [hasFile, setHasFile] = useState(false)
+  const [selectedFile, setSelectedFile] = useState(null)
   const [showResults, setShowResults] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -44,32 +45,84 @@ export default function AppPage({data, setData, setJobId, jobId}){
 
     setLoading(true)
     
-    setTimeout(() => {
-      let sample
+    try {
       if (activeOption === 2) { 
-        sample = {
-          video_url: youtubeUrl,
-          detections: [
-            { class: 'logo-brand', score: 0.81, bbox: [60,50,100,100], timestamp: 15 },
-            { class: 'logo-brand', score: 0.75, bbox: [200,80,90,90], timestamp: 45 }
-          ],
-          total_video_time_segs: 120
+        // Procesar video de YouTube
+        const response = await fetch('http://localhost:8000/process/youtube', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ url: youtubeUrl })
+        })
+        
+        if (!response.ok) {
+          throw new Error(`Error al procesar el video: ${response.statusText}`)
         }
-        setJobId('youtube-job-42')
-      } else {
-        // Para imagen y video (simulado)
-        sample = {
+        
+        const result = await response.json()
+        
+        if (result.error) {
+          throw new Error(result.error)
+        }
+        
+        // Crear un objeto de datos con la información recibida
+        const sample = {
+          video_url: youtubeUrl,
+          detections: result.detections || [],
+          total_video_time_segs: result.total_video_time_segs || 0
+        }
+        
+        setJobId(`youtube-job-${Date.now()}`)
+        setData(sample)
+        setShowResults(true)
+      } else if (activeOption === 1) { // Video MP4
+        if (!selectedFile) {
+          throw new Error('No se ha seleccionado ningún archivo de video')
+        }
+        
+        // Crear un FormData para enviar el archivo
+        const formData = new FormData()
+        formData.append('file', selectedFile)
+        
+        // Enviar el archivo al backend
+        const response = await fetch('http://localhost:8000/predict/mp4', {
+          method: 'POST',
+          body: formData
+        })
+        
+        if (!response.ok) {
+          throw new Error(`Error al procesar el video: ${response.statusText}`)
+        }
+        
+        const result = await response.json()
+        
+        // Crear un objeto de datos con la información recibida
+        const sample = {
+          video_file: selectedFile.name,
+          detections: result.detections || []
+        }
+        
+        setJobId(result.job_id || `video-job-${Date.now()}`)
+        setData(sample)
+        setShowResults(true)
+      } else { // Imagen
+        // Para imagen (simulado por ahora)
+        const sample = {
           detections: [
-            { class: 'logo-brand', score: 0.88, bbox: [80,40,120,120], timestamp: activeOption === 1 ? 3.2 : null }
+            { class: 'logo-brand', score: 0.88, bbox: [80,40,120,120], timestamp: null }
           ]
         }
-        setJobId(activeOption === 1 ? 'video-job-1' : null)
+        setJobId(null)
+        setData(sample)
+        setShowResults(true)
       }
-      
-      setData(sample)
-      setShowResults(true)
+    } catch (error) {
+      console.error('Error al procesar:', error)
+      setErrorMessage(`Error: ${error.message}`)
+    } finally {
       setLoading(false)
-    }, 2000)
+    }
   }
 
   const shouldShowButton = () => {
@@ -112,6 +165,7 @@ export default function AppPage({data, setData, setJobId, jobId}){
             <ActiveComponent 
               onResult={(r, id) => {
                 setHasFile(true)
+                setSelectedFile(r) // Guardar el archivo seleccionado
                 setShowResults(false) 
                 setErrorMessage('')
               }}
