@@ -1,14 +1,35 @@
 from ultralytics import YOLO
 import cv2
-import imutils
 import time
 import os
 import subprocess
 import sys
 from pathlib import Path
-from loguru import logger
 from datetime import datetime
 import requests
+import threading
+
+# Safe imports with auto-installation
+try:
+    import imutils
+except ImportError:
+    print("Installing imutils...")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "imutils"])
+    import imutils
+
+try:
+    from loguru import logger
+except ImportError:
+    print("Installing loguru...")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "loguru==0.7.3"])
+    from loguru import logger
+
+try:
+    import pytubefix
+except ImportError:
+    print("Installing pytubefix...")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "pytubefix>=6.5.2"])
+    import pytubefix
 
 class VideoProcessor:
     def send_results_to_backend(self, api_url: str = "http://localhost:8000/predict/url"):
@@ -44,8 +65,16 @@ class VideoProcessor:
         self.start_time = None
         self.detection_data = {}
         self.total_frames_processed = 0
+        self.total_detections = 0
         self.video_duration = 0
         self.processing_metrics = {}
+        
+        # Callback para reportar estado
+        self.status_callback = None
+        
+    def set_status_callback(self, callback_fn):
+        """Establecer una función de callback para reportar el estado del procesamiento"""
+        self.status_callback = callback_fn
     
     def get_processing_metrics(self):
         """Obtener todas las métricas calculadas para la base de datos"""
@@ -71,6 +100,9 @@ class VideoProcessor:
                     self.detection_data[label_name] = {'count': 0}
                 
                 self.detection_data[label_name]['count'] += 1
+                
+        # Actualizar el contador total de detecciones
+        self.total_detections = sum(data['count'] for data in self.detection_data.values())
     
     def calculate_metrics(self):
         """Calcular métricas finales (solo cálculo, NO guardado)"""
@@ -91,7 +123,7 @@ class VideoProcessor:
         return metrics
         
     def download_youtube_video(self, url):
-        """Descargar video de YouTube usando yt-dlp"""
+        """Descargar video de YouTube usando yt-dlp con instalación automática"""
         logger.info("Intentando descargar video de YouTube...")
         print("Descargando video de YouTube...")
         
@@ -103,85 +135,163 @@ class VideoProcessor:
         output_path = temp_dir / "temp_video.%(ext)s"
         
         try:
-            # Comando yt-dlp para descargar
-            cmd = [
-                "yt-dlp",
-                "--format", "best[height<=720]",  # Calidad máxima 720p para evitar problemas
-                "--output", str(output_path),
-                "--no-playlist",
-                url
-            ]
-            
-            logger.info(f"Ejecutando: {' '.join(cmd)}")
-            print(f"Ejecutando comando de descarga...")
-            
-            result = subprocess.run(cmd, capture_output=True, text=True)
-            
-            if result.returncode == 0:
+            # Intentar usar yt-dlp como módulo Python primero
+            try:
+                import yt_dlp
+                
+                # Opciones para yt-dlp
+                ydl_opts = {
+                    'format': 'best[height<=720]',  # Calidad máxima 720p
+                    'outtmpl': str(output_path),
+                    'noplaylist': True,
+                    'quiet': False,
+                    'no_warnings': False
+                }
+                
+                # Descargar el video
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    ydl.download([url])
+                
                 # Buscar el archivo descargado
                 for file in temp_dir.glob("temp_video.*"):
                     logger.info(f"Video descargado: {file}")
                     print(f"Video descargado exitosamente: {file}")
                     return str(file)
-            else:
-                logger.error(f"Error en yt-dlp: {result.stderr}")
-                print(f"Error al descargar el video: {result.stderr}")
-                return None
+                    
+            except ImportError:
+                # Si no está instalado como módulo, intentar instalarlo
+                print("Instalando yt-dlp...")
+                subprocess.check_call([sys.executable, "-m", "pip", "install", "yt-dlp"])
+                
+                # Reintentar después de instalar
+                import yt_dlp
+                
+                # Opciones para yt-dlp
+                ydl_opts = {
+                    'format': 'best[height<=720]',  # Calidad máxima 720p
+                    'outtmpl': str(output_path),
+                    'noplaylist': True,
+                    'quiet': False,
+                    'no_warnings': False
+                }
+                
+                # Descargar el video
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    ydl.download([url])
+                
+                # Buscar el archivo descargado
+                for file in temp_dir.glob("temp_video.*"):
+                    logger.info(f"Video descargado: {file}")
+                    print(f"Video descargado exitosamente: {file}")
+                    return str(file)
+            
+            except Exception as e:
+                # Si falla el método de módulo, intentar con el comando
+                logger.warning(f"Error al usar yt-dlp como módulo: {e}. Intentando como comando...")
+                print(f"Error al usar yt-dlp como módulo: {e}. Intentando como comando...")
+                
+                # Comando yt-dlp para descargar
+                cmd = [
+                    "yt-dlp",
+                    "--format", "best[height<=720]",  # Calidad máxima 720p para evitar problemas
+                    "--output", str(output_path),
+                    "--no-playlist",
+                    url
+                ]
+                
+                logger.info(f"Ejecutando: {' '.join(cmd)}")
+                print(f"Ejecutando comando de descarga...")
+                
+                result = subprocess.run(cmd, capture_output=True, text=True)
+                
+                if result.returncode == 0:
+                    # Buscar el archivo descargado
+                    for file in temp_dir.glob("temp_video.*"):
+                        logger.info(f"Video descargado: {file}")
+                        print(f"Video descargado exitosamente: {file}")
+                        return str(file)
+                else:
+                    raise Exception(f"Error en yt-dlp: {result.stderr}")
                 
         except FileNotFoundError:
-            logger.error("yt-dlp no está instalado. Instálalo con: pip install yt-dlp")
-            print("Error: yt-dlp no está instalado. Instálalo con: pip install yt-dlp")
-            return None
+            # Intentar instalar yt-dlp y reintentar
+            try:
+                logger.info("yt-dlp no está instalado. Instalando automáticamente...")
+                print("yt-dlp no está instalado. Instalando automáticamente...")
+                subprocess.check_call([sys.executable, "-m", "pip", "install", "yt-dlp"])
+                
+                # Reintentar después de instalar
+                return self.download_youtube_video(url)
+            except Exception as e:
+                logger.error(f"Error al instalar yt-dlp: {e}")
+                print(f"Error al instalar yt-dlp: {e}")
+                return None
+                
         except Exception as e:
             logger.error(f"Error al descargar: {e}")
             print(f"Error al descargar: {e}")
             return None
     
-    def process_with_yolo_stream(self):
-        """Procesar video usando el método stream de YOLO (como en la versión 1)"""
+    def process_with_yolo_stream(self, video_path=None):
+        """Procesar video usando el método stream de YOLO a velocidad normal"""
         print("=== CONTROLES ===")
         print("ESC: Salir")
         print("ESPACIO: Pausar/Reanudar")
-        print("1: Velocidad normal (1x)")
-        print("2: Velocidad rápida (2x)")
-        print("4: Velocidad muy rápida (4x)")
-        print("0: Velocidad lenta (0.5x)")
-        print("3: Velocidad muy lenta (0.25x)")
-        print("5: Velocidad súper lenta (0.1x)")
-        print("6: Velocidad ultra lenta (0.05x)")
         print("==================")
-        print(f"Iniciando con velocidad: {self.speed_multiplier}x")
+        print("Iniciando procesamiento a velocidad normal")
         
         # Inicializar métricas
         self.start_time = time.time()
         self.detection_data = {}
         self.total_frames_processed = 0
-        last_fps_update = time.time()
         fps = 0
         frame_times = []
         
+        # Variables para sincronización entre hilos
+        self.processing_active = True
+        self.current_result = None
+        self.result_ready = False
+        self.paused = False
+        
         try:
-            # Usar el método stream de YOLO (como en la versión 1)
-            results = self.model(self.source, stream=True, verbose=True)
+            # Iniciar el procesamiento en un hilo separado
+            processing_thread = threading.Thread(target=self._process_frames_thread)
+            processing_thread.daemon = True
+            processing_thread.start()
             
+            # Abrir el video con OpenCV para reproducción
+            source = video_path if video_path is not None else self.source
+            
+            if source.startswith(('http', 'www')):
+                # Para URLs de YouTube, primero intentamos descargar
+                downloaded_path = self.download_youtube_video(source)
+                if downloaded_path:
+                    cap = cv2.VideoCapture(downloaded_path)
+                else:
+                    print("No se pudo descargar el video. Intentando reproducir directamente.")
+                    cap = cv2.VideoCapture(source)
+            else:
+                cap = cv2.VideoCapture(source)
+            
+            if not cap.isOpened():
+                raise Exception("No se pudo abrir el video")
+            
+            # Obtener FPS del video original para reproducción a velocidad normal
+            original_fps = cap.get(cv2.CAP_PROP_FPS)
+            if original_fps <= 0:
+                original_fps = 30  # Valor por defecto si no se puede determinar
+            
+            frame_delay = 1.0 / original_fps
             frame_count = 0
-            start_time = time.time()
+            last_time = time.time()
             
-            for result in results:
-                self.current_frame += 1
-                
-                # Control de velocidad mediante saltos de frames
-                if self.speed_multiplier > 1.0:
-                    self.frame_skip_counter += 1
-                    if self.frame_skip_counter % int(self.speed_multiplier) != 0:
-                        continue
-                
+            while cap.isOpened() and self.processing_active:
                 if not self.paused:
-                    frame_count += 1
-                    self.total_frames_processed += 1
+                    ret, frame = cap.read()
+                    if not ret:
+                        break
                     
-                    # Actualizar estadísticas de detección
-                    self.update_detection_stats(result)
+                    frame_count += 1
                     
                     # Calcular FPS en tiempo real
                     current_time = time.time()
@@ -195,43 +305,41 @@ class VideoProcessor:
                     if len(frame_times) > 1:
                         fps = len(frame_times) / (frame_times[-1] - frame_times[0])
                     
-                    # Obtener el frame anotado
-                    annotated_frame = result.plot()
-                    annotated_frame = imutils.resize(annotated_frame, width=640)
+                    # Mostrar el frame original o el procesado si está disponible
+                    display_frame = frame.copy()
                     
-                    # Mostrar información en el frame (ACTUALIZADA EN TIEMPO REAL)
-                    cv2.putText(annotated_frame, f"Speed: {self.speed_multiplier}x", (10, 30), 
+                    # Si hay un resultado de detección disponible, mostrarlo
+                    if self.result_ready and self.current_result is not None:
+                        # Usar el frame anotado del procesamiento
+                        display_frame = self.current_result.copy()
+                        self.result_ready = False
+                    
+                    # Redimensionar para visualización
+                    display_frame = imutils.resize(display_frame, width=640)
+                    
+                    # Mostrar información en el frame
+                    cv2.putText(display_frame, f"Frame: {frame_count}", (10, 30), 
                                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-                    cv2.putText(annotated_frame, f"Paused: {'Yes' if self.paused else 'No'}", (10, 60), 
+                    cv2.putText(display_frame, f"FPS: {fps:.1f}", (10, 60), 
                                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-                    cv2.putText(annotated_frame, f"Frame: {frame_count}", (10, 90), 
-                               cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-                    cv2.putText(annotated_frame, f"FPS: {fps:.1f}", (10, 120), 
+                    cv2.putText(display_frame, f"Paused: {'Yes' if self.paused else 'No'}", (10, 90), 
                                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
                     
-                    cv2.imshow("YOLO Video Processing", annotated_frame)
+                    cv2.imshow("YOLO Video Processing", display_frame)
                     
-                    # CONTROL DE VELOCIDAD para velocidades lentas
-                    if self.speed_multiplier < 1.0:
-                        target_delay = (1.0 / (30 * self.speed_multiplier)) - 0.01  # Asumiendo 30 FPS
-                        if target_delay > 0:
-                            time.sleep(target_delay)
-                
+                    # Control de velocidad para mantener FPS original
+                    elapsed = time.time() - last_time
+                    sleep_time = max(0, frame_delay - elapsed)
+                    if sleep_time > 0:
+                        time.sleep(sleep_time)
+                    last_time = time.time()
                 else:
-                    # SI ESTÁ PAUSADO: Mostrar el último frame pero con texto actualizado
-                    if 'annotated_frame' in locals():
-                        # Crear una copia del último frame con el texto de pausa actualizado
-                        paused_frame = annotated_frame.copy()
-                        cv2.putText(paused_frame, f"Speed: {self.speed_multiplier}x", (10, 30), 
-                                   cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-                        cv2.putText(paused_frame, f"Paused: {'Yes' if self.paused else 'No'}", (10, 60), 
-                                   cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-                        cv2.putText(paused_frame, f"Frame: {frame_count}", (10, 90), 
-                                   cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-                        cv2.putText(paused_frame, f"FPS: {fps:.1f}", (10, 120), 
-                                   cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+                    # Si está pausado, mostrar el último frame
+                    if 'display_frame' in locals():
+                        paused_frame = display_frame.copy()
+                        cv2.putText(paused_frame, "PAUSED", (display_frame.shape[1]//2 - 60, display_frame.shape[0]//2), 
+                                   cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 2)
                         cv2.imshow("YOLO Video Processing", paused_frame)
-                    
                     time.sleep(0.1)
                 
                 # Control de teclas
@@ -242,32 +350,11 @@ class VideoProcessor:
                 elif key == ord(' '):  # Espacio para pausar/reanudar
                     self.paused = not self.paused
                     print(f"Video {'pausado' if self.paused else 'reanudado'}")
-                    # Forzar actualización inmediata del texto de pausa
-                    continue
-                elif key == ord('1'):  # Velocidad normal
-                    self.speed_multiplier = 1.0
-                    self.frame_skip_counter = 0
-                    print("Velocidad: 1x (Normal)")
-                elif key == ord('2'):  # 2x
-                    self.speed_multiplier = 2.0
-                    self.frame_skip_counter = 0
-                    print("Velocidad: 2x (Rápida)")
-                elif key == ord('4'):  # 4x
-                    self.speed_multiplier = 4.0
-                    self.frame_skip_counter = 0
-                    print("Velocidad: 4x (Muy rápida)")
-                elif key == ord('0'):  # 0.5x (más lento)
-                    self.speed_multiplier = 0.5
-                    print("Velocidad: 0.5x (Lenta)")
-                elif key == ord('3'):
-                    self.speed_multiplier = 0.25
-                    print("Velocidad: 0.25x (Muy lenta)")
-                elif key == ord('5'):
-                    self.speed_multiplier = 0.1
-                    print("Velocidad: 0.1x (Súper lenta)")
-                elif key == ord('6'):
-                    self.speed_multiplier = 0.05
-                    print("Velocidad: 0.05x (Ultra lenta)")
+            
+            # Esperar a que termine el hilo de procesamiento
+            self.processing_active = False
+            if processing_thread.is_alive():
+                processing_thread.join(timeout=5.0)
             
             # Al final del procesamiento, calcular métricas finales
             self.video_duration = time.time() - self.start_time
@@ -282,6 +369,65 @@ class VideoProcessor:
             logger.info(f"Video completado. Frames procesados: {frame_count}")
             print(f"Video completado. Frames procesados: {frame_count}")
             return True
+            
+        except Exception as e:
+            logger.error(f"Error al procesar el video con stream: {e}")
+            print(f"Error al procesar el video con stream: {e}")
+            return False
+        
+        finally:
+            if 'cap' in locals() and cap is not None:
+                cap.release()
+            cv2.destroyAllWindows()
+            self.processing_active = False
+    
+    def _process_frames_thread(self):
+        """Hilo para procesar frames con YOLO en segundo plano"""
+        try:
+            # Usar el método stream de YOLO
+            results = self.model(self.source, stream=True, verbose=False)
+            
+            for result in results:
+                if not self.processing_active:
+                    break
+                    
+                if not self.paused:
+                    self.total_frames_processed += 1
+                    
+                    # Actualizar estadísticas de detección
+                    self.update_detection_stats(result)
+                    
+                    # Obtener el frame anotado y guardarlo para visualización
+                    annotated_frame = result.plot()
+                    self.current_result = annotated_frame
+                    self.result_ready = True
+                    
+                    # Actualizar el estado si hay un callback configurado
+                    if self.status_callback and self.total_frames_processed % 10 == 0:  # Actualizar más frecuentemente
+                        # Obtener el total de frames si es posible
+                        try:
+                            cap = cv2.VideoCapture(self.source)
+                            total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+                            cap.release()
+                            progress = (self.total_frames_processed / total_frames * 100) if total_frames > 0 else 0
+                        except:
+                            total_frames = 0
+                            progress = 0
+                            
+                        self.status_callback({
+                            'frame_count': self.total_frames_processed,
+                            'total_frames': total_frames,
+                            'progress': progress,
+                            'detections': self.total_detections
+                        })
+                
+                # Pequeña pausa para no saturar la CPU
+                time.sleep(0.01)
+                
+        except Exception as e:
+            logger.error(f"Error en el hilo de procesamiento: {e}")
+            print(f"Error en el hilo de procesamiento: {e}")
+            self.processing_active = False
             
         except AttributeError as e:
             if "'NoneType' object has no attribute 'isnumeric'" in str(e):
@@ -323,8 +469,9 @@ class VideoProcessor:
                     os.remove(downloaded_path)
                     logger.info("Archivo temporal eliminado")
                     print("Archivo temporal eliminado")
-                except:
-                    pass
+                except Exception as e:
+                    logger.warning(f"No se pudo eliminar el archivo temporal: {e}")
+                    print(f"Advertencia: No se pudo eliminar el archivo temporal: {e}")
                     
                 return result
             except Exception as e:
@@ -336,27 +483,40 @@ class VideoProcessor:
             print("Error: No se pudo descargar el video")
             return False
     
-    def process_video(self):
+    def process_video(self, url=None):
         """Método principal que intenta procesar con stream primero"""
-        if self.source.startswith(('http', 'www')):
-            logger.info("Intentando procesar con YOLO stream...")
-            print("Intentando procesar con YOLO stream...")
+        try:
+            # Si se proporciona una URL, usarla; de lo contrario, usar self.source
+            source = url if url is not None else self.source
+            self.source = source  # Actualizar la fuente para uso en otros métodos
             
-            # Primero intentar con el método stream de YOLO
-            try:
-                return self.process_with_yolo_stream()
-            except Exception as e:
-                if "Error de isnumeric - necesita descarga" in str(e):
-                    logger.warning("Error específico de YouTube detectado, intentando descargar...")
-                    print("Error específico de YouTube detectado, intentando descargar...")
-                    return self.process_downloaded_video()
-                else:
+            # Para URLs de YouTube, siempre intentamos descargar primero para mejor rendimiento
+            if source.startswith(('http', 'www')) and ('youtube.com' in source or 'youtu.be' in source):
+                logger.info("URL de YouTube detectada, descargando para mejor rendimiento...")
+                print("Procesando video de YouTube...")
+                return self.process_downloaded_video()
+            
+            # Para otras URLs, intentamos primero con stream
+            elif source.startswith(('http', 'www')):
+                logger.info("Intentando procesar con YOLO stream...")
+                print("Intentando procesar URL directamente...")
+                try:
+                    return self.process_with_yolo_stream()
+                except Exception as e:
                     logger.error(f"Falló procesamiento con stream: {e}")
-                    print(f"Falló procesamiento con stream: {e}")
+                    print(f"No se pudo procesar la URL directamente. Intentando descargar...")
                     return self.process_downloaded_video()
-        else:
-            # Archivo local - usar el método stream
-            return self.process_with_yolo_stream()
+            
+            else:
+                # Es un archivo local, procesarlo directamente
+                logger.info("Procesando archivo local...")
+                print("Procesando archivo local...")
+                return self.process_with_yolo_stream()
+                
+        except Exception as e:
+            print(f"Error al procesar el video: {e}")
+            logger.error(f"Error al procesar el video: {e}")
+            return False
 
 # Uso
 if __name__ == "__main__":
