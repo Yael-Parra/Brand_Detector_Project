@@ -20,3 +20,5 @@ data/uploads/
 runs/
 
 .DS_Store
+
+temp_videos/
