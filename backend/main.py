@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from .database.db_io import connect, disconnect, insert_video, insert_detection
+from database.db_io import connect, disconnect, insert_video, insert_detection
 
 from pydantic import BaseModel
 
@@ -201,9 +201,9 @@ def health():
 
 
 
-from .routes.youtube_video import router as youtube_router
-from .routes.upload_image import router as upload_image_router
-from .routes.upload_videos import router as upload_videos_router
+from routes.youtube_video import router as youtube_router
+from routes.upload_image import router as upload_image_router
+from routes.upload_videos import router as upload_videos_router
 
 app.include_router(youtube_router)
 app.include_router(upload_image_router)
