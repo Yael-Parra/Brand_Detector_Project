@@ -12,23 +12,38 @@ import requests
 
 class VideoProcessor:
     def send_results_to_backend(self, api_url: str = "http://localhost:8000/predict/url"):
-        metrics = self.get_processing_metrics()
-        video_info = metrics["video_info"]
-        detections = metrics["detection_results"]
-
-        data = {
-            "type": video_info["type"],
-            "name": video_info["name"],
-            "duration_sec": int(video_info["total_video_time_segs"]) or 0,
-            "fps_estimated": (
-                metrics["total_frames_processed"] / video_info["total_video_time_segs"]
-                if video_info["total_video_time_segs"] > 0 else 0.0
-            ),
-            "detections": detections,
-        }
-
-        resp = requests.post(api_url, json=data, timeout=30)
-        print("\n[BACKEND]", resp.status_code, resp.text)
+        try:
+            metrics = self.get_processing_metrics()
+            video_info = metrics["video_info"]
+            detections = metrics["detection_results"]
+            
+            # Prepara los datos en el formato EXACTO que espera el endpoint /predict/url
+            data = {
+                "type": video_info["type"],
+                "name": video_info["name"],
+                "duration_sec": int(video_info["total_video_time_segs"]) if video_info["total_video_time_segs"] > 0 else 0,
+                "fps_estimated": (
+                    metrics["total_frames_processed"] / video_info["total_video_time_segs"] 
+                    if video_info["total_video_time_segs"] > 0 else 0.0
+                ),
+                "detections": detections  # Esto debe ser un dict, no una lista
+            }
+            
+            print(f"Enviando datos al backend: {data}")  # Para debugging
+            
+            resp = requests.post(api_url, json=data, timeout=30)
+            print(f"Respuesta del backend: {resp.status_code} - {resp.text}")
+            
+            if resp.status_code == 200:
+                print("✓ Datos enviados exitosamente a logo_detector")
+                return True
+            else:
+                print("✗ Error al enviar datos al backend")
+                return False
+                
+        except Exception as e:
+            print(f"Error al enviar datos al backend: {e}")
+            return False
 
     def __init__(self, model_path, video_source):
         self.model = YOLO("best_v5.pt")
@@ -371,7 +386,7 @@ if __name__ == "__main__":
         if success:
             metrics = processor.get_processing_metrics()
             print("\nDatos listos para guardar en BD:")
-            print(f"Tipo: {metrics['video_info']['type']}\n")
+            print(f"Tipo: {metrics['video_info']['type']}")
             print(f"Nombre: {metrics['video_info']['name']}\n")
             print(f"Duración: {metrics['video_info']['total_video_time_segs']} segundos")
             print("Detecciones:", metrics['detection_results'], "\n")
@@ -384,6 +399,36 @@ if __name__ == "__main__":
     else:
         print("Por favor, proporciona una URL de YouTube como argumento al ejecutar el script.")
 
+# Para Testing:
+# # Uso
+# if __name__ == "__main__":
+#     # Lista de videos para probar
+#     videos_to_test = [
+#         "https://www.youtube.com/watch?v=FKdlUnVvX7Q"]
+        
+    
+#     for video_url in videos_to_test:
+#         print(f"\n{'='*60}")
+#         print(f"Probando: {video_url}")
+#         print(f"{'='*60}")
+        
+#         processor = VideoProcessor("best.pt", video_url)
+#         success = processor.process_video()
+        
+#         if success:
+#             # OBTENER MÉTRICAS (para que la API las use después)
+#             metrics = processor.get_processing_metrics()
+#             print("\nDatos listos para guardar en BD:")
+#             print(f"Tipo: {metrics['video_info']['type']}")
+#             print(f"Nombre: {metrics['video_info']['name']}")
+#             print(f"Duración: {metrics['video_info']['total_video_time_segs']} segundos")
+#             print("Detecciones:", metrics['detection_results'])
+            
+#             logger.success(f"Éxito con {video_url}")
+#             print(f"✓ Éxito con {video_url}")
+#         else:
+#             logger.warning(f"✗ Falló {video_url}")
+#             print(f"✗ Falló {video_url}")
 
 # Videos probados:
     # processor = VideoProcessor("best.pt", "https://www.youtube.com/watch?v=oaExWXqwkqg") # 👍 60 segundos
