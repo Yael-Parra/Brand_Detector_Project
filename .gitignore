@@ -11,6 +11,10 @@ pyproject.toml
 *.pyc
 __pycache__/
 
+#frontend 
+node_modules/
+
+# logs
 data/uploads/
 
 runs/
