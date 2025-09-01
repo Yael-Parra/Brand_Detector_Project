@@ -5,34 +5,34 @@
 from fastapi import APIRouter
 import subprocess
 import sys
-from ..models import YoutubeRequest, PredictUrlRequest
+from backend.models import YoutubeRequest, PredictUrlRequest
 from fastapi import HTTPException
-from ..main import persist_results
-
+from backend.main import persist_results
+from backend.services.detection_image_youtube_slow import VideoProcessor
 
 router = APIRouter()
 
 @router.post("/process/youtube")
 def process_youtube(data: YoutubeRequest):
-    """
-    Procesa un video de YouTube usando el script detection_image_youtube_slow.py y retorna las métricas.
-    """
-    # Llama al script como subproceso, pasando la URL como argumento
     try:
-        result = subprocess.run([
-            sys.executable,
-            "backend/services/detection_image_youtube_slow.py",
-            data.url
-        ], capture_output=True, text=True, timeout=600)
-        if result.returncode == 0:
-            # Busca la sección de métricas en la salida
-            output = result.stdout
-            # Opcional: puedes parsear la salida para devolver solo las métricas
-            return {"output": output}
-        else:
-            return {"error": result.stderr, "output": result.stdout}
+        processor = VideoProcessor(model_path="best_v5.pt", video_source=data.url)
+        processor.process_with_yolo_stream()
+        metrics = processor.get_processing_metrics()
+
+        # Guardar en BD reutilizando persist_results
+        id_video = persist_results(
+            vtype=metrics["video_info"]["type"],
+            name=metrics["video_info"]["name"],
+            fps=metrics["total_frames_processed"] / metrics["video_info"]["total_video_time_segs"] if metrics["video_info"]["total_video_time_segs"] > 0 else 0.0,
+            total_secs=metrics["video_info"]["total_video_time_segs"],
+            summary=metrics["detection_results"],
+        )
+
+        return {"id_video": id_video, **metrics}
     except Exception as e:
-        return {"error": str(e)}  
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 
 @router.post("/predict/url")
 def predict_url(data: PredictUrlRequest):
