@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 
-model = YOLO('backend/best1.pt')
+model = YOLO('best1.pt')
 
 #source = "https://omes-va.com/wp-content/uploads/2025/02/Datasets_720x405.jpg"
 source = "data/mrc26.jpg"
