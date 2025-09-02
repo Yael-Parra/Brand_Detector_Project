@@ -2,13 +2,83 @@ import React, { useEffect, useRef, useState } from 'react'
 
 export default function ResultViewer({data, jobId}){
   const canvasRef = useRef()
+  const streamingCanvasRef = useRef() // Canvas específico para streaming
   const videoRef = useRef()
   const [summary, setSummary] = useState(null)
   const [processingStatus, setProcessingStatus] = useState('')
   const [isLiveProcessing, setIsLiveProcessing] = useState(false)
   const statusCheckInterval = useRef(null)
 
-  // Función para verificar el estado del procesamiento
+  // ===============================================
+  // FUNCIONES ESPECÍFICAS PARA STREAMING
+  // ===============================================
+  
+  // Construir resumen específico para streaming
+  function buildStreamingSummary(streamingData) {
+    const detections = streamingData.detections || []
+    const totalDetections = detections.length
+    
+    // Contar etiquetas en el frame actual
+    const labelCounts = {}
+    detections.forEach(detection => {
+      const label = detection.label || detection.class
+      if (label) {
+        labelCounts[label] = (labelCounts[label] || 0) + 1
+      }
+    })
+    
+    return {
+      totalDetections,
+      labelCounts,
+      frameCount: streamingData.frame_count || 0,
+      hasDetections: streamingData.has_detections || false,
+      timestamp: streamingData.timestamp || Date.now()
+    }
+  }
+    // Mostrar imagen anotada del streaming directamente
+  function drawStreamingImage(annotatedImageBase64) {
+    if (!annotatedImageBase64 || !streamingCanvasRef.current) return
+    
+    const img = new Image()
+    img.onload = () => {
+      const canvas = streamingCanvasRef.current
+      if (!canvas) return
+      
+      // Configurar tamaño máximo más pequeño para mejor presentación
+      const maxWidth = 480   // Reducido de 800 a 480
+      const maxHeight = 360  // Reducido de 600 a 360
+      
+      let { width, height } = img
+      
+      // Calcular escala manteniendo proporción
+      const scaleX = maxWidth / width
+      const scaleY = maxHeight / height
+      const scale = Math.min(scaleX, scaleY, 1) // No aumentar si ya es pequeño
+      
+      const newWidth = Math.floor(width * scale)
+      const newHeight = Math.floor(height * scale)
+      
+      // Configurar canvas con las nuevas dimensiones
+      canvas.width = newWidth
+      canvas.height = newHeight
+      
+      // Configurar estilos CSS para responsividad
+      canvas.style.width = `${newWidth}px`
+      canvas.style.height = `${newHeight}px`
+      canvas.style.maxWidth = '100%'
+      canvas.style.height = 'auto'
+      
+      const ctx = canvas.getContext('2d')
+      
+      // Limpiar canvas antes de dibujar
+      ctx.clearRect(0, 0, newWidth, newHeight)
+      
+      // Dibujar imagen escalada
+      ctx.drawImage(img, 0, 0, newWidth, newHeight)
+    }
+    img.src = `data:image/jpeg;base64,${annotatedImageBase64}`
+  }
+
   const checkProcessingStatus = async (id) => {
     if (!id) return
     
@@ -20,8 +90,6 @@ export default function ResultViewer({data, jobId}){
         console.error(`Error al obtener estado: ${response.status} ${response.statusText}`)
         setProcessingStatus(`Error al obtener estado: ${response.status}. Reintentando...`)
         
-        // Si recibimos un 404, pero sabemos que es un trabajo válido, actualizamos la UI
-        // para evitar confundir al usuario
         if (response.status === 404 && id && (id.startsWith('video-job-') || id.startsWith('youtube-job-'))) {
           console.log('Trabajo no encontrado en el servidor, pero parece válido. Mostrando información temporal.')
           setSummary(prev => ({
@@ -36,9 +104,7 @@ export default function ResultViewer({data, jobId}){
       const statusData = await response.json()
       console.log(`Estado recibido para ${id}:`, statusData)
         
-        // Actualizar el estado de procesamiento con información detallada
         if (statusData.status === 'processing') {
-          // Mostrar progreso si está disponible
           if (statusData.progress) {
             setProcessingStatus(`Procesando: ${Math.round(statusData.progress)}%`)
           } else if (statusData.frame_count) {
@@ -47,30 +113,24 @@ export default function ResultViewer({data, jobId}){
             setProcessingStatus('Procesando video...')
           }
           
-          // Actualizar el resumen con las detecciones en tiempo real
           if (statusData.detections) {
-            // Verificar si detections es un número o un array
             if (typeof statusData.detections === 'number') {
-              // Formato antiguo: detections es un número
               const labelCounts = statusData.labels || {}
               
               setSummary(prev => ({
                 ...prev,
                 totalDetections: statusData.detections,
                 processingProgress: statusData.progress || 0,
-                labelCounts: labelCounts // Añadir conteo de etiquetas
+                labelCounts: labelCounts
               }))
               
-              // Si el procesamiento está completo, actualizar los datos
               if ((statusData.progress || 0) >= 100 && !data) {
                 setData({
                   detections: statusData.detections_list || [],
-                  video_url: processingVideoUrl // Usar la URL del video que ya tenemos
+                  video_url: processingVideoUrl
                 })
               }
             } else if (Array.isArray(statusData.detections)) {
-              // Formato nuevo: detections es un array de objetos con detecciones
-              // Calcular el conteo de etiquetas a partir del array de detecciones
               const labelCounts = {}
               statusData.detections.forEach(detection => {
                 if (detection.label) {
@@ -83,41 +143,33 @@ export default function ResultViewer({data, jobId}){
                 totalDetections: statusData.detections.length,
                 processingProgress: statusData.progress || 0,
                 labelCounts: labelCounts,
-                detectionsList: statusData.detections // Guardar la lista de detecciones
+                detectionsList: statusData.detections
               }))
               
-              // Si el procesamiento está completo, actualizar los datos
               if ((statusData.progress || 0) >= 100 && !data) {
                 setData({
                   detections: statusData.detections,
-                  video_url: processingVideoUrl // Usar la URL del video que ya tenemos
+                  video_url: processingVideoUrl
                 })
               }
             }
           }
         } else if (statusData.status === 'completed') {
-          // Si el procesamiento ha terminado, detener el intervalo
           clearInterval(statusCheckInterval.current)
           setProcessingStatus('Procesamiento completado')
           
-          // Actualizar datos si es necesario
           if (statusData.detections) {
-            // Obtener las etiquetas detectadas
             let labelCounts = {}
             
-            // Manejar diferentes formatos de respuesta
             if (statusData.labels) {
-              // Si tenemos etiquetas directamente
               labelCounts = statusData.labels
             } else if (typeof statusData.detections === 'object') {
-              // Si las detecciones están en formato de objeto
               labelCounts = Object.keys(statusData.detections).reduce((acc, key) => {
                 acc[key] = statusData.detections[key].frames || 0
                 return acc
               }, {})
             }
             
-            // Actualizar con los resultados finales
             setSummary(prev => ({
               ...prev,
               totalDetections: typeof statusData.detections === 'number' 
@@ -127,11 +179,10 @@ export default function ResultViewer({data, jobId}){
               processingProgress: 100
             }))
             
-            // Actualizar los datos con el resultado final si no existen
             if (!data) {
               setData({
                 detections: Array.isArray(statusData.detections) ? statusData.detections : statusData.detections_list || [],
-                video_url: processingVideoUrl // Usar la URL del video que ya tenemos
+                video_url: processingVideoUrl
               })
             }
           }
@@ -142,10 +193,8 @@ export default function ResultViewer({data, jobId}){
     } catch (error) {
       console.error('Error al verificar estado:', error)
       
-      // Manejar errores de red o conexión
       setProcessingStatus(`Error de conexión: ${error.message}. Reintentando...`)
       
-      // Si es un error de red pero tenemos un jobId válido, actualizar la UI con información temporal
       if (id && (id.startsWith('video-job-') || id.startsWith('youtube-job-'))) {
         console.log('Error de red con jobId válido. Mostrando información temporal.')
         setSummary(prev => ({
@@ -157,33 +206,26 @@ export default function ResultViewer({data, jobId}){
     }
   }
 
-  // Estado para almacenar la URL del video durante el procesamiento
   const [processingVideoUrl, setProcessingVideoUrl] = useState(null)
 
-  // Efecto para iniciar la verificación de estado cuando hay un jobId
   useEffect(() => {
     if (jobId) {
       console.log(`Iniciando monitoreo para job_id: ${jobId}`)
       
-      // Limpiar intervalo anterior si existe
       if (statusCheckInterval.current) {
         clearInterval(statusCheckInterval.current)
       }
       
-      // Verificar estado inmediatamente
       checkProcessingStatus(jobId)
       
-      // Configurar intervalo para verificar estado cada 2 segundos (más frecuente)
       statusCheckInterval.current = setInterval(() => {
         checkProcessingStatus(jobId)
       }, 2000)
       
-      // Si es un trabajo de YouTube o video MP4, activar modo de procesamiento en vivo
       if (jobId.startsWith('youtube-job-') || jobId.startsWith('video-job-')) {
         setIsLiveProcessing(true)
         console.log(`Modo de procesamiento en vivo activado para ${jobId}`)
         
-        // Solicitar la URL del video para reproducción durante el procesamiento
         fetch(`http://localhost:8000/video/${jobId}`)
           .then(response => {
             if (response.ok) {
@@ -202,14 +244,13 @@ export default function ResultViewer({data, jobId}){
           })
       }
       
-      // Establecer un timeout de seguridad para detener el intervalo después de 10 minutos
       const safetyTimeout = setTimeout(() => {
         if (statusCheckInterval.current) {
           console.log('Timeout de seguridad alcanzado, deteniendo verificación de estado')
           clearInterval(statusCheckInterval.current)
           setProcessingStatus('Tiempo de espera agotado. El procesamiento puede continuar en segundo plano.')
         }
-      }, 10 * 60 * 1000) // 10 minutos
+      }, 10 * 60 * 1000)
       
       return () => {
         if (statusCheckInterval.current) {
@@ -219,26 +260,34 @@ export default function ResultViewer({data, jobId}){
       }
     }
   }, [jobId])
-
   useEffect(()=>{
     if(!data) return
-    setSummary(buildSummary(data))
-    if(data.image_url){
-      drawImage(data.image_url, data.detections||[])
+    
+    // Manejar datos de streaming en tiempo real
+    if(data.type === 'streaming-detection') {
+      setSummary(buildStreamingSummary(data))
+      
+      // Mostrar imagen anotada si está disponible
+      if(data.annotated_image) {
+        drawStreamingImage(data.annotated_image)
+      }
+    } else {
+      // Manejar datos de imagen/video normales
+      setSummary(buildSummary(data))
+      if(data.image_url){
+        drawImage(data.image_url, data.detections||[])
+      }
     }
   },[data])
   
-  // Efecto para configurar el reproductor de video en tiempo real
   useEffect(() => {
     if (isLiveProcessing && data && data.video_url && videoRef.current) {
       const video = videoRef.current
       
-      // Configurar el video para reproducción automática
       video.autoplay = true
-      video.muted = false // Permitir audio
+      video.muted = false
       video.controls = true
       
-      // Manejar errores de reproducción
       const handleVideoError = (e) => {
         console.error('Error en la reproducción del video:', e)
         setProcessingStatus('Error al reproducir el video')
@@ -253,18 +302,15 @@ export default function ResultViewer({data, jobId}){
   }, [isLiveProcessing, data])
   
   function buildSummary(d){
-    // Usar el campo label en lugar de class para las detecciones
     const totalDetections = (d.detections||[]).length
     const frames = (d.detections||[])
     
-    // Crear un objeto para contar las etiquetas detectadas
     const labelCounts = {}
     if (d.detections && Array.isArray(d.detections)) {
       d.detections.forEach(detection => {
         if (detection.label) {
           labelCounts[detection.label] = (labelCounts[detection.label] || 0) + 1
         } else if (detection.class) {
-          // Mantener compatibilidad con el formato anterior
           labelCounts[detection.class] = (labelCounts[detection.class] || 0) + 1
         }
       })
@@ -285,20 +331,16 @@ export default function ResultViewer({data, jobId}){
       ctx.lineWidth = 4
       ctx.font = 'bold 16px Inter, sans-serif'
       detections.forEach(box=>{
-        // Verificar si tenemos bbox_xyxy (formato nuevo) o bbox (formato antiguo)
         let x, y, w, h;
         if (box.bbox_xyxy) {
-          // Formato nuevo: [x1, y1, x2, y2]
           const [x1, y1, x2, y2] = box.bbox_xyxy;
           x = x1;
           y = y1;
           w = x2 - x1;
           h = y2 - y1;
         } else if (box.bbox) {
-          // Formato antiguo: [x, y, w, h]
           [x, y, w, h] = box.bbox;
         } else {
-          // No hay información de bounding box
           return;
         }
         
@@ -307,7 +349,6 @@ export default function ResultViewer({data, jobId}){
         ctx.fillRect(x, y-30, 160, 30)
         ctx.fillStyle = '#000000'
         
-        // Usar label si está disponible, sino usar class
         const label = box.label || box.class || 'desconocido';
         const score = box.score ? Math.round(box.score*100) : 0;
         ctx.fillText(`${label} ${score}%`, x+8, y-8)
@@ -332,7 +373,6 @@ export default function ResultViewer({data, jobId}){
           <div style={{color: 'var(--white)', fontWeight: '600'}}>Job ID: {jobId}</div>
           <div style={{color: 'var(--white)', fontSize: '0.9rem'}}>{processingStatus || 'Procesamiento en progreso...'}</div>
           
-          {/* Barra de progreso para procesamiento en tiempo real */}
           {isLiveProcessing && summary && summary.processingProgress !== undefined && (
             <div style={{marginTop: '0.5rem', background: 'var(--gray-dark)', borderRadius: '5px', height: '10px', position: 'relative'}}>
               <div 
@@ -352,12 +392,10 @@ export default function ResultViewer({data, jobId}){
             </div>
           )}
           
-          {/* Mostrar detecciones en tiempo real */}
           {isLiveProcessing && summary && summary.totalDetections !== undefined && (
             <div style={{marginTop: '0.5rem', color: 'var(--white)'}}>
               <p>Detecciones encontradas: {summary.totalDetections}</p>
               
-              {/* Mostrar etiquetas detectadas en tiempo real */}
               {summary.labelCounts && Object.keys(summary.labelCounts).length > 0 && (
                 <div style={{marginTop: '0.5rem'}}>
                   <p>Etiquetas detectadas:</p>
@@ -372,13 +410,157 @@ export default function ResultViewer({data, jobId}){
                 </div>
               )}
             </div>
+          )}        </div>
+      )}      {/* Sección específica para streaming en tiempo real */}
+      {data && data.type === 'streaming-detection' && (
+        <div className="preview">
+          <h4 style={{color: 'var(--white)', marginBottom: '1rem', textAlign: 'center'}}>Detección en Tiempo Real</h4>
+          
+          {/* Contenedor del canvas para streaming */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '1.5rem',
+            padding: '1rem',
+            background: 'rgba(0, 0, 0, 0.3)',
+            borderRadius: '15px',
+            border: '1px solid var(--border)'
+          }}>
+            <canvas 
+              ref={streamingCanvasRef} 
+              style={{
+                borderRadius: '10px',
+                border: '2px solid var(--white)',
+                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+                display: 'block'
+              }}
+            />
+          </div>
+            {/* Estadísticas del frame actual - Layout mejorado */}
+          {summary && (
+            <div style={{
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))', 
+              padding: '1.5rem', 
+              borderRadius: '15px',
+              marginTop: '1rem',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
+            }}>
+              {/* Grid de estadísticas principales */}
+              <div style={{
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', 
+                gap: '1rem',
+                marginBottom: '1rem'
+              }}>
+                <div style={{
+                  textAlign: 'center',
+                  padding: '0.75rem',
+                  background: 'rgba(0, 0, 0, 0.2)',
+                  borderRadius: '10px'
+                }}>
+                  <div style={{fontSize: '1.8rem', color: '#64B5F6', fontWeight: 'bold'}}>
+                    {summary.frameCount || 0}
+                  </div>
+                  <div style={{color: 'var(--white)', fontSize: '0.85rem', opacity: '0.9'}}>Frames</div>
+                </div>
+                <div style={{
+                  textAlign: 'center',
+                  padding: '0.75rem',
+                  background: 'rgba(0, 0, 0, 0.2)',
+                  borderRadius: '10px'
+                }}>
+                  <div style={{fontSize: '1.8rem', color: '#81C784', fontWeight: 'bold'}}>
+                    {summary.totalDetections || 0}
+                  </div>
+                  <div style={{color: 'var(--white)', fontSize: '0.85rem', opacity: '0.9'}}>Detecciones</div>
+                </div>
+                <div style={{
+                  textAlign: 'center',
+                  padding: '0.75rem',
+                  background: 'rgba(0, 0, 0, 0.2)',
+                  borderRadius: '10px'
+                }}>
+                  <div style={{
+                    fontSize: '1.8rem', 
+                    color: summary.hasDetections ? '#4CAF50' : '#FF8A65', 
+                    fontWeight: 'bold'
+                  }}>
+                    {summary.hasDetections ? '●' : '○'}
+                  </div>
+                  <div style={{color: 'var(--white)', fontSize: '0.85rem', opacity: '0.9'}}>
+                    {summary.hasDetections ? 'Activo' : 'Inactivo'}
+                  </div>
+                </div>
+              </div>
+                {/* Sección de etiquetas detectadas */}
+              {summary.labelCounts && Object.keys(summary.labelCounts).length > 0 ? (
+                <div>
+                  <h5 style={{
+                    color: 'var(--white)', 
+                    marginBottom: '0.75rem',
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    textAlign: 'center'
+                  }}>
+                    Logos detectados:
+                  </h5>
+                  <div style={{
+                    background: 'rgba(0, 0, 0, 0.3)', 
+                    padding: '0.75rem', 
+                    borderRadius: '10px',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}>
+                    {Object.entries(summary.labelCounts).map(([label, count], index) => (
+                      <div key={index} style={{
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center',
+                        padding: '0.5rem 0.75rem',
+                        margin: '0.25rem 0',
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                      }}>
+                        <span style={{color: 'var(--white)', fontWeight: '500'}}>{label}</span>
+                        <span style={{
+                          color: '#FFD54F', 
+                          fontWeight: 'bold',
+                          background: 'rgba(255, 213, 79, 0.2)',
+                          padding: '0.25rem 0.5rem',
+                          borderRadius: '12px',
+                          fontSize: '0.9rem'
+                        }}>
+                          {count}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div style={{
+                  textAlign: 'center',
+                  padding: '1rem',
+                  background: 'rgba(0, 0, 0, 0.2)',
+                  borderRadius: '10px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}>
+                  <div style={{
+                    color: '#90A4AE',
+                    fontSize: '0.9rem',
+                    fontStyle: 'italic'
+                  }}>
+                    No se detectaron logos en este frame
+                  </div>
+                </div>
+              )}
+            </div>
           )}
         </div>
       )}
 
       {data && data.image_url && (
         <div className="preview">
-          {/* Mostrar la imagen original y la imagen procesada lado a lado */}
           <div style={{display: 'flex', flexDirection: 'row', gap: '20px', flexWrap: 'wrap'}}>
             {data.original_jpg_base64 && (
               <div style={{flex: '1', minWidth: '300px'}}>
@@ -398,7 +580,6 @@ export default function ResultViewer({data, jobId}){
         </div>
       )}
 
-      {/* Mostrar video cuando está completado el procesamiento */}
       {data && (data.video_url || processingVideoUrl) && (
         <div className="preview">
           <video 
@@ -421,7 +602,6 @@ export default function ResultViewer({data, jobId}){
         </div>
       )}
       
-      {/* Mostrar video durante el procesamiento (solo si no hay datos completos) */}
       {!data && isLiveProcessing && processingVideoUrl && (
         <div className="preview">
           <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>Video en procesamiento:</h4>
@@ -453,7 +633,6 @@ export default function ResultViewer({data, jobId}){
             )}
           </div>
           
-          {/* Sección de etiquetas detectadas */}
           {summary.labelCounts && Object.keys(summary.labelCounts).length > 0 && (
             <div style={{marginTop: '1.5rem'}}>
               <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>Etiquetas detectadas</h4>
