@@ -6,7 +6,7 @@ def predict_image(image_path: str):
     image = cv2.imread(image_path)
     if image is None:
         raise ValueError(f"No se pudo cargar la imagen: {image_path}")
-    model = YOLO("best.pt")
+    model = YOLO("best_v5.pt")
     results = model(image)
     detections = []
     for result in results:
