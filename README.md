@@ -89,11 +89,7 @@ resumen
 
 ### 🌐 Web UI & Interfaces
 
-
-
-### 🐳 DevOps & Utilities
-
-![Docker](https://img.shields.io/badge/-Docker-2496ed?logo=docker&logoColor=white)
+-
 
 ---
 
@@ -102,7 +98,7 @@ resumen
 
 
 <p align="center">
-  <img src=EL LINK DE LA IMAGEN" alt="System Architecture Diagram" width="700"/>
+  <img src=https://github.com/Yael-Parra/Brand_Detector_Project/issues/5#issuecomment-3245008872" alt="System Architecture Diagram" width="700"/>
 </p>
 
 
