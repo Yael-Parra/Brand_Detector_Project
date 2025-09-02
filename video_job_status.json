@@ -5343,5 +5343,14 @@
     "end_time": "2025-09-02T11:19:10.983680",
     "fps_estimated": 30.0,
     "processed_secs": 75.79561638832092
+  },
+  "youtube-job-1756814501398": {
+    "status": "processing",
+    "file_name": "unknown_file.mp4",
+    "start_time": "2025-09-02T14:01:41.414038",
+    "detections": 0,
+    "frame_count": 0,
+    "progress": 0,
+    "total_frames": 100
   }
 }
