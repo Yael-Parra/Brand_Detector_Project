@@ -10,8 +10,7 @@ import StreamingCamera from '../components/StreamingCamera'
 import ResultViewer from '../components/ResultViewer'
 
 export default function AppPage({data, setData, setJobId, jobId}){
-  
-  // ===============================================
+    // ===============================================
   // ESTADOS DEL COMPONENTE
   // ===============================================
   const [activeOption, setActiveOption] = useState(0)      // Opción activa del carousel (0-3)
@@ -21,6 +20,7 @@ export default function AppPage({data, setData, setJobId, jobId}){
   const [selectedFile, setSelectedFile] = useState(null)   // Archivo seleccionado
   const [showResults, setShowResults] = useState(false)    // Mostrar resultados
   const [errorMessage, setErrorMessage] = useState('')     // Mensajes de error
+  const [isAnalyzing, setIsAnalyzing] = useState(false)    // Estado de análisis para streaming
 
   // ===============================================
   // CONFIGURACIÓN DEL CAROUSEL
@@ -30,16 +30,33 @@ export default function AppPage({data, setData, setJobId, jobId}){
     { id: 1, title: 'Video', component: VideoUploader },
     { id: 2, title: 'YouTube', component: YoutubeInput },
     { id: 3, title: 'Streaming', component: StreamingCamera }
-  ]
-  // ===============================================
+  ]  // ===============================================
   // FUNCIONES DE NAVEGACIÓN
   // ===============================================
   const nextOption = () => {
     setActiveOption((prev) => (prev + 1) % options.length)
+    // Limpiar estados al cambiar de opción
+    resetStates()
   }
   
   const prevOption = () => {
     setActiveOption((prev) => (prev - 1 + options.length) % options.length)
+    // Limpiar estados al cambiar de opción
+    resetStates()
+  }
+
+  // ===============================================
+  // FUNCIÓN PARA LIMPIAR ESTADOS
+  // ===============================================
+  const resetStates = () => {
+    setHasFile(false)
+    setSelectedFile(null)
+    setYoutubeUrl('')
+    setShowResults(false)
+    setErrorMessage('')
+    setIsAnalyzing(false)
+    setData(null)
+    setJobId(null)
   }
   
   // ===============================================
@@ -163,24 +180,19 @@ export default function AppPage({data, setData, setJobId, jobId}){
         setJobId(`youtube-job-${Date.now()}`)
         setData(sample)
         setShowResults(true)
-        
-      } else if (activeOption === 3) {
-        // STREAMING - Iniciar análisis en tiempo real
-        console.log('Iniciando streaming de detección...')
-        
-        // TODO: Conexión real con backend de streaming
-        setTimeout(() => {
-          const streamingData = {
-            type: 'streaming',
-            detections: [
-              { class: 'logo-brand', score: 0.92, bbox: [100,60,80,80] }
-            ],
-            streaming_active: true
-          }
-          setJobId('streaming-' + Date.now())
-          setData(streamingData)
+          } else if (activeOption === 3) {
+        // STREAMING - Toggle análisis en tiempo real
+        if (!isAnalyzing) {
+          // Iniciar análisis
+          setIsAnalyzing(true)
           setShowResults(true)
-        }, 1000)
+          setJobId(`streaming-${Date.now()}`)
+          console.log('🎯 Streaming de detección iniciado')
+        } else {
+          // Detener análisis
+          setIsAnalyzing(false)
+          console.log('⏹️ Streaming de detección detenido')
+        }
       }
       
     } catch (error) {
@@ -189,20 +201,43 @@ export default function AppPage({data, setData, setJobId, jobId}){
     } finally {
       setLoading(false)
     }
-  }
-  // ===============================================
+  }  // ===============================================
   // MANEJADORES DE EVENTOS DE COMPONENTES HIJOS
   // ===============================================
   const handleComponentResult = (result, id) => {
-    if (result === "camera-ready") {
-      // Cámara lista para streaming
+    if (typeof result === 'object' && result.type) {
+      // Resultado del streaming camera
+      if (result.type === 'camera-ready') {
+        setHasFile(true)
+        setErrorMessage('')
+      } else if (result.type === 'camera-off') {
+        setHasFile(false)
+        setShowResults(false)
+        setIsAnalyzing(false)
+        setData(null)  // Limpiar datos de streaming
+        setJobId(null) // Limpiar job ID
+        setErrorMessage('')
+      } else if (result.type === 'streaming-detection') {
+        // Actualizar resultados en tiempo real
+        setData(result)
+        setShowResults(true)
+      } else if (result.type === 'streaming-complete') {
+        // Finalización del streaming
+        console.log('✅ Streaming completado:', result.final_statistics)
+        setIsAnalyzing(false)
+      }
+    } else if (result === "camera-ready") {
+      // Cámara lista para streaming (compatibilidad)
       setHasFile(true)
       setShowResults(false)
       setErrorMessage('')
     } else if (result === "camera-off") {
-      // Cámara apagada
+      // Cámara apagada (compatibilidad)
       setHasFile(false)
       setShowResults(false)
+      setIsAnalyzing(false)
+      setData(null)  // Limpiar datos
+      setJobId(null) // Limpiar job ID
       setErrorMessage('')
     } else {
       // Archivo subido (imagen/video)
@@ -261,13 +296,12 @@ export default function AppPage({data, setData, setJobId, jobId}){
             <button className="carousel-btn next" onClick={nextOption}>
               ›
             </button>
-          </div>
-
-          {/* Componente activo según opción seleccionada */}
-          <div className="active-uploader">
+          </div>          {/* Componente activo según opción seleccionada */}          <div className="active-uploader">
             <ActiveComponent 
               onResult={handleComponentResult}
               onUrlChange={activeOption === 2 ? handleUrlChange : undefined}
+              isAnalyzing={activeOption === 3 ? isAnalyzing : undefined}
+              onAnalyzeToggle={activeOption === 3 ? setIsAnalyzing : undefined}
             />
           </div>
 
@@ -278,13 +312,14 @@ export default function AppPage({data, setData, setJobId, jobId}){
             alignItems: 'center', 
             marginTop: '2rem', 
             marginBottom: '2rem'
-          }}>
-            <button 
+          }}>            <button 
               className="button analyze-button" 
               onClick={handleProcess}
-              disabled={loading}
+              disabled={loading || (activeOption === 3 && !hasFile)}
             >
-              {loading ? 'Procesando...' : 'Analizar'}
+              {loading ? 'Procesando...' : 
+               activeOption === 3 ? (isAnalyzing ? 'Detener Análisis' : 'Analizar') : 
+               'Analizar'}
             </button>
             
             {errorMessage && (
