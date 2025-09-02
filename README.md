@@ -25,8 +25,10 @@
 ## 📌 Project Overview
 
 <p align="justify">  
+  
+Este proyecto de <strong>Computer Vision</strong> está diseñado para <strong>detectar</strong> y <strong>analizar</strong> la aparición de <strong>logos</strong> en <strong>imágenes</strong>, <strong>vídeos</strong>, <strong>enlaces</strong> o <strong>streaming en vivo</strong>, utilizando un modelo <strong>YOLO</strong> entrenado con <strong>Roboflow</strong> e integrado en un backend <strong>FastAPI</strong>. El sistema <strong>procesa</strong> el contenido, <strong>identifica</strong> las marcas, <strong>calcula</strong> el tiempo total y el porcentaje de aparición, y <strong>almacena</strong> los resultados en una base de datos <strong>PostgreSQL (Neon)</strong> estructurada en dos tablas: <strong>videos</strong>, que registra metadatos como tipo, nombre y duración del vídeo; y <strong>logo_detector</strong>, que guarda las detecciones con información como nombre de la marca, número de frames detectados, <em>FPS</em> y porcentaje de aparición, vinculadas al vídeo correspondiente. El frontend, desarrollado con <strong>React</strong> + <strong>Vite</strong>, ofrece una interfaz intuitiva para <strong>subir</strong> o <strong>capturar</strong> contenido y <strong>visualizar</strong> los resultados procesados.
+</p>
 
-resumen
 
 ---
 ## 📎 Useful links
@@ -36,10 +38,10 @@ resumen
 
 ## 🎯 Target Audience
 
-- 
-- 
-- 
-
+- **Equipos de marketing y publicidad** que necesiten medir la exposición de marcas.
+- **Medios y transmisiones en vivo** que quieran monitorear logos en su contenido.
+- **Organizaciones deportivas** y eventos para evaluar visibilidad de patrocinadores.
+  
 ---
 
 ## 🔧 General Project Overview
