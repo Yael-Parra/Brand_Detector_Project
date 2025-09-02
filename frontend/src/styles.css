@@ -23,6 +23,7 @@
   --gray-light: #cccccc;
   --gray-lighter: #e5e5e5;
   --white: #ffffff;
+  --primary: #4CAF50; /* Color verde para la barra de progreso */
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -97,7 +98,50 @@ strong, b {
 }
 
 /* ===============================================
-   4. SECCIONES HERO Y PÁGINA DE INICIO
+   4. COMPONENTES DE PROCESAMIENTO EN TIEMPO REAL
+   =============================================== */
+
+/* Estilos para la barra de progreso */
+.progress-bar-container {
+  width: 100%;
+  height: 10px;
+  background-color: var(--gray-dark);
+  border-radius: 5px;
+  margin: 10px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--primary);
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+/* Estilos para la información de procesamiento */
+.processing-info {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid var(--white);
+}
+
+.processing-info h3 {
+  margin-bottom: 10px;
+  color: var(--white);
+}
+
+.live-detections {
+  margin-top: 10px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+/* ===============================================
+   5. SECCIONES HERO Y PÁGINA DE INICIO
    =============================================== */
 
 /* Hero base genérico */

@@ -1,0 +1,5347 @@
+{
+  "video-job-1756726557857": {
+    "status": "completed",
+    "file_name": "V\u00eddeo sin t\u00edtulo \u2010 Hecho con Clipchamp (1).mp4",
+    "start_time": "2025-09-01T13:35:57.887872",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "end_time": "2025-09-01T13:37:08.810769",
+    "fps_estimated": 30.0,
+    "processed_secs": 70.91288590431213
+  },
+  "video-job-1756726933345": {
+    "status": "completed",
+    "file_name": "V\u00eddeo sin t\u00edtulo \u2010 Hecho con Clipchamp (1).mp4",
+    "start_time": "2025-09-01T13:42:13.373024",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "end_time": "2025-09-01T13:43:22.764062",
+    "fps_estimated": 30.0,
+    "processed_secs": 69.38540363311768
+  },
+  "video-job-1756727431127": {
+    "status": "completed",
+    "file_name": "V\u00eddeo sin t\u00edtulo \u2010 Hecho con Clipchamp (1).mp4",
+    "start_time": "2025-09-01T13:50:31.158173",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "end_time": "2025-09-01T13:51:42.582140",
+    "fps_estimated": 30.0,
+    "processed_secs": 71.41738700866699
+  },
+  "video-job-1756729666451": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T14:27:46.485914",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T14:29:06.091679",
+    "fps_estimated": 30.0,
+    "processed_secs": 79.59775042533875
+  },
+  "video-job-1756730903927": {
+    "status": "completed",
+    "file_name": "skynet_l8zwBjjW.mp4",
+    "start_time": "2025-09-01T14:48:23.928133",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "labels": {},
+    "end_time": "2025-09-01T14:48:29.625425",
+    "fps_estimated": 10.0,
+    "processed_secs": 5.696101903915405
+  },
+  "video-job-1756731296160": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T14:54:56.185316",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T14:56:14.725601",
+    "fps_estimated": 30.0,
+    "processed_secs": 78.53527164459229
+  },
+  "video-job-1756732193218": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-01T15:09:53.219996",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpyk2v0dz7.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T15:10:55.449726",
+    "fps_estimated": 10.0,
+    "processed_secs": 62.06484007835388
+  },
+  "video-job-1756732536640": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-01T15:15:36.641219",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpfgyio_rq.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T15:15:45.283885",
+    "fps_estimated": 10.0,
+    "processed_secs": 8.635663509368896
+  },
+  "video-job-1756734139954": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-01T15:42:19.955348",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpozbr2ohq.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T15:43:04.854671",
+    "fps_estimated": 10.0,
+    "processed_secs": 44.80216884613037
+  },
+  "video-job-1756734310380": {
+    "status": "completed",
+    "file_name": "skynet_l8zwBjjW.mp4",
+    "start_time": "2025-09-01T15:45:10.380839",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpfv7xnp3k.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T15:45:15.874913",
+    "fps_estimated": 10.0,
+    "processed_secs": 5.492074489593506
+  },
+  "video-job-1756738277663": {
+    "status": "processing",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T16:51:17.690702",
+    "detections": 30,
+    "frame_count": 40,
+    "progress": 8.333333333333332,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpiwbtq6rr.mp4",
+    "labels": {
+      "logo_toyota": 30
+    }
+  },
+  "video-job-1756740821859": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T17:33:41.909098",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmph2qt9vac.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T17:35:19.143682",
+    "fps_estimated": 30.0,
+    "processed_secs": 97.16857028007507
+  },
+  "video-job-1756742970272": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T18:09:30.303813",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpurnq4epx.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T18:10:40.572414",
+    "fps_estimated": 30.0,
+    "processed_secs": 70.26260018348694
+  },
+  "youtube-job-1756743197620": {
+    "status": "processing",
+    "file_name": "unknown_file.mp4",
+    "start_time": "2025-09-01T18:13:17.626451",
+    "detections": 0,
+    "frame_count": 0,
+    "progress": 0,
+    "total_frames": 100
+  },
+  "video-job-1756743703214": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-01T18:21:43.215543",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpnbwl5lrz.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T18:21:51.205535",
+    "fps_estimated": 10.0,
+    "processed_secs": 7.982110500335693
+  },
+  "video-job-1756743899634": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T18:24:59.674146",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpbt5csepi.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T18:26:11.508525",
+    "fps_estimated": 30.0,
+    "processed_secs": 71.82937574386597
+  },
+  "video-job-1756744064721": {
+    "status": "completed",
+    "file_name": "skynet_l8zwBjjW.mp4",
+    "start_time": "2025-09-01T18:27:44.722043",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmp9ibj07bd.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T18:27:49.926075",
+    "fps_estimated": 10.0,
+    "processed_secs": 5.203031539916992
+  },
+  "video-job-1756749342159": {
+    "status": "processing",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T19:55:42.197916",
+    "detections": 179,
+    "frame_count": 190,
+    "progress": 39.58333333333333,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmplp0h97fe.mp4",
+    "labels": {
+      "logo_toyota": 179
+    }
+  },
+  "video-job-1756749461827": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T19:57:41.859121",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpjzzqp4xn.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T19:58:52.788773",
+    "fps_estimated": 30.0,
+    "processed_secs": 70.92672371864319
+  },
+  "video-job-1756754373582": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T21:19:33.615314",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpjni08qhq.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T21:20:46.519934",
+    "fps_estimated": 30.0,
+    "processed_secs": 72.88777184486389
+  },
+  "video-job-1756754985427": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-01T21:29:45.427813",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpo13mc7d_.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T21:29:53.367620",
+    "fps_estimated": 10.0,
+    "processed_secs": 7.93880820274353
+  },
+  "video-job-1756755048146": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-01T21:30:48.147207",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmp1p48b6vq.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T21:30:55.240045",
+    "fps_estimated": 10.0,
+    "processed_secs": 7.0908379554748535
+  },
+  "video-job-1756761759975": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T23:22:40.008846",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpbexfiyit.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T23:23:50.416888",
+    "fps_estimated": 30.0,
+    "processed_secs": 70.40164566040039
+  },
+  "video-job-1756794313964": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-02T08:25:13.989333",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmp8svq034w.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-02T08:26:24.319238",
+    "fps_estimated": 30.0,
+    "processed_secs": 70.32439947128296
+  },
+  "video-job-1756796690995": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-02T09:04:50.996912",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpsx0ie9w3.mp4",
+    "labels": {},
+    "end_time": "2025-09-02T09:05:02.377040",
+    "fps_estimated": 10.0,
+    "processed_secs": 11.361138820648193
+  },
+  "video-job-1756799389583": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-02T09:49:49.610322",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpq0plmh42.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-02T09:51:00.772345",
+    "fps_estimated": 30.0,
+    "processed_secs": 71.156001329422
+  },
+  "video-job-1756803258437": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-02T10:54:18.465145",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmp750x21aq.mp4",
+    "detections_list": [
+      {
+        "timestamp": 0.0,
+        "label": "logo_toyota",
+        "score": 0.6981098651885986,
+        "frame": 0
+      },
+      {
+        "timestamp": 0.03,
+        "label": "logo_toyota",
+        "score": 0.682765781879425,
+        "frame": 1
+      },
+      {
+        "timestamp": 0.07,
+        "label": "logo_toyota",
+        "score": 0.6964125633239746,
+        "frame": 2
+      },
+      {
+        "timestamp": 0.1,
+        "label": "logo_toyota",
+        "score": 0.6992893218994141,
+        "frame": 3
+      },
+      {
+        "timestamp": 0.13,
+        "label": "logo_toyota",
+        "score": 0.7085016369819641,
+        "frame": 4
+      },
+      {
+        "timestamp": 0.17,
+        "label": "logo_toyota",
+        "score": 0.7033102512359619,
+        "frame": 5
+      },
+      {
+        "timestamp": 0.2,
+        "label": "logo_toyota",
+        "score": 0.6978628635406494,
+        "frame": 6
+      },
+      {
+        "timestamp": 0.23,
+        "label": "logo_toyota",
+        "score": 0.7100182175636292,
+        "frame": 7
+      },
+      {
+        "timestamp": 0.27,
+        "label": "logo_toyota",
+        "score": 0.7059346437454224,
+        "frame": 8
+      },
+      {
+        "timestamp": 0.3,
+        "label": "logo_toyota",
+        "score": 0.7020646333694458,
+        "frame": 9
+      },
+      {
+        "timestamp": 0.33,
+        "label": "logo_toyota",
+        "score": 0.7012081742286682,
+        "frame": 10
+      },
+      {
+        "timestamp": 0.37,
+        "label": "logo_toyota",
+        "score": 0.6900842785835266,
+        "frame": 11
+      },
+      {
+        "timestamp": 0.4,
+        "label": "logo_toyota",
+        "score": 0.7024139165878296,
+        "frame": 12
+      },
+      {
+        "timestamp": 0.43,
+        "label": "logo_toyota",
+        "score": 0.7024180293083191,
+        "frame": 13
+      },
+      {
+        "timestamp": 0.47,
+        "label": "logo_toyota",
+        "score": 0.7051296234130859,
+        "frame": 14
+      },
+      {
+        "timestamp": 0.5,
+        "label": "logo_toyota",
+        "score": 0.706866979598999,
+        "frame": 15
+      },
+      {
+        "timestamp": 0.53,
+        "label": "logo_toyota",
+        "score": 0.7095577716827393,
+        "frame": 16
+      },
+      {
+        "timestamp": 0.57,
+        "label": "logo_toyota",
+        "score": 0.7107908129692078,
+        "frame": 17
+      },
+      {
+        "timestamp": 0.6,
+        "label": "logo_toyota",
+        "score": 0.7019457817077637,
+        "frame": 18
+      },
+      {
+        "timestamp": 0.63,
+        "label": "logo_toyota",
+        "score": 0.7059224843978882,
+        "frame": 19
+      },
+      {
+        "timestamp": 0.67,
+        "label": "logo_toyota",
+        "score": 0.7059966921806335,
+        "frame": 20
+      },
+      {
+        "timestamp": 0.7,
+        "label": "logo_toyota",
+        "score": 0.7015203833580017,
+        "frame": 21
+      },
+      {
+        "timestamp": 0.73,
+        "label": "logo_toyota",
+        "score": 0.7012872099876404,
+        "frame": 22
+      },
+      {
+        "timestamp": 0.77,
+        "label": "logo_toyota",
+        "score": 0.7002803087234497,
+        "frame": 23
+      },
+      {
+        "timestamp": 0.8,
+        "label": "logo_toyota",
+        "score": 0.7004261612892151,
+        "frame": 24
+      },
+      {
+        "timestamp": 0.83,
+        "label": "logo_toyota",
+        "score": 0.6988541483879089,
+        "frame": 25
+      },
+      {
+        "timestamp": 0.87,
+        "label": "logo_toyota",
+        "score": 0.7033953070640564,
+        "frame": 26
+      },
+      {
+        "timestamp": 0.9,
+        "label": "logo_toyota",
+        "score": 0.7006080150604248,
+        "frame": 27
+      },
+      {
+        "timestamp": 0.93,
+        "label": "logo_toyota",
+        "score": 0.695164144039154,
+        "frame": 28
+      },
+      {
+        "timestamp": 0.97,
+        "label": "logo_toyota",
+        "score": 0.6975618600845337,
+        "frame": 29
+      },
+      {
+        "timestamp": 3.6,
+        "label": "logo_toyota",
+        "score": 0.3388378322124481,
+        "frame": 108
+      },
+      {
+        "timestamp": 3.63,
+        "label": "logo_toyota",
+        "score": 0.6927392482757568,
+        "frame": 109
+      },
+      {
+        "timestamp": 3.67,
+        "label": "logo_toyota",
+        "score": 0.7324101328849792,
+        "frame": 110
+      },
+      {
+        "timestamp": 3.7,
+        "label": "logo_toyota",
+        "score": 0.7846181988716125,
+        "frame": 111
+      },
+      {
+        "timestamp": 3.73,
+        "label": "logo_toyota",
+        "score": 0.7688596844673157,
+        "frame": 112
+      },
+      {
+        "timestamp": 3.77,
+        "label": "logo_toyota",
+        "score": 0.7906239032745361,
+        "frame": 113
+      },
+      {
+        "timestamp": 3.77,
+        "label": "logo_toyota",
+        "score": 0.4056192636489868,
+        "frame": 113
+      },
+      {
+        "timestamp": 3.8,
+        "label": "logo_toyota",
+        "score": 0.7335293292999268,
+        "frame": 114
+      },
+      {
+        "timestamp": 3.8,
+        "label": "logo_toyota",
+        "score": 0.48673826456069946,
+        "frame": 114
+      },
+      {
+        "timestamp": 3.83,
+        "label": "logo_toyota",
+        "score": 0.7644509673118591,
+        "frame": 115
+      },
+      {
+        "timestamp": 3.83,
+        "label": "logo_toyota",
+        "score": 0.6054864525794983,
+        "frame": 115
+      },
+      {
+        "timestamp": 3.87,
+        "label": "logo_toyota",
+        "score": 0.7649827599525452,
+        "frame": 116
+      },
+      {
+        "timestamp": 3.87,
+        "label": "logo_toyota",
+        "score": 0.5609305500984192,
+        "frame": 116
+      },
+      {
+        "timestamp": 3.9,
+        "label": "logo_toyota",
+        "score": 0.7650200128555298,
+        "frame": 117
+      },
+      {
+        "timestamp": 3.9,
+        "label": "logo_toyota",
+        "score": 0.2792198956012726,
+        "frame": 117
+      },
+      {
+        "timestamp": 3.93,
+        "label": "logo_toyota",
+        "score": 0.7462235689163208,
+        "frame": 118
+      },
+      {
+        "timestamp": 3.97,
+        "label": "logo_toyota",
+        "score": 0.7501943111419678,
+        "frame": 119
+      },
+      {
+        "timestamp": 4.0,
+        "label": "logo_toyota",
+        "score": 0.7479733824729919,
+        "frame": 120
+      },
+      {
+        "timestamp": 4.03,
+        "label": "logo_toyota",
+        "score": 0.7463943958282471,
+        "frame": 121
+      },
+      {
+        "timestamp": 4.07,
+        "label": "logo_toyota",
+        "score": 0.7585945129394531,
+        "frame": 122
+      },
+      {
+        "timestamp": 4.1,
+        "label": "logo_toyota",
+        "score": 0.7754806876182556,
+        "frame": 123
+      },
+      {
+        "timestamp": 4.1,
+        "label": "logo_toyota",
+        "score": 0.398237407207489,
+        "frame": 123
+      },
+      {
+        "timestamp": 4.13,
+        "label": "logo_toyota",
+        "score": 0.7744877338409424,
+        "frame": 124
+      },
+      {
+        "timestamp": 4.13,
+        "label": "logo_toyota",
+        "score": 0.5884287357330322,
+        "frame": 124
+      },
+      {
+        "timestamp": 4.17,
+        "label": "logo_toyota",
+        "score": 0.7570046186447144,
+        "frame": 125
+      },
+      {
+        "timestamp": 4.17,
+        "label": "logo_toyota",
+        "score": 0.6282377243041992,
+        "frame": 125
+      },
+      {
+        "timestamp": 4.2,
+        "label": "logo_toyota",
+        "score": 0.7590730786323547,
+        "frame": 126
+      },
+      {
+        "timestamp": 4.2,
+        "label": "logo_toyota",
+        "score": 0.5400351285934448,
+        "frame": 126
+      },
+      {
+        "timestamp": 4.23,
+        "label": "logo_toyota",
+        "score": 0.7411866784095764,
+        "frame": 127
+      },
+      {
+        "timestamp": 4.23,
+        "label": "logo_toyota",
+        "score": 0.4590073525905609,
+        "frame": 127
+      },
+      {
+        "timestamp": 4.27,
+        "label": "logo_toyota",
+        "score": 0.7430436611175537,
+        "frame": 128
+      },
+      {
+        "timestamp": 4.27,
+        "label": "logo_toyota",
+        "score": 0.4891042709350586,
+        "frame": 128
+      },
+      {
+        "timestamp": 4.3,
+        "label": "logo_toyota",
+        "score": 0.7728447318077087,
+        "frame": 129
+      },
+      {
+        "timestamp": 4.3,
+        "label": "logo_toyota",
+        "score": 0.6703440546989441,
+        "frame": 129
+      },
+      {
+        "timestamp": 4.33,
+        "label": "logo_toyota",
+        "score": 0.7753072381019592,
+        "frame": 130
+      },
+      {
+        "timestamp": 4.33,
+        "label": "logo_toyota",
+        "score": 0.595439612865448,
+        "frame": 130
+      },
+      {
+        "timestamp": 4.37,
+        "label": "logo_toyota",
+        "score": 0.7785623669624329,
+        "frame": 131
+      },
+      {
+        "timestamp": 4.37,
+        "label": "logo_toyota",
+        "score": 0.5567252039909363,
+        "frame": 131
+      },
+      {
+        "timestamp": 4.4,
+        "label": "logo_toyota",
+        "score": 0.7890016436576843,
+        "frame": 132
+      },
+      {
+        "timestamp": 4.4,
+        "label": "logo_toyota",
+        "score": 0.39063936471939087,
+        "frame": 132
+      },
+      {
+        "timestamp": 4.43,
+        "label": "logo_toyota",
+        "score": 0.7875890731811523,
+        "frame": 133
+      },
+      {
+        "timestamp": 4.43,
+        "label": "logo_toyota",
+        "score": 0.3733059763908386,
+        "frame": 133
+      },
+      {
+        "timestamp": 4.47,
+        "label": "logo_toyota",
+        "score": 0.787612795829773,
+        "frame": 134
+      },
+      {
+        "timestamp": 4.47,
+        "label": "logo_toyota",
+        "score": 0.3726620376110077,
+        "frame": 134
+      },
+      {
+        "timestamp": 4.5,
+        "label": "logo_toyota",
+        "score": 0.7872411608695984,
+        "frame": 135
+      },
+      {
+        "timestamp": 4.5,
+        "label": "logo_toyota",
+        "score": 0.3738759458065033,
+        "frame": 135
+      },
+      {
+        "timestamp": 4.53,
+        "label": "logo_toyota",
+        "score": 0.7871951460838318,
+        "frame": 136
+      },
+      {
+        "timestamp": 4.53,
+        "label": "logo_toyota",
+        "score": 0.37605050206184387,
+        "frame": 136
+      },
+      {
+        "timestamp": 4.57,
+        "label": "logo_toyota",
+        "score": 0.7871850728988647,
+        "frame": 137
+      },
+      {
+        "timestamp": 4.57,
+        "label": "logo_toyota",
+        "score": 0.3759240210056305,
+        "frame": 137
+      },
+      {
+        "timestamp": 4.6,
+        "label": "logo_toyota",
+        "score": 0.7864711880683899,
+        "frame": 138
+      },
+      {
+        "timestamp": 4.6,
+        "label": "logo_toyota",
+        "score": 0.43401163816452026,
+        "frame": 138
+      },
+      {
+        "timestamp": 4.63,
+        "label": "logo_toyota",
+        "score": 0.7861813306808472,
+        "frame": 139
+      },
+      {
+        "timestamp": 4.63,
+        "label": "logo_toyota",
+        "score": 0.43415403366088867,
+        "frame": 139
+      },
+      {
+        "timestamp": 4.67,
+        "label": "logo_toyota",
+        "score": 0.786113977432251,
+        "frame": 140
+      },
+      {
+        "timestamp": 4.67,
+        "label": "logo_toyota",
+        "score": 0.43537768721580505,
+        "frame": 140
+      },
+      {
+        "timestamp": 4.7,
+        "label": "logo_toyota",
+        "score": 0.7859024405479431,
+        "frame": 141
+      },
+      {
+        "timestamp": 4.7,
+        "label": "logo_toyota",
+        "score": 0.4362228810787201,
+        "frame": 141
+      },
+      {
+        "timestamp": 4.73,
+        "label": "logo_toyota",
+        "score": 0.786450982093811,
+        "frame": 142
+      },
+      {
+        "timestamp": 4.73,
+        "label": "logo_toyota",
+        "score": 0.4345559775829315,
+        "frame": 142
+      },
+      {
+        "timestamp": 4.77,
+        "label": "logo_toyota",
+        "score": 0.7864415645599365,
+        "frame": 143
+      },
+      {
+        "timestamp": 4.77,
+        "label": "logo_toyota",
+        "score": 0.434527724981308,
+        "frame": 143
+      },
+      {
+        "timestamp": 4.8,
+        "label": "logo_toyota",
+        "score": 0.7862597107887268,
+        "frame": 144
+      },
+      {
+        "timestamp": 4.8,
+        "label": "logo_toyota",
+        "score": 0.42987608909606934,
+        "frame": 144
+      },
+      {
+        "timestamp": 4.83,
+        "label": "logo_toyota",
+        "score": 0.7873342633247375,
+        "frame": 145
+      },
+      {
+        "timestamp": 4.83,
+        "label": "logo_toyota",
+        "score": 0.41359686851501465,
+        "frame": 145
+      },
+      {
+        "timestamp": 4.87,
+        "label": "logo_toyota",
+        "score": 0.7872914671897888,
+        "frame": 146
+      },
+      {
+        "timestamp": 4.87,
+        "label": "logo_toyota",
+        "score": 0.41407325863838196,
+        "frame": 146
+      },
+      {
+        "timestamp": 4.9,
+        "label": "logo_toyota",
+        "score": 0.7870745062828064,
+        "frame": 147
+      },
+      {
+        "timestamp": 4.9,
+        "label": "logo_toyota",
+        "score": 0.4140988290309906,
+        "frame": 147
+      },
+      {
+        "timestamp": 4.93,
+        "label": "logo_toyota",
+        "score": 0.7869178652763367,
+        "frame": 148
+      },
+      {
+        "timestamp": 4.93,
+        "label": "logo_toyota",
+        "score": 0.4170219302177429,
+        "frame": 148
+      },
+      {
+        "timestamp": 4.97,
+        "label": "logo_toyota",
+        "score": 0.7872016429901123,
+        "frame": 149
+      },
+      {
+        "timestamp": 4.97,
+        "label": "logo_toyota",
+        "score": 0.40977978706359863,
+        "frame": 149
+      },
+      {
+        "timestamp": 5.0,
+        "label": "logo_toyota",
+        "score": 0.787006676197052,
+        "frame": 150
+      },
+      {
+        "timestamp": 5.0,
+        "label": "logo_toyota",
+        "score": 0.40628284215927124,
+        "frame": 150
+      },
+      {
+        "timestamp": 5.03,
+        "label": "logo_toyota",
+        "score": 0.7868227362632751,
+        "frame": 151
+      },
+      {
+        "timestamp": 5.03,
+        "label": "logo_toyota",
+        "score": 0.40560808777809143,
+        "frame": 151
+      },
+      {
+        "timestamp": 5.07,
+        "label": "logo_toyota",
+        "score": 0.786781370639801,
+        "frame": 152
+      },
+      {
+        "timestamp": 5.07,
+        "label": "logo_toyota",
+        "score": 0.4322640597820282,
+        "frame": 152
+      },
+      {
+        "timestamp": 5.1,
+        "label": "logo_toyota",
+        "score": 0.7872349619865417,
+        "frame": 153
+      },
+      {
+        "timestamp": 5.1,
+        "label": "logo_toyota",
+        "score": 0.4314972758293152,
+        "frame": 153
+      },
+      {
+        "timestamp": 5.13,
+        "label": "logo_toyota",
+        "score": 0.7868940234184265,
+        "frame": 154
+      },
+      {
+        "timestamp": 5.13,
+        "label": "logo_toyota",
+        "score": 0.43169966340065,
+        "frame": 154
+      },
+      {
+        "timestamp": 5.17,
+        "label": "logo_toyota",
+        "score": 0.7868950366973877,
+        "frame": 155
+      },
+      {
+        "timestamp": 5.17,
+        "label": "logo_toyota",
+        "score": 0.4315842092037201,
+        "frame": 155
+      },
+      {
+        "timestamp": 5.2,
+        "label": "logo_toyota",
+        "score": 0.7868643999099731,
+        "frame": 156
+      },
+      {
+        "timestamp": 5.2,
+        "label": "logo_toyota",
+        "score": 0.4330880045890808,
+        "frame": 156
+      },
+      {
+        "timestamp": 5.23,
+        "label": "logo_toyota",
+        "score": 0.7877485156059265,
+        "frame": 157
+      },
+      {
+        "timestamp": 5.23,
+        "label": "logo_toyota",
+        "score": 0.434700071811676,
+        "frame": 157
+      },
+      {
+        "timestamp": 5.27,
+        "label": "logo_toyota",
+        "score": 0.7883588671684265,
+        "frame": 158
+      },
+      {
+        "timestamp": 5.27,
+        "label": "logo_toyota",
+        "score": 0.43204009532928467,
+        "frame": 158
+      },
+      {
+        "timestamp": 5.3,
+        "label": "logo_toyota",
+        "score": 0.7873573303222656,
+        "frame": 159
+      },
+      {
+        "timestamp": 5.3,
+        "label": "logo_toyota",
+        "score": 0.4183846116065979,
+        "frame": 159
+      },
+      {
+        "timestamp": 5.33,
+        "label": "logo_toyota",
+        "score": 0.7875639200210571,
+        "frame": 160
+      },
+      {
+        "timestamp": 5.33,
+        "label": "logo_toyota",
+        "score": 0.41653701663017273,
+        "frame": 160
+      },
+      {
+        "timestamp": 5.37,
+        "label": "logo_toyota",
+        "score": 0.7875697612762451,
+        "frame": 161
+      },
+      {
+        "timestamp": 5.37,
+        "label": "logo_toyota",
+        "score": 0.41662654280662537,
+        "frame": 161
+      },
+      {
+        "timestamp": 5.4,
+        "label": "logo_toyota",
+        "score": 0.7883812189102173,
+        "frame": 162
+      },
+      {
+        "timestamp": 5.4,
+        "label": "logo_toyota",
+        "score": 0.41485315561294556,
+        "frame": 162
+      },
+      {
+        "timestamp": 5.43,
+        "label": "logo_toyota",
+        "score": 0.7882748246192932,
+        "frame": 163
+      },
+      {
+        "timestamp": 5.43,
+        "label": "logo_toyota",
+        "score": 0.41453900933265686,
+        "frame": 163
+      },
+      {
+        "timestamp": 5.47,
+        "label": "logo_toyota",
+        "score": 0.7882920503616333,
+        "frame": 164
+      },
+      {
+        "timestamp": 5.47,
+        "label": "logo_toyota",
+        "score": 0.41454359889030457,
+        "frame": 164
+      },
+      {
+        "timestamp": 5.5,
+        "label": "logo_toyota",
+        "score": 0.788030743598938,
+        "frame": 165
+      },
+      {
+        "timestamp": 5.5,
+        "label": "logo_toyota",
+        "score": 0.41494107246398926,
+        "frame": 165
+      },
+      {
+        "timestamp": 5.53,
+        "label": "logo_toyota",
+        "score": 0.7880576848983765,
+        "frame": 166
+      },
+      {
+        "timestamp": 5.53,
+        "label": "logo_toyota",
+        "score": 0.41616401076316833,
+        "frame": 166
+      },
+      {
+        "timestamp": 5.57,
+        "label": "logo_toyota",
+        "score": 0.7880659103393555,
+        "frame": 167
+      },
+      {
+        "timestamp": 5.57,
+        "label": "logo_toyota",
+        "score": 0.41587525606155396,
+        "frame": 167
+      },
+      {
+        "timestamp": 5.6,
+        "label": "logo_toyota",
+        "score": 0.7871627807617188,
+        "frame": 168
+      },
+      {
+        "timestamp": 5.6,
+        "label": "logo_toyota",
+        "score": 0.4118283689022064,
+        "frame": 168
+      },
+      {
+        "timestamp": 5.63,
+        "label": "logo_toyota",
+        "score": 0.7866761684417725,
+        "frame": 169
+      },
+      {
+        "timestamp": 5.63,
+        "label": "logo_toyota",
+        "score": 0.4109117090702057,
+        "frame": 169
+      },
+      {
+        "timestamp": 5.67,
+        "label": "logo_toyota",
+        "score": 0.7867100238800049,
+        "frame": 170
+      },
+      {
+        "timestamp": 5.67,
+        "label": "logo_toyota",
+        "score": 0.4105904698371887,
+        "frame": 170
+      },
+      {
+        "timestamp": 5.7,
+        "label": "logo_toyota",
+        "score": 0.7866601347923279,
+        "frame": 171
+      },
+      {
+        "timestamp": 5.7,
+        "label": "logo_toyota",
+        "score": 0.41635018587112427,
+        "frame": 171
+      },
+      {
+        "timestamp": 5.73,
+        "label": "logo_toyota",
+        "score": 0.7870182394981384,
+        "frame": 172
+      },
+      {
+        "timestamp": 5.73,
+        "label": "logo_toyota",
+        "score": 0.4154721200466156,
+        "frame": 172
+      },
+      {
+        "timestamp": 5.77,
+        "label": "logo_toyota",
+        "score": 0.7870296239852905,
+        "frame": 173
+      },
+      {
+        "timestamp": 5.77,
+        "label": "logo_toyota",
+        "score": 0.41550496220588684,
+        "frame": 173
+      },
+      {
+        "timestamp": 5.8,
+        "label": "logo_toyota",
+        "score": 0.7870951890945435,
+        "frame": 174
+      },
+      {
+        "timestamp": 5.8,
+        "label": "logo_toyota",
+        "score": 0.41661351919174194,
+        "frame": 174
+      },
+      {
+        "timestamp": 5.83,
+        "label": "logo_toyota",
+        "score": 0.7869927883148193,
+        "frame": 175
+      },
+      {
+        "timestamp": 5.83,
+        "label": "logo_toyota",
+        "score": 0.41706550121307373,
+        "frame": 175
+      },
+      {
+        "timestamp": 5.87,
+        "label": "logo_toyota",
+        "score": 0.7876849174499512,
+        "frame": 176
+      },
+      {
+        "timestamp": 5.87,
+        "label": "logo_toyota",
+        "score": 0.43130385875701904,
+        "frame": 176
+      },
+      {
+        "timestamp": 5.9,
+        "label": "logo_toyota",
+        "score": 0.7875734567642212,
+        "frame": 177
+      },
+      {
+        "timestamp": 5.9,
+        "label": "logo_toyota",
+        "score": 0.4236704111099243,
+        "frame": 177
+      },
+      {
+        "timestamp": 5.93,
+        "label": "logo_toyota",
+        "score": 0.7877007126808167,
+        "frame": 178
+      },
+      {
+        "timestamp": 5.93,
+        "label": "logo_toyota",
+        "score": 0.4258044362068176,
+        "frame": 178
+      },
+      {
+        "timestamp": 5.97,
+        "label": "logo_toyota",
+        "score": 0.7876850366592407,
+        "frame": 179
+      },
+      {
+        "timestamp": 5.97,
+        "label": "logo_toyota",
+        "score": 0.4257790148258209,
+        "frame": 179
+      },
+      {
+        "timestamp": 6.0,
+        "label": "logo_toyota",
+        "score": 0.7872006297111511,
+        "frame": 180
+      },
+      {
+        "timestamp": 6.0,
+        "label": "logo_toyota",
+        "score": 0.42215612530708313,
+        "frame": 180
+      },
+      {
+        "timestamp": 6.03,
+        "label": "logo_toyota",
+        "score": 0.786979615688324,
+        "frame": 181
+      },
+      {
+        "timestamp": 6.03,
+        "label": "logo_toyota",
+        "score": 0.4212751090526581,
+        "frame": 181
+      },
+      {
+        "timestamp": 6.07,
+        "label": "logo_toyota",
+        "score": 0.7869707345962524,
+        "frame": 182
+      },
+      {
+        "timestamp": 6.07,
+        "label": "logo_toyota",
+        "score": 0.4212782084941864,
+        "frame": 182
+      },
+      {
+        "timestamp": 6.1,
+        "label": "logo_toyota",
+        "score": 0.7881879806518555,
+        "frame": 183
+      },
+      {
+        "timestamp": 6.1,
+        "label": "logo_toyota",
+        "score": 0.42461109161376953,
+        "frame": 183
+      },
+      {
+        "timestamp": 6.13,
+        "label": "logo_toyota",
+        "score": 0.7874721884727478,
+        "frame": 184
+      },
+      {
+        "timestamp": 6.13,
+        "label": "logo_toyota",
+        "score": 0.4250878393650055,
+        "frame": 184
+      },
+      {
+        "timestamp": 6.17,
+        "label": "logo_toyota",
+        "score": 0.7874350547790527,
+        "frame": 185
+      },
+      {
+        "timestamp": 6.17,
+        "label": "logo_toyota",
+        "score": 0.42642226815223694,
+        "frame": 185
+      },
+      {
+        "timestamp": 6.23,
+        "label": "logo_toyota",
+        "score": 0.709274172782898,
+        "frame": 187
+      },
+      {
+        "timestamp": 6.27,
+        "label": "logo_toyota",
+        "score": 0.717208743095398,
+        "frame": 188
+      },
+      {
+        "timestamp": 6.3,
+        "label": "logo_toyota",
+        "score": 0.7202175259590149,
+        "frame": 189
+      },
+      {
+        "timestamp": 6.33,
+        "label": "logo_toyota",
+        "score": 0.7248904705047607,
+        "frame": 190
+      },
+      {
+        "timestamp": 6.37,
+        "label": "logo_toyota",
+        "score": 0.7253571152687073,
+        "frame": 191
+      },
+      {
+        "timestamp": 6.4,
+        "label": "logo_toyota",
+        "score": 0.7252753376960754,
+        "frame": 192
+      },
+      {
+        "timestamp": 6.43,
+        "label": "logo_toyota",
+        "score": 0.7304302453994751,
+        "frame": 193
+      },
+      {
+        "timestamp": 6.47,
+        "label": "logo_toyota",
+        "score": 0.7375078201293945,
+        "frame": 194
+      },
+      {
+        "timestamp": 6.5,
+        "label": "logo_toyota",
+        "score": 0.7488638162612915,
+        "frame": 195
+      },
+      {
+        "timestamp": 6.53,
+        "label": "logo_toyota",
+        "score": 0.746536374092102,
+        "frame": 196
+      },
+      {
+        "timestamp": 6.57,
+        "label": "logo_toyota",
+        "score": 0.7441576719284058,
+        "frame": 197
+      },
+      {
+        "timestamp": 6.6,
+        "label": "logo_toyota",
+        "score": 0.7430732846260071,
+        "frame": 198
+      },
+      {
+        "timestamp": 6.63,
+        "label": "logo_toyota",
+        "score": 0.7477704286575317,
+        "frame": 199
+      },
+      {
+        "timestamp": 6.67,
+        "label": "logo_toyota",
+        "score": 0.7390037775039673,
+        "frame": 200
+      },
+      {
+        "timestamp": 6.7,
+        "label": "logo_toyota",
+        "score": 0.7303220629692078,
+        "frame": 201
+      },
+      {
+        "timestamp": 6.73,
+        "label": "logo_toyota",
+        "score": 0.7408477067947388,
+        "frame": 202
+      },
+      {
+        "timestamp": 6.77,
+        "label": "logo_toyota",
+        "score": 0.7178341150283813,
+        "frame": 203
+      },
+      {
+        "timestamp": 6.8,
+        "label": "logo_toyota",
+        "score": 0.7008219957351685,
+        "frame": 204
+      },
+      {
+        "timestamp": 6.83,
+        "label": "logo_toyota",
+        "score": 0.6979852318763733,
+        "frame": 205
+      },
+      {
+        "timestamp": 6.87,
+        "label": "logo_toyota",
+        "score": 0.6987552642822266,
+        "frame": 206
+      },
+      {
+        "timestamp": 6.9,
+        "label": "logo_toyota",
+        "score": 0.7127447128295898,
+        "frame": 207
+      },
+      {
+        "timestamp": 6.93,
+        "label": "logo_toyota",
+        "score": 0.70762038230896,
+        "frame": 208
+      },
+      {
+        "timestamp": 6.97,
+        "label": "logo_toyota",
+        "score": 0.7167506814002991,
+        "frame": 209
+      },
+      {
+        "timestamp": 7.0,
+        "label": "logo_toyota",
+        "score": 0.7248148322105408,
+        "frame": 210
+      },
+      {
+        "timestamp": 7.03,
+        "label": "logo_toyota",
+        "score": 0.721568763256073,
+        "frame": 211
+      },
+      {
+        "timestamp": 7.07,
+        "label": "logo_toyota",
+        "score": 0.7215842604637146,
+        "frame": 212
+      },
+      {
+        "timestamp": 7.1,
+        "label": "logo_toyota",
+        "score": 0.7211061716079712,
+        "frame": 213
+      },
+      {
+        "timestamp": 7.13,
+        "label": "logo_toyota",
+        "score": 0.7173150777816772,
+        "frame": 214
+      },
+      {
+        "timestamp": 7.17,
+        "label": "logo_toyota",
+        "score": 0.7105025053024292,
+        "frame": 215
+      },
+      {
+        "timestamp": 7.2,
+        "label": "logo_toyota",
+        "score": 0.7148422002792358,
+        "frame": 216
+      },
+      {
+        "timestamp": 7.23,
+        "label": "logo_toyota",
+        "score": 0.7267094254493713,
+        "frame": 217
+      },
+      {
+        "timestamp": 7.27,
+        "label": "logo_toyota",
+        "score": 0.7318651676177979,
+        "frame": 218
+      },
+      {
+        "timestamp": 7.3,
+        "label": "logo_toyota",
+        "score": 0.7473447918891907,
+        "frame": 219
+      },
+      {
+        "timestamp": 7.33,
+        "label": "logo_toyota",
+        "score": 0.7451336979866028,
+        "frame": 220
+      },
+      {
+        "timestamp": 7.37,
+        "label": "logo_toyota",
+        "score": 0.7448282837867737,
+        "frame": 221
+      },
+      {
+        "timestamp": 7.4,
+        "label": "logo_toyota",
+        "score": 0.7205298542976379,
+        "frame": 222
+      },
+      {
+        "timestamp": 7.43,
+        "label": "logo_toyota",
+        "score": 0.705187201499939,
+        "frame": 223
+      },
+      {
+        "timestamp": 7.47,
+        "label": "logo_toyota",
+        "score": 0.7108418941497803,
+        "frame": 224
+      },
+      {
+        "timestamp": 7.5,
+        "label": "logo_toyota",
+        "score": 0.7082453370094299,
+        "frame": 225
+      },
+      {
+        "timestamp": 7.53,
+        "label": "logo_toyota",
+        "score": 0.7383202314376831,
+        "frame": 226
+      },
+      {
+        "timestamp": 7.57,
+        "label": "logo_toyota",
+        "score": 0.7016355991363525,
+        "frame": 227
+      },
+      {
+        "timestamp": 7.6,
+        "label": "logo_toyota",
+        "score": 0.691023051738739,
+        "frame": 228
+      },
+      {
+        "timestamp": 7.63,
+        "label": "logo_toyota",
+        "score": 0.699003279209137,
+        "frame": 229
+      },
+      {
+        "timestamp": 7.67,
+        "label": "logo_toyota",
+        "score": 0.6786812543869019,
+        "frame": 230
+      },
+      {
+        "timestamp": 7.7,
+        "label": "logo_toyota",
+        "score": 0.6862503290176392,
+        "frame": 231
+      },
+      {
+        "timestamp": 7.73,
+        "label": "logo_toyota",
+        "score": 0.6923179626464844,
+        "frame": 232
+      },
+      {
+        "timestamp": 7.77,
+        "label": "logo_toyota",
+        "score": 0.6997280120849609,
+        "frame": 233
+      },
+      {
+        "timestamp": 7.8,
+        "label": "logo_toyota",
+        "score": 0.7006967067718506,
+        "frame": 234
+      },
+      {
+        "timestamp": 7.83,
+        "label": "logo_toyota",
+        "score": 0.7138068675994873,
+        "frame": 235
+      },
+      {
+        "timestamp": 7.87,
+        "label": "logo_toyota",
+        "score": 0.7064512968063354,
+        "frame": 236
+      },
+      {
+        "timestamp": 7.9,
+        "label": "logo_toyota",
+        "score": 0.6981101036071777,
+        "frame": 237
+      },
+      {
+        "timestamp": 7.93,
+        "label": "logo_toyota",
+        "score": 0.6810606122016907,
+        "frame": 238
+      },
+      {
+        "timestamp": 7.97,
+        "label": "logo_toyota",
+        "score": 0.6840972304344177,
+        "frame": 239
+      },
+      {
+        "timestamp": 8.0,
+        "label": "logo_toyota",
+        "score": 0.6810539364814758,
+        "frame": 240
+      },
+      {
+        "timestamp": 8.03,
+        "label": "logo_toyota",
+        "score": 0.6799024343490601,
+        "frame": 241
+      },
+      {
+        "timestamp": 8.07,
+        "label": "logo_toyota",
+        "score": 0.692657470703125,
+        "frame": 242
+      },
+      {
+        "timestamp": 8.1,
+        "label": "logo_toyota",
+        "score": 0.6836501955986023,
+        "frame": 243
+      },
+      {
+        "timestamp": 8.13,
+        "label": "logo_toyota",
+        "score": 0.6850788593292236,
+        "frame": 244
+      },
+      {
+        "timestamp": 8.17,
+        "label": "logo_toyota",
+        "score": 0.6838453412055969,
+        "frame": 245
+      },
+      {
+        "timestamp": 8.2,
+        "label": "logo_toyota",
+        "score": 0.677554190158844,
+        "frame": 246
+      },
+      {
+        "timestamp": 8.23,
+        "label": "logo_toyota",
+        "score": 0.6866925954818726,
+        "frame": 247
+      },
+      {
+        "timestamp": 8.27,
+        "label": "logo_toyota",
+        "score": 0.6648353338241577,
+        "frame": 248
+      },
+      {
+        "timestamp": 8.3,
+        "label": "logo_toyota",
+        "score": 0.6825984716415405,
+        "frame": 249
+      },
+      {
+        "timestamp": 8.33,
+        "label": "logo_toyota",
+        "score": 0.6837072372436523,
+        "frame": 250
+      },
+      {
+        "timestamp": 8.37,
+        "label": "logo_toyota",
+        "score": 0.6700750589370728,
+        "frame": 251
+      },
+      {
+        "timestamp": 8.4,
+        "label": "logo_toyota",
+        "score": 0.6788952350616455,
+        "frame": 252
+      },
+      {
+        "timestamp": 10.1,
+        "label": "logo_toyota",
+        "score": 0.280075341463089,
+        "frame": 303
+      },
+      {
+        "timestamp": 10.47,
+        "label": "logo_toyota",
+        "score": 0.3557213544845581,
+        "frame": 314
+      },
+      {
+        "timestamp": 10.5,
+        "label": "logo_toyota",
+        "score": 0.335126668214798,
+        "frame": 315
+      },
+      {
+        "timestamp": 10.53,
+        "label": "logo_toyota",
+        "score": 0.3369435966014862,
+        "frame": 316
+      },
+      {
+        "timestamp": 10.57,
+        "label": "logo_toyota",
+        "score": 0.42780259251594543,
+        "frame": 317
+      },
+      {
+        "timestamp": 10.6,
+        "label": "logo_toyota",
+        "score": 0.44185736775398254,
+        "frame": 318
+      },
+      {
+        "timestamp": 10.63,
+        "label": "logo_toyota",
+        "score": 0.48263296484947205,
+        "frame": 319
+      },
+      {
+        "timestamp": 10.67,
+        "label": "logo_toyota",
+        "score": 0.4971674084663391,
+        "frame": 320
+      },
+      {
+        "timestamp": 10.7,
+        "label": "logo_toyota",
+        "score": 0.4026634991168976,
+        "frame": 321
+      },
+      {
+        "timestamp": 13.7,
+        "label": "logo_mercedez",
+        "score": 0.2925967872142792,
+        "frame": 411
+      },
+      {
+        "timestamp": 13.83,
+        "label": "logo_mercedez",
+        "score": 0.30462753772735596,
+        "frame": 415
+      },
+      {
+        "timestamp": 13.87,
+        "label": "logo_mercedez",
+        "score": 0.30601388216018677,
+        "frame": 416
+      },
+      {
+        "timestamp": 13.9,
+        "label": "logo_mercedez",
+        "score": 0.36108657717704773,
+        "frame": 417
+      },
+      {
+        "timestamp": 13.93,
+        "label": "logo_mercedez",
+        "score": 0.2974011301994324,
+        "frame": 418
+      },
+      {
+        "timestamp": 13.97,
+        "label": "logo_mercedez",
+        "score": 0.29621660709381104,
+        "frame": 419
+      },
+      {
+        "timestamp": 14.2,
+        "label": "logo_toyota",
+        "score": 0.3094513714313507,
+        "frame": 426
+      },
+      {
+        "timestamp": 14.23,
+        "label": "logo_toyota",
+        "score": 0.3032563626766205,
+        "frame": 427
+      },
+      {
+        "timestamp": 14.23,
+        "label": "logo_toyota",
+        "score": 0.301143616437912,
+        "frame": 427
+      },
+      {
+        "timestamp": 14.23,
+        "label": "logo_mercedez",
+        "score": 0.2727136015892029,
+        "frame": 427
+      },
+      {
+        "timestamp": 14.27,
+        "label": "logo_toyota",
+        "score": 0.31176626682281494,
+        "frame": 428
+      },
+      {
+        "timestamp": 14.27,
+        "label": "logo_toyota",
+        "score": 0.30200546979904175,
+        "frame": 428
+      },
+      {
+        "timestamp": 14.27,
+        "label": "logo_mercedez",
+        "score": 0.26931139826774597,
+        "frame": 428
+      }
+    ],
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-02T10:55:31.059870",
+    "fps_estimated": 30.0,
+    "processed_secs": 72.58821868896484
+  },
+  "video-job-1756804548634": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-02T11:15:48.665686",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpmdqvtluq.mp4",
+    "detections_list": [
+      {
+        "timestamp": 0.0,
+        "label": "logo_toyota",
+        "score": 0.6981098651885986,
+        "frame": 0
+      },
+      {
+        "timestamp": 0.03,
+        "label": "logo_toyota",
+        "score": 0.682765781879425,
+        "frame": 1
+      },
+      {
+        "timestamp": 0.07,
+        "label": "logo_toyota",
+        "score": 0.6964125633239746,
+        "frame": 2
+      },
+      {
+        "timestamp": 0.1,
+        "label": "logo_toyota",
+        "score": 0.6992893218994141,
+        "frame": 3
+      },
+      {
+        "timestamp": 0.13,
+        "label": "logo_toyota",
+        "score": 0.7085016369819641,
+        "frame": 4
+      },
+      {
+        "timestamp": 0.17,
+        "label": "logo_toyota",
+        "score": 0.7033102512359619,
+        "frame": 5
+      },
+      {
+        "timestamp": 0.2,
+        "label": "logo_toyota",
+        "score": 0.6978628635406494,
+        "frame": 6
+      },
+      {
+        "timestamp": 0.23,
+        "label": "logo_toyota",
+        "score": 0.7100182175636292,
+        "frame": 7
+      },
+      {
+        "timestamp": 0.27,
+        "label": "logo_toyota",
+        "score": 0.7059346437454224,
+        "frame": 8
+      },
+      {
+        "timestamp": 0.3,
+        "label": "logo_toyota",
+        "score": 0.7020646333694458,
+        "frame": 9
+      },
+      {
+        "timestamp": 0.33,
+        "label": "logo_toyota",
+        "score": 0.7012081742286682,
+        "frame": 10
+      },
+      {
+        "timestamp": 0.37,
+        "label": "logo_toyota",
+        "score": 0.6900842785835266,
+        "frame": 11
+      },
+      {
+        "timestamp": 0.4,
+        "label": "logo_toyota",
+        "score": 0.7024139165878296,
+        "frame": 12
+      },
+      {
+        "timestamp": 0.43,
+        "label": "logo_toyota",
+        "score": 0.7024180293083191,
+        "frame": 13
+      },
+      {
+        "timestamp": 0.47,
+        "label": "logo_toyota",
+        "score": 0.7051296234130859,
+        "frame": 14
+      },
+      {
+        "timestamp": 0.5,
+        "label": "logo_toyota",
+        "score": 0.706866979598999,
+        "frame": 15
+      },
+      {
+        "timestamp": 0.53,
+        "label": "logo_toyota",
+        "score": 0.7095577716827393,
+        "frame": 16
+      },
+      {
+        "timestamp": 0.57,
+        "label": "logo_toyota",
+        "score": 0.7107908129692078,
+        "frame": 17
+      },
+      {
+        "timestamp": 0.6,
+        "label": "logo_toyota",
+        "score": 0.7019457817077637,
+        "frame": 18
+      },
+      {
+        "timestamp": 0.63,
+        "label": "logo_toyota",
+        "score": 0.7059224843978882,
+        "frame": 19
+      },
+      {
+        "timestamp": 0.67,
+        "label": "logo_toyota",
+        "score": 0.7059966921806335,
+        "frame": 20
+      },
+      {
+        "timestamp": 0.7,
+        "label": "logo_toyota",
+        "score": 0.7015203833580017,
+        "frame": 21
+      },
+      {
+        "timestamp": 0.73,
+        "label": "logo_toyota",
+        "score": 0.7012872099876404,
+        "frame": 22
+      },
+      {
+        "timestamp": 0.77,
+        "label": "logo_toyota",
+        "score": 0.7002803087234497,
+        "frame": 23
+      },
+      {
+        "timestamp": 0.8,
+        "label": "logo_toyota",
+        "score": 0.7004261612892151,
+        "frame": 24
+      },
+      {
+        "timestamp": 0.83,
+        "label": "logo_toyota",
+        "score": 0.6988541483879089,
+        "frame": 25
+      },
+      {
+        "timestamp": 0.87,
+        "label": "logo_toyota",
+        "score": 0.7033953070640564,
+        "frame": 26
+      },
+      {
+        "timestamp": 0.9,
+        "label": "logo_toyota",
+        "score": 0.7006080150604248,
+        "frame": 27
+      },
+      {
+        "timestamp": 0.93,
+        "label": "logo_toyota",
+        "score": 0.695164144039154,
+        "frame": 28
+      },
+      {
+        "timestamp": 0.97,
+        "label": "logo_toyota",
+        "score": 0.6975618600845337,
+        "frame": 29
+      },
+      {
+        "timestamp": 3.6,
+        "label": "logo_toyota",
+        "score": 0.3388378322124481,
+        "frame": 108
+      },
+      {
+        "timestamp": 3.63,
+        "label": "logo_toyota",
+        "score": 0.6927392482757568,
+        "frame": 109
+      },
+      {
+        "timestamp": 3.67,
+        "label": "logo_toyota",
+        "score": 0.7324101328849792,
+        "frame": 110
+      },
+      {
+        "timestamp": 3.7,
+        "label": "logo_toyota",
+        "score": 0.7846181988716125,
+        "frame": 111
+      },
+      {
+        "timestamp": 3.73,
+        "label": "logo_toyota",
+        "score": 0.7688596844673157,
+        "frame": 112
+      },
+      {
+        "timestamp": 3.77,
+        "label": "logo_toyota",
+        "score": 0.7906239032745361,
+        "frame": 113
+      },
+      {
+        "timestamp": 3.77,
+        "label": "logo_toyota",
+        "score": 0.4056192636489868,
+        "frame": 113
+      },
+      {
+        "timestamp": 3.8,
+        "label": "logo_toyota",
+        "score": 0.7335293292999268,
+        "frame": 114
+      },
+      {
+        "timestamp": 3.8,
+        "label": "logo_toyota",
+        "score": 0.48673826456069946,
+        "frame": 114
+      },
+      {
+        "timestamp": 3.83,
+        "label": "logo_toyota",
+        "score": 0.7644509673118591,
+        "frame": 115
+      },
+      {
+        "timestamp": 3.83,
+        "label": "logo_toyota",
+        "score": 0.6054864525794983,
+        "frame": 115
+      },
+      {
+        "timestamp": 3.87,
+        "label": "logo_toyota",
+        "score": 0.7649827599525452,
+        "frame": 116
+      },
+      {
+        "timestamp": 3.87,
+        "label": "logo_toyota",
+        "score": 0.5609305500984192,
+        "frame": 116
+      },
+      {
+        "timestamp": 3.9,
+        "label": "logo_toyota",
+        "score": 0.7650200128555298,
+        "frame": 117
+      },
+      {
+        "timestamp": 3.9,
+        "label": "logo_toyota",
+        "score": 0.2792198956012726,
+        "frame": 117
+      },
+      {
+        "timestamp": 3.93,
+        "label": "logo_toyota",
+        "score": 0.7462235689163208,
+        "frame": 118
+      },
+      {
+        "timestamp": 3.97,
+        "label": "logo_toyota",
+        "score": 0.7501943111419678,
+        "frame": 119
+      },
+      {
+        "timestamp": 4.0,
+        "label": "logo_toyota",
+        "score": 0.7479733824729919,
+        "frame": 120
+      },
+      {
+        "timestamp": 4.03,
+        "label": "logo_toyota",
+        "score": 0.7463943958282471,
+        "frame": 121
+      },
+      {
+        "timestamp": 4.07,
+        "label": "logo_toyota",
+        "score": 0.7585945129394531,
+        "frame": 122
+      },
+      {
+        "timestamp": 4.1,
+        "label": "logo_toyota",
+        "score": 0.7754806876182556,
+        "frame": 123
+      },
+      {
+        "timestamp": 4.1,
+        "label": "logo_toyota",
+        "score": 0.398237407207489,
+        "frame": 123
+      },
+      {
+        "timestamp": 4.13,
+        "label": "logo_toyota",
+        "score": 0.7744877338409424,
+        "frame": 124
+      },
+      {
+        "timestamp": 4.13,
+        "label": "logo_toyota",
+        "score": 0.5884287357330322,
+        "frame": 124
+      },
+      {
+        "timestamp": 4.17,
+        "label": "logo_toyota",
+        "score": 0.7570046186447144,
+        "frame": 125
+      },
+      {
+        "timestamp": 4.17,
+        "label": "logo_toyota",
+        "score": 0.6282377243041992,
+        "frame": 125
+      },
+      {
+        "timestamp": 4.2,
+        "label": "logo_toyota",
+        "score": 0.7590730786323547,
+        "frame": 126
+      },
+      {
+        "timestamp": 4.2,
+        "label": "logo_toyota",
+        "score": 0.5400351285934448,
+        "frame": 126
+      },
+      {
+        "timestamp": 4.23,
+        "label": "logo_toyota",
+        "score": 0.7411866784095764,
+        "frame": 127
+      },
+      {
+        "timestamp": 4.23,
+        "label": "logo_toyota",
+        "score": 0.4590073525905609,
+        "frame": 127
+      },
+      {
+        "timestamp": 4.27,
+        "label": "logo_toyota",
+        "score": 0.7430436611175537,
+        "frame": 128
+      },
+      {
+        "timestamp": 4.27,
+        "label": "logo_toyota",
+        "score": 0.4891042709350586,
+        "frame": 128
+      },
+      {
+        "timestamp": 4.3,
+        "label": "logo_toyota",
+        "score": 0.7728447318077087,
+        "frame": 129
+      },
+      {
+        "timestamp": 4.3,
+        "label": "logo_toyota",
+        "score": 0.6703440546989441,
+        "frame": 129
+      },
+      {
+        "timestamp": 4.33,
+        "label": "logo_toyota",
+        "score": 0.7753072381019592,
+        "frame": 130
+      },
+      {
+        "timestamp": 4.33,
+        "label": "logo_toyota",
+        "score": 0.595439612865448,
+        "frame": 130
+      },
+      {
+        "timestamp": 4.37,
+        "label": "logo_toyota",
+        "score": 0.7785623669624329,
+        "frame": 131
+      },
+      {
+        "timestamp": 4.37,
+        "label": "logo_toyota",
+        "score": 0.5567252039909363,
+        "frame": 131
+      },
+      {
+        "timestamp": 4.4,
+        "label": "logo_toyota",
+        "score": 0.7890016436576843,
+        "frame": 132
+      },
+      {
+        "timestamp": 4.4,
+        "label": "logo_toyota",
+        "score": 0.39063936471939087,
+        "frame": 132
+      },
+      {
+        "timestamp": 4.43,
+        "label": "logo_toyota",
+        "score": 0.7875890731811523,
+        "frame": 133
+      },
+      {
+        "timestamp": 4.43,
+        "label": "logo_toyota",
+        "score": 0.3733059763908386,
+        "frame": 133
+      },
+      {
+        "timestamp": 4.47,
+        "label": "logo_toyota",
+        "score": 0.787612795829773,
+        "frame": 134
+      },
+      {
+        "timestamp": 4.47,
+        "label": "logo_toyota",
+        "score": 0.3726620376110077,
+        "frame": 134
+      },
+      {
+        "timestamp": 4.5,
+        "label": "logo_toyota",
+        "score": 0.7872411608695984,
+        "frame": 135
+      },
+      {
+        "timestamp": 4.5,
+        "label": "logo_toyota",
+        "score": 0.3738759458065033,
+        "frame": 135
+      },
+      {
+        "timestamp": 4.53,
+        "label": "logo_toyota",
+        "score": 0.7871951460838318,
+        "frame": 136
+      },
+      {
+        "timestamp": 4.53,
+        "label": "logo_toyota",
+        "score": 0.37605050206184387,
+        "frame": 136
+      },
+      {
+        "timestamp": 4.57,
+        "label": "logo_toyota",
+        "score": 0.7871850728988647,
+        "frame": 137
+      },
+      {
+        "timestamp": 4.57,
+        "label": "logo_toyota",
+        "score": 0.3759240210056305,
+        "frame": 137
+      },
+      {
+        "timestamp": 4.6,
+        "label": "logo_toyota",
+        "score": 0.7864711880683899,
+        "frame": 138
+      },
+      {
+        "timestamp": 4.6,
+        "label": "logo_toyota",
+        "score": 0.43401163816452026,
+        "frame": 138
+      },
+      {
+        "timestamp": 4.63,
+        "label": "logo_toyota",
+        "score": 0.7861813306808472,
+        "frame": 139
+      },
+      {
+        "timestamp": 4.63,
+        "label": "logo_toyota",
+        "score": 0.43415403366088867,
+        "frame": 139
+      },
+      {
+        "timestamp": 4.67,
+        "label": "logo_toyota",
+        "score": 0.786113977432251,
+        "frame": 140
+      },
+      {
+        "timestamp": 4.67,
+        "label": "logo_toyota",
+        "score": 0.43537768721580505,
+        "frame": 140
+      },
+      {
+        "timestamp": 4.7,
+        "label": "logo_toyota",
+        "score": 0.7859024405479431,
+        "frame": 141
+      },
+      {
+        "timestamp": 4.7,
+        "label": "logo_toyota",
+        "score": 0.4362228810787201,
+        "frame": 141
+      },
+      {
+        "timestamp": 4.73,
+        "label": "logo_toyota",
+        "score": 0.786450982093811,
+        "frame": 142
+      },
+      {
+        "timestamp": 4.73,
+        "label": "logo_toyota",
+        "score": 0.4345559775829315,
+        "frame": 142
+      },
+      {
+        "timestamp": 4.77,
+        "label": "logo_toyota",
+        "score": 0.7864415645599365,
+        "frame": 143
+      },
+      {
+        "timestamp": 4.77,
+        "label": "logo_toyota",
+        "score": 0.434527724981308,
+        "frame": 143
+      },
+      {
+        "timestamp": 4.8,
+        "label": "logo_toyota",
+        "score": 0.7862597107887268,
+        "frame": 144
+      },
+      {
+        "timestamp": 4.8,
+        "label": "logo_toyota",
+        "score": 0.42987608909606934,
+        "frame": 144
+      },
+      {
+        "timestamp": 4.83,
+        "label": "logo_toyota",
+        "score": 0.7873342633247375,
+        "frame": 145
+      },
+      {
+        "timestamp": 4.83,
+        "label": "logo_toyota",
+        "score": 0.41359686851501465,
+        "frame": 145
+      },
+      {
+        "timestamp": 4.87,
+        "label": "logo_toyota",
+        "score": 0.7872914671897888,
+        "frame": 146
+      },
+      {
+        "timestamp": 4.87,
+        "label": "logo_toyota",
+        "score": 0.41407325863838196,
+        "frame": 146
+      },
+      {
+        "timestamp": 4.9,
+        "label": "logo_toyota",
+        "score": 0.7870745062828064,
+        "frame": 147
+      },
+      {
+        "timestamp": 4.9,
+        "label": "logo_toyota",
+        "score": 0.4140988290309906,
+        "frame": 147
+      },
+      {
+        "timestamp": 4.93,
+        "label": "logo_toyota",
+        "score": 0.7869178652763367,
+        "frame": 148
+      },
+      {
+        "timestamp": 4.93,
+        "label": "logo_toyota",
+        "score": 0.4170219302177429,
+        "frame": 148
+      },
+      {
+        "timestamp": 4.97,
+        "label": "logo_toyota",
+        "score": 0.7872016429901123,
+        "frame": 149
+      },
+      {
+        "timestamp": 4.97,
+        "label": "logo_toyota",
+        "score": 0.40977978706359863,
+        "frame": 149
+      },
+      {
+        "timestamp": 5.0,
+        "label": "logo_toyota",
+        "score": 0.787006676197052,
+        "frame": 150
+      },
+      {
+        "timestamp": 5.0,
+        "label": "logo_toyota",
+        "score": 0.40628284215927124,
+        "frame": 150
+      },
+      {
+        "timestamp": 5.03,
+        "label": "logo_toyota",
+        "score": 0.7868227362632751,
+        "frame": 151
+      },
+      {
+        "timestamp": 5.03,
+        "label": "logo_toyota",
+        "score": 0.40560808777809143,
+        "frame": 151
+      },
+      {
+        "timestamp": 5.07,
+        "label": "logo_toyota",
+        "score": 0.786781370639801,
+        "frame": 152
+      },
+      {
+        "timestamp": 5.07,
+        "label": "logo_toyota",
+        "score": 0.4322640597820282,
+        "frame": 152
+      },
+      {
+        "timestamp": 5.1,
+        "label": "logo_toyota",
+        "score": 0.7872349619865417,
+        "frame": 153
+      },
+      {
+        "timestamp": 5.1,
+        "label": "logo_toyota",
+        "score": 0.4314972758293152,
+        "frame": 153
+      },
+      {
+        "timestamp": 5.13,
+        "label": "logo_toyota",
+        "score": 0.7868940234184265,
+        "frame": 154
+      },
+      {
+        "timestamp": 5.13,
+        "label": "logo_toyota",
+        "score": 0.43169966340065,
+        "frame": 154
+      },
+      {
+        "timestamp": 5.17,
+        "label": "logo_toyota",
+        "score": 0.7868950366973877,
+        "frame": 155
+      },
+      {
+        "timestamp": 5.17,
+        "label": "logo_toyota",
+        "score": 0.4315842092037201,
+        "frame": 155
+      },
+      {
+        "timestamp": 5.2,
+        "label": "logo_toyota",
+        "score": 0.7868643999099731,
+        "frame": 156
+      },
+      {
+        "timestamp": 5.2,
+        "label": "logo_toyota",
+        "score": 0.4330880045890808,
+        "frame": 156
+      },
+      {
+        "timestamp": 5.23,
+        "label": "logo_toyota",
+        "score": 0.7877485156059265,
+        "frame": 157
+      },
+      {
+        "timestamp": 5.23,
+        "label": "logo_toyota",
+        "score": 0.434700071811676,
+        "frame": 157
+      },
+      {
+        "timestamp": 5.27,
+        "label": "logo_toyota",
+        "score": 0.7883588671684265,
+        "frame": 158
+      },
+      {
+        "timestamp": 5.27,
+        "label": "logo_toyota",
+        "score": 0.43204009532928467,
+        "frame": 158
+      },
+      {
+        "timestamp": 5.3,
+        "label": "logo_toyota",
+        "score": 0.7873573303222656,
+        "frame": 159
+      },
+      {
+        "timestamp": 5.3,
+        "label": "logo_toyota",
+        "score": 0.4183846116065979,
+        "frame": 159
+      },
+      {
+        "timestamp": 5.33,
+        "label": "logo_toyota",
+        "score": 0.7875639200210571,
+        "frame": 160
+      },
+      {
+        "timestamp": 5.33,
+        "label": "logo_toyota",
+        "score": 0.41653701663017273,
+        "frame": 160
+      },
+      {
+        "timestamp": 5.37,
+        "label": "logo_toyota",
+        "score": 0.7875697612762451,
+        "frame": 161
+      },
+      {
+        "timestamp": 5.37,
+        "label": "logo_toyota",
+        "score": 0.41662654280662537,
+        "frame": 161
+      },
+      {
+        "timestamp": 5.4,
+        "label": "logo_toyota",
+        "score": 0.7883812189102173,
+        "frame": 162
+      },
+      {
+        "timestamp": 5.4,
+        "label": "logo_toyota",
+        "score": 0.41485315561294556,
+        "frame": 162
+      },
+      {
+        "timestamp": 5.43,
+        "label": "logo_toyota",
+        "score": 0.7882748246192932,
+        "frame": 163
+      },
+      {
+        "timestamp": 5.43,
+        "label": "logo_toyota",
+        "score": 0.41453900933265686,
+        "frame": 163
+      },
+      {
+        "timestamp": 5.47,
+        "label": "logo_toyota",
+        "score": 0.7882920503616333,
+        "frame": 164
+      },
+      {
+        "timestamp": 5.47,
+        "label": "logo_toyota",
+        "score": 0.41454359889030457,
+        "frame": 164
+      },
+      {
+        "timestamp": 5.5,
+        "label": "logo_toyota",
+        "score": 0.788030743598938,
+        "frame": 165
+      },
+      {
+        "timestamp": 5.5,
+        "label": "logo_toyota",
+        "score": 0.41494107246398926,
+        "frame": 165
+      },
+      {
+        "timestamp": 5.53,
+        "label": "logo_toyota",
+        "score": 0.7880576848983765,
+        "frame": 166
+      },
+      {
+        "timestamp": 5.53,
+        "label": "logo_toyota",
+        "score": 0.41616401076316833,
+        "frame": 166
+      },
+      {
+        "timestamp": 5.57,
+        "label": "logo_toyota",
+        "score": 0.7880659103393555,
+        "frame": 167
+      },
+      {
+        "timestamp": 5.57,
+        "label": "logo_toyota",
+        "score": 0.41587525606155396,
+        "frame": 167
+      },
+      {
+        "timestamp": 5.6,
+        "label": "logo_toyota",
+        "score": 0.7871627807617188,
+        "frame": 168
+      },
+      {
+        "timestamp": 5.6,
+        "label": "logo_toyota",
+        "score": 0.4118283689022064,
+        "frame": 168
+      },
+      {
+        "timestamp": 5.63,
+        "label": "logo_toyota",
+        "score": 0.7866761684417725,
+        "frame": 169
+      },
+      {
+        "timestamp": 5.63,
+        "label": "logo_toyota",
+        "score": 0.4109117090702057,
+        "frame": 169
+      },
+      {
+        "timestamp": 5.67,
+        "label": "logo_toyota",
+        "score": 0.7867100238800049,
+        "frame": 170
+      },
+      {
+        "timestamp": 5.67,
+        "label": "logo_toyota",
+        "score": 0.4105904698371887,
+        "frame": 170
+      },
+      {
+        "timestamp": 5.7,
+        "label": "logo_toyota",
+        "score": 0.7866601347923279,
+        "frame": 171
+      },
+      {
+        "timestamp": 5.7,
+        "label": "logo_toyota",
+        "score": 0.41635018587112427,
+        "frame": 171
+      },
+      {
+        "timestamp": 5.73,
+        "label": "logo_toyota",
+        "score": 0.7870182394981384,
+        "frame": 172
+      },
+      {
+        "timestamp": 5.73,
+        "label": "logo_toyota",
+        "score": 0.4154721200466156,
+        "frame": 172
+      },
+      {
+        "timestamp": 5.77,
+        "label": "logo_toyota",
+        "score": 0.7870296239852905,
+        "frame": 173
+      },
+      {
+        "timestamp": 5.77,
+        "label": "logo_toyota",
+        "score": 0.41550496220588684,
+        "frame": 173
+      },
+      {
+        "timestamp": 5.8,
+        "label": "logo_toyota",
+        "score": 0.7870951890945435,
+        "frame": 174
+      },
+      {
+        "timestamp": 5.8,
+        "label": "logo_toyota",
+        "score": 0.41661351919174194,
+        "frame": 174
+      },
+      {
+        "timestamp": 5.83,
+        "label": "logo_toyota",
+        "score": 0.7869927883148193,
+        "frame": 175
+      },
+      {
+        "timestamp": 5.83,
+        "label": "logo_toyota",
+        "score": 0.41706550121307373,
+        "frame": 175
+      },
+      {
+        "timestamp": 5.87,
+        "label": "logo_toyota",
+        "score": 0.7876849174499512,
+        "frame": 176
+      },
+      {
+        "timestamp": 5.87,
+        "label": "logo_toyota",
+        "score": 0.43130385875701904,
+        "frame": 176
+      },
+      {
+        "timestamp": 5.9,
+        "label": "logo_toyota",
+        "score": 0.7875734567642212,
+        "frame": 177
+      },
+      {
+        "timestamp": 5.9,
+        "label": "logo_toyota",
+        "score": 0.4236704111099243,
+        "frame": 177
+      },
+      {
+        "timestamp": 5.93,
+        "label": "logo_toyota",
+        "score": 0.7877007126808167,
+        "frame": 178
+      },
+      {
+        "timestamp": 5.93,
+        "label": "logo_toyota",
+        "score": 0.4258044362068176,
+        "frame": 178
+      },
+      {
+        "timestamp": 5.97,
+        "label": "logo_toyota",
+        "score": 0.7876850366592407,
+        "frame": 179
+      },
+      {
+        "timestamp": 5.97,
+        "label": "logo_toyota",
+        "score": 0.4257790148258209,
+        "frame": 179
+      },
+      {
+        "timestamp": 6.0,
+        "label": "logo_toyota",
+        "score": 0.7872006297111511,
+        "frame": 180
+      },
+      {
+        "timestamp": 6.0,
+        "label": "logo_toyota",
+        "score": 0.42215612530708313,
+        "frame": 180
+      },
+      {
+        "timestamp": 6.03,
+        "label": "logo_toyota",
+        "score": 0.786979615688324,
+        "frame": 181
+      },
+      {
+        "timestamp": 6.03,
+        "label": "logo_toyota",
+        "score": 0.4212751090526581,
+        "frame": 181
+      },
+      {
+        "timestamp": 6.07,
+        "label": "logo_toyota",
+        "score": 0.7869707345962524,
+        "frame": 182
+      },
+      {
+        "timestamp": 6.07,
+        "label": "logo_toyota",
+        "score": 0.4212782084941864,
+        "frame": 182
+      },
+      {
+        "timestamp": 6.1,
+        "label": "logo_toyota",
+        "score": 0.7881879806518555,
+        "frame": 183
+      },
+      {
+        "timestamp": 6.1,
+        "label": "logo_toyota",
+        "score": 0.42461109161376953,
+        "frame": 183
+      },
+      {
+        "timestamp": 6.13,
+        "label": "logo_toyota",
+        "score": 0.7874721884727478,
+        "frame": 184
+      },
+      {
+        "timestamp": 6.13,
+        "label": "logo_toyota",
+        "score": 0.4250878393650055,
+        "frame": 184
+      },
+      {
+        "timestamp": 6.17,
+        "label": "logo_toyota",
+        "score": 0.7874350547790527,
+        "frame": 185
+      },
+      {
+        "timestamp": 6.17,
+        "label": "logo_toyota",
+        "score": 0.42642226815223694,
+        "frame": 185
+      },
+      {
+        "timestamp": 6.23,
+        "label": "logo_toyota",
+        "score": 0.709274172782898,
+        "frame": 187
+      },
+      {
+        "timestamp": 6.27,
+        "label": "logo_toyota",
+        "score": 0.717208743095398,
+        "frame": 188
+      },
+      {
+        "timestamp": 6.3,
+        "label": "logo_toyota",
+        "score": 0.7202175259590149,
+        "frame": 189
+      },
+      {
+        "timestamp": 6.33,
+        "label": "logo_toyota",
+        "score": 0.7248904705047607,
+        "frame": 190
+      },
+      {
+        "timestamp": 6.37,
+        "label": "logo_toyota",
+        "score": 0.7253571152687073,
+        "frame": 191
+      },
+      {
+        "timestamp": 6.4,
+        "label": "logo_toyota",
+        "score": 0.7252753376960754,
+        "frame": 192
+      },
+      {
+        "timestamp": 6.43,
+        "label": "logo_toyota",
+        "score": 0.7304302453994751,
+        "frame": 193
+      },
+      {
+        "timestamp": 6.47,
+        "label": "logo_toyota",
+        "score": 0.7375078201293945,
+        "frame": 194
+      },
+      {
+        "timestamp": 6.5,
+        "label": "logo_toyota",
+        "score": 0.7488638162612915,
+        "frame": 195
+      },
+      {
+        "timestamp": 6.53,
+        "label": "logo_toyota",
+        "score": 0.746536374092102,
+        "frame": 196
+      },
+      {
+        "timestamp": 6.57,
+        "label": "logo_toyota",
+        "score": 0.7441576719284058,
+        "frame": 197
+      },
+      {
+        "timestamp": 6.6,
+        "label": "logo_toyota",
+        "score": 0.7430732846260071,
+        "frame": 198
+      },
+      {
+        "timestamp": 6.63,
+        "label": "logo_toyota",
+        "score": 0.7477704286575317,
+        "frame": 199
+      },
+      {
+        "timestamp": 6.67,
+        "label": "logo_toyota",
+        "score": 0.7390037775039673,
+        "frame": 200
+      },
+      {
+        "timestamp": 6.7,
+        "label": "logo_toyota",
+        "score": 0.7303220629692078,
+        "frame": 201
+      },
+      {
+        "timestamp": 6.73,
+        "label": "logo_toyota",
+        "score": 0.7408477067947388,
+        "frame": 202
+      },
+      {
+        "timestamp": 6.77,
+        "label": "logo_toyota",
+        "score": 0.7178341150283813,
+        "frame": 203
+      },
+      {
+        "timestamp": 6.8,
+        "label": "logo_toyota",
+        "score": 0.7008219957351685,
+        "frame": 204
+      },
+      {
+        "timestamp": 6.83,
+        "label": "logo_toyota",
+        "score": 0.6979852318763733,
+        "frame": 205
+      },
+      {
+        "timestamp": 6.87,
+        "label": "logo_toyota",
+        "score": 0.6987552642822266,
+        "frame": 206
+      },
+      {
+        "timestamp": 6.9,
+        "label": "logo_toyota",
+        "score": 0.7127447128295898,
+        "frame": 207
+      },
+      {
+        "timestamp": 6.93,
+        "label": "logo_toyota",
+        "score": 0.70762038230896,
+        "frame": 208
+      },
+      {
+        "timestamp": 6.97,
+        "label": "logo_toyota",
+        "score": 0.7167506814002991,
+        "frame": 209
+      },
+      {
+        "timestamp": 7.0,
+        "label": "logo_toyota",
+        "score": 0.7248148322105408,
+        "frame": 210
+      },
+      {
+        "timestamp": 7.03,
+        "label": "logo_toyota",
+        "score": 0.721568763256073,
+        "frame": 211
+      },
+      {
+        "timestamp": 7.07,
+        "label": "logo_toyota",
+        "score": 0.7215842604637146,
+        "frame": 212
+      },
+      {
+        "timestamp": 7.1,
+        "label": "logo_toyota",
+        "score": 0.7211061716079712,
+        "frame": 213
+      },
+      {
+        "timestamp": 7.13,
+        "label": "logo_toyota",
+        "score": 0.7173150777816772,
+        "frame": 214
+      },
+      {
+        "timestamp": 7.17,
+        "label": "logo_toyota",
+        "score": 0.7105025053024292,
+        "frame": 215
+      },
+      {
+        "timestamp": 7.2,
+        "label": "logo_toyota",
+        "score": 0.7148422002792358,
+        "frame": 216
+      },
+      {
+        "timestamp": 7.23,
+        "label": "logo_toyota",
+        "score": 0.7267094254493713,
+        "frame": 217
+      },
+      {
+        "timestamp": 7.27,
+        "label": "logo_toyota",
+        "score": 0.7318651676177979,
+        "frame": 218
+      },
+      {
+        "timestamp": 7.3,
+        "label": "logo_toyota",
+        "score": 0.7473447918891907,
+        "frame": 219
+      },
+      {
+        "timestamp": 7.33,
+        "label": "logo_toyota",
+        "score": 0.7451336979866028,
+        "frame": 220
+      },
+      {
+        "timestamp": 7.37,
+        "label": "logo_toyota",
+        "score": 0.7448282837867737,
+        "frame": 221
+      },
+      {
+        "timestamp": 7.4,
+        "label": "logo_toyota",
+        "score": 0.7205298542976379,
+        "frame": 222
+      },
+      {
+        "timestamp": 7.43,
+        "label": "logo_toyota",
+        "score": 0.705187201499939,
+        "frame": 223
+      },
+      {
+        "timestamp": 7.47,
+        "label": "logo_toyota",
+        "score": 0.7108418941497803,
+        "frame": 224
+      },
+      {
+        "timestamp": 7.5,
+        "label": "logo_toyota",
+        "score": 0.7082453370094299,
+        "frame": 225
+      },
+      {
+        "timestamp": 7.53,
+        "label": "logo_toyota",
+        "score": 0.7383202314376831,
+        "frame": 226
+      },
+      {
+        "timestamp": 7.57,
+        "label": "logo_toyota",
+        "score": 0.7016355991363525,
+        "frame": 227
+      },
+      {
+        "timestamp": 7.6,
+        "label": "logo_toyota",
+        "score": 0.691023051738739,
+        "frame": 228
+      },
+      {
+        "timestamp": 7.63,
+        "label": "logo_toyota",
+        "score": 0.699003279209137,
+        "frame": 229
+      },
+      {
+        "timestamp": 7.67,
+        "label": "logo_toyota",
+        "score": 0.6786812543869019,
+        "frame": 230
+      },
+      {
+        "timestamp": 7.7,
+        "label": "logo_toyota",
+        "score": 0.6862503290176392,
+        "frame": 231
+      },
+      {
+        "timestamp": 7.73,
+        "label": "logo_toyota",
+        "score": 0.6923179626464844,
+        "frame": 232
+      },
+      {
+        "timestamp": 7.77,
+        "label": "logo_toyota",
+        "score": 0.6997280120849609,
+        "frame": 233
+      },
+      {
+        "timestamp": 7.8,
+        "label": "logo_toyota",
+        "score": 0.7006967067718506,
+        "frame": 234
+      },
+      {
+        "timestamp": 7.83,
+        "label": "logo_toyota",
+        "score": 0.7138068675994873,
+        "frame": 235
+      },
+      {
+        "timestamp": 7.87,
+        "label": "logo_toyota",
+        "score": 0.7064512968063354,
+        "frame": 236
+      },
+      {
+        "timestamp": 7.9,
+        "label": "logo_toyota",
+        "score": 0.6981101036071777,
+        "frame": 237
+      },
+      {
+        "timestamp": 7.93,
+        "label": "logo_toyota",
+        "score": 0.6810606122016907,
+        "frame": 238
+      },
+      {
+        "timestamp": 7.97,
+        "label": "logo_toyota",
+        "score": 0.6840972304344177,
+        "frame": 239
+      },
+      {
+        "timestamp": 8.0,
+        "label": "logo_toyota",
+        "score": 0.6810539364814758,
+        "frame": 240
+      },
+      {
+        "timestamp": 8.03,
+        "label": "logo_toyota",
+        "score": 0.6799024343490601,
+        "frame": 241
+      },
+      {
+        "timestamp": 8.07,
+        "label": "logo_toyota",
+        "score": 0.692657470703125,
+        "frame": 242
+      },
+      {
+        "timestamp": 8.1,
+        "label": "logo_toyota",
+        "score": 0.6836501955986023,
+        "frame": 243
+      },
+      {
+        "timestamp": 8.13,
+        "label": "logo_toyota",
+        "score": 0.6850788593292236,
+        "frame": 244
+      },
+      {
+        "timestamp": 8.17,
+        "label": "logo_toyota",
+        "score": 0.6838453412055969,
+        "frame": 245
+      },
+      {
+        "timestamp": 8.2,
+        "label": "logo_toyota",
+        "score": 0.677554190158844,
+        "frame": 246
+      },
+      {
+        "timestamp": 8.23,
+        "label": "logo_toyota",
+        "score": 0.6866925954818726,
+        "frame": 247
+      },
+      {
+        "timestamp": 8.27,
+        "label": "logo_toyota",
+        "score": 0.6648353338241577,
+        "frame": 248
+      },
+      {
+        "timestamp": 8.3,
+        "label": "logo_toyota",
+        "score": 0.6825984716415405,
+        "frame": 249
+      },
+      {
+        "timestamp": 8.33,
+        "label": "logo_toyota",
+        "score": 0.6837072372436523,
+        "frame": 250
+      },
+      {
+        "timestamp": 8.37,
+        "label": "logo_toyota",
+        "score": 0.6700750589370728,
+        "frame": 251
+      },
+      {
+        "timestamp": 8.4,
+        "label": "logo_toyota",
+        "score": 0.6788952350616455,
+        "frame": 252
+      },
+      {
+        "timestamp": 10.1,
+        "label": "logo_toyota",
+        "score": 0.280075341463089,
+        "frame": 303
+      },
+      {
+        "timestamp": 10.47,
+        "label": "logo_toyota",
+        "score": 0.3557213544845581,
+        "frame": 314
+      },
+      {
+        "timestamp": 10.5,
+        "label": "logo_toyota",
+        "score": 0.335126668214798,
+        "frame": 315
+      },
+      {
+        "timestamp": 10.53,
+        "label": "logo_toyota",
+        "score": 0.3369435966014862,
+        "frame": 316
+      },
+      {
+        "timestamp": 10.57,
+        "label": "logo_toyota",
+        "score": 0.42780259251594543,
+        "frame": 317
+      },
+      {
+        "timestamp": 10.6,
+        "label": "logo_toyota",
+        "score": 0.44185736775398254,
+        "frame": 318
+      },
+      {
+        "timestamp": 10.63,
+        "label": "logo_toyota",
+        "score": 0.48263296484947205,
+        "frame": 319
+      },
+      {
+        "timestamp": 10.67,
+        "label": "logo_toyota",
+        "score": 0.4971674084663391,
+        "frame": 320
+      },
+      {
+        "timestamp": 10.7,
+        "label": "logo_toyota",
+        "score": 0.4026634991168976,
+        "frame": 321
+      },
+      {
+        "timestamp": 13.7,
+        "label": "logo_mercedez",
+        "score": 0.2925967872142792,
+        "frame": 411
+      },
+      {
+        "timestamp": 13.83,
+        "label": "logo_mercedez",
+        "score": 0.30462753772735596,
+        "frame": 415
+      },
+      {
+        "timestamp": 13.87,
+        "label": "logo_mercedez",
+        "score": 0.30601388216018677,
+        "frame": 416
+      },
+      {
+        "timestamp": 13.9,
+        "label": "logo_mercedez",
+        "score": 0.36108657717704773,
+        "frame": 417
+      },
+      {
+        "timestamp": 13.93,
+        "label": "logo_mercedez",
+        "score": 0.2974011301994324,
+        "frame": 418
+      },
+      {
+        "timestamp": 13.97,
+        "label": "logo_mercedez",
+        "score": 0.29621660709381104,
+        "frame": 419
+      },
+      {
+        "timestamp": 14.2,
+        "label": "logo_toyota",
+        "score": 0.3094513714313507,
+        "frame": 426
+      },
+      {
+        "timestamp": 14.23,
+        "label": "logo_toyota",
+        "score": 0.3032563626766205,
+        "frame": 427
+      },
+      {
+        "timestamp": 14.23,
+        "label": "logo_toyota",
+        "score": 0.301143616437912,
+        "frame": 427
+      },
+      {
+        "timestamp": 14.23,
+        "label": "logo_mercedez",
+        "score": 0.2727136015892029,
+        "frame": 427
+      },
+      {
+        "timestamp": 14.27,
+        "label": "logo_toyota",
+        "score": 0.31176626682281494,
+        "frame": 428
+      },
+      {
+        "timestamp": 14.27,
+        "label": "logo_toyota",
+        "score": 0.30200546979904175,
+        "frame": 428
+      },
+      {
+        "timestamp": 14.27,
+        "label": "logo_mercedez",
+        "score": 0.26931139826774597,
+        "frame": 428
+      }
+    ],
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-02T11:17:02.127334",
+    "fps_estimated": 30.0,
+    "processed_secs": 73.45213890075684
+  },
+  "video-job-1756804650770": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-02T11:17:30.770469",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpfufiloww.mp4",
+    "labels": {},
+    "end_time": "2025-09-02T11:17:38.430825",
+    "fps_estimated": 10.0,
+    "processed_secs": 7.652835845947266
+  },
+  "video-job-1756804675145": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-02T11:17:55.175045",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpk34u5zm0.mp4",
+    "detections_list": [
+      {
+        "timestamp": 0.0,
+        "label": "logo_toyota",
+        "score": 0.6981098651885986,
+        "frame": 0
+      },
+      {
+        "timestamp": 0.03,
+        "label": "logo_toyota",
+        "score": 0.682765781879425,
+        "frame": 1
+      },
+      {
+        "timestamp": 0.07,
+        "label": "logo_toyota",
+        "score": 0.6964125633239746,
+        "frame": 2
+      },
+      {
+        "timestamp": 0.1,
+        "label": "logo_toyota",
+        "score": 0.6992893218994141,
+        "frame": 3
+      },
+      {
+        "timestamp": 0.13,
+        "label": "logo_toyota",
+        "score": 0.7085016369819641,
+        "frame": 4
+      },
+      {
+        "timestamp": 0.17,
+        "label": "logo_toyota",
+        "score": 0.7033102512359619,
+        "frame": 5
+      },
+      {
+        "timestamp": 0.2,
+        "label": "logo_toyota",
+        "score": 0.6978628635406494,
+        "frame": 6
+      },
+      {
+        "timestamp": 0.23,
+        "label": "logo_toyota",
+        "score": 0.7100182175636292,
+        "frame": 7
+      },
+      {
+        "timestamp": 0.27,
+        "label": "logo_toyota",
+        "score": 0.7059346437454224,
+        "frame": 8
+      },
+      {
+        "timestamp": 0.3,
+        "label": "logo_toyota",
+        "score": 0.7020646333694458,
+        "frame": 9
+      },
+      {
+        "timestamp": 0.33,
+        "label": "logo_toyota",
+        "score": 0.7012081742286682,
+        "frame": 10
+      },
+      {
+        "timestamp": 0.37,
+        "label": "logo_toyota",
+        "score": 0.6900842785835266,
+        "frame": 11
+      },
+      {
+        "timestamp": 0.4,
+        "label": "logo_toyota",
+        "score": 0.7024139165878296,
+        "frame": 12
+      },
+      {
+        "timestamp": 0.43,
+        "label": "logo_toyota",
+        "score": 0.7024180293083191,
+        "frame": 13
+      },
+      {
+        "timestamp": 0.47,
+        "label": "logo_toyota",
+        "score": 0.7051296234130859,
+        "frame": 14
+      },
+      {
+        "timestamp": 0.5,
+        "label": "logo_toyota",
+        "score": 0.706866979598999,
+        "frame": 15
+      },
+      {
+        "timestamp": 0.53,
+        "label": "logo_toyota",
+        "score": 0.7095577716827393,
+        "frame": 16
+      },
+      {
+        "timestamp": 0.57,
+        "label": "logo_toyota",
+        "score": 0.7107908129692078,
+        "frame": 17
+      },
+      {
+        "timestamp": 0.6,
+        "label": "logo_toyota",
+        "score": 0.7019457817077637,
+        "frame": 18
+      },
+      {
+        "timestamp": 0.63,
+        "label": "logo_toyota",
+        "score": 0.7059224843978882,
+        "frame": 19
+      },
+      {
+        "timestamp": 0.67,
+        "label": "logo_toyota",
+        "score": 0.7059966921806335,
+        "frame": 20
+      },
+      {
+        "timestamp": 0.7,
+        "label": "logo_toyota",
+        "score": 0.7015203833580017,
+        "frame": 21
+      },
+      {
+        "timestamp": 0.73,
+        "label": "logo_toyota",
+        "score": 0.7012872099876404,
+        "frame": 22
+      },
+      {
+        "timestamp": 0.77,
+        "label": "logo_toyota",
+        "score": 0.7002803087234497,
+        "frame": 23
+      },
+      {
+        "timestamp": 0.8,
+        "label": "logo_toyota",
+        "score": 0.7004261612892151,
+        "frame": 24
+      },
+      {
+        "timestamp": 0.83,
+        "label": "logo_toyota",
+        "score": 0.6988541483879089,
+        "frame": 25
+      },
+      {
+        "timestamp": 0.87,
+        "label": "logo_toyota",
+        "score": 0.7033953070640564,
+        "frame": 26
+      },
+      {
+        "timestamp": 0.9,
+        "label": "logo_toyota",
+        "score": 0.7006080150604248,
+        "frame": 27
+      },
+      {
+        "timestamp": 0.93,
+        "label": "logo_toyota",
+        "score": 0.695164144039154,
+        "frame": 28
+      },
+      {
+        "timestamp": 0.97,
+        "label": "logo_toyota",
+        "score": 0.6975618600845337,
+        "frame": 29
+      },
+      {
+        "timestamp": 3.6,
+        "label": "logo_toyota",
+        "score": 0.3388378322124481,
+        "frame": 108
+      },
+      {
+        "timestamp": 3.63,
+        "label": "logo_toyota",
+        "score": 0.6927392482757568,
+        "frame": 109
+      },
+      {
+        "timestamp": 3.67,
+        "label": "logo_toyota",
+        "score": 0.7324101328849792,
+        "frame": 110
+      },
+      {
+        "timestamp": 3.7,
+        "label": "logo_toyota",
+        "score": 0.7846181988716125,
+        "frame": 111
+      },
+      {
+        "timestamp": 3.73,
+        "label": "logo_toyota",
+        "score": 0.7688596844673157,
+        "frame": 112
+      },
+      {
+        "timestamp": 3.77,
+        "label": "logo_toyota",
+        "score": 0.7906239032745361,
+        "frame": 113
+      },
+      {
+        "timestamp": 3.77,
+        "label": "logo_toyota",
+        "score": 0.4056192636489868,
+        "frame": 113
+      },
+      {
+        "timestamp": 3.8,
+        "label": "logo_toyota",
+        "score": 0.7335293292999268,
+        "frame": 114
+      },
+      {
+        "timestamp": 3.8,
+        "label": "logo_toyota",
+        "score": 0.48673826456069946,
+        "frame": 114
+      },
+      {
+        "timestamp": 3.83,
+        "label": "logo_toyota",
+        "score": 0.7644509673118591,
+        "frame": 115
+      },
+      {
+        "timestamp": 3.83,
+        "label": "logo_toyota",
+        "score": 0.6054864525794983,
+        "frame": 115
+      },
+      {
+        "timestamp": 3.87,
+        "label": "logo_toyota",
+        "score": 0.7649827599525452,
+        "frame": 116
+      },
+      {
+        "timestamp": 3.87,
+        "label": "logo_toyota",
+        "score": 0.5609305500984192,
+        "frame": 116
+      },
+      {
+        "timestamp": 3.9,
+        "label": "logo_toyota",
+        "score": 0.7650200128555298,
+        "frame": 117
+      },
+      {
+        "timestamp": 3.9,
+        "label": "logo_toyota",
+        "score": 0.2792198956012726,
+        "frame": 117
+      },
+      {
+        "timestamp": 3.93,
+        "label": "logo_toyota",
+        "score": 0.7462235689163208,
+        "frame": 118
+      },
+      {
+        "timestamp": 3.97,
+        "label": "logo_toyota",
+        "score": 0.7501943111419678,
+        "frame": 119
+      },
+      {
+        "timestamp": 4.0,
+        "label": "logo_toyota",
+        "score": 0.7479733824729919,
+        "frame": 120
+      },
+      {
+        "timestamp": 4.03,
+        "label": "logo_toyota",
+        "score": 0.7463943958282471,
+        "frame": 121
+      },
+      {
+        "timestamp": 4.07,
+        "label": "logo_toyota",
+        "score": 0.7585945129394531,
+        "frame": 122
+      },
+      {
+        "timestamp": 4.1,
+        "label": "logo_toyota",
+        "score": 0.7754806876182556,
+        "frame": 123
+      },
+      {
+        "timestamp": 4.1,
+        "label": "logo_toyota",
+        "score": 0.398237407207489,
+        "frame": 123
+      },
+      {
+        "timestamp": 4.13,
+        "label": "logo_toyota",
+        "score": 0.7744877338409424,
+        "frame": 124
+      },
+      {
+        "timestamp": 4.13,
+        "label": "logo_toyota",
+        "score": 0.5884287357330322,
+        "frame": 124
+      },
+      {
+        "timestamp": 4.17,
+        "label": "logo_toyota",
+        "score": 0.7570046186447144,
+        "frame": 125
+      },
+      {
+        "timestamp": 4.17,
+        "label": "logo_toyota",
+        "score": 0.6282377243041992,
+        "frame": 125
+      },
+      {
+        "timestamp": 4.2,
+        "label": "logo_toyota",
+        "score": 0.7590730786323547,
+        "frame": 126
+      },
+      {
+        "timestamp": 4.2,
+        "label": "logo_toyota",
+        "score": 0.5400351285934448,
+        "frame": 126
+      },
+      {
+        "timestamp": 4.23,
+        "label": "logo_toyota",
+        "score": 0.7411866784095764,
+        "frame": 127
+      },
+      {
+        "timestamp": 4.23,
+        "label": "logo_toyota",
+        "score": 0.4590073525905609,
+        "frame": 127
+      },
+      {
+        "timestamp": 4.27,
+        "label": "logo_toyota",
+        "score": 0.7430436611175537,
+        "frame": 128
+      },
+      {
+        "timestamp": 4.27,
+        "label": "logo_toyota",
+        "score": 0.4891042709350586,
+        "frame": 128
+      },
+      {
+        "timestamp": 4.3,
+        "label": "logo_toyota",
+        "score": 0.7728447318077087,
+        "frame": 129
+      },
+      {
+        "timestamp": 4.3,
+        "label": "logo_toyota",
+        "score": 0.6703440546989441,
+        "frame": 129
+      },
+      {
+        "timestamp": 4.33,
+        "label": "logo_toyota",
+        "score": 0.7753072381019592,
+        "frame": 130
+      },
+      {
+        "timestamp": 4.33,
+        "label": "logo_toyota",
+        "score": 0.595439612865448,
+        "frame": 130
+      },
+      {
+        "timestamp": 4.37,
+        "label": "logo_toyota",
+        "score": 0.7785623669624329,
+        "frame": 131
+      },
+      {
+        "timestamp": 4.37,
+        "label": "logo_toyota",
+        "score": 0.5567252039909363,
+        "frame": 131
+      },
+      {
+        "timestamp": 4.4,
+        "label": "logo_toyota",
+        "score": 0.7890016436576843,
+        "frame": 132
+      },
+      {
+        "timestamp": 4.4,
+        "label": "logo_toyota",
+        "score": 0.39063936471939087,
+        "frame": 132
+      },
+      {
+        "timestamp": 4.43,
+        "label": "logo_toyota",
+        "score": 0.7875890731811523,
+        "frame": 133
+      },
+      {
+        "timestamp": 4.43,
+        "label": "logo_toyota",
+        "score": 0.3733059763908386,
+        "frame": 133
+      },
+      {
+        "timestamp": 4.47,
+        "label": "logo_toyota",
+        "score": 0.787612795829773,
+        "frame": 134
+      },
+      {
+        "timestamp": 4.47,
+        "label": "logo_toyota",
+        "score": 0.3726620376110077,
+        "frame": 134
+      },
+      {
+        "timestamp": 4.5,
+        "label": "logo_toyota",
+        "score": 0.7872411608695984,
+        "frame": 135
+      },
+      {
+        "timestamp": 4.5,
+        "label": "logo_toyota",
+        "score": 0.3738759458065033,
+        "frame": 135
+      },
+      {
+        "timestamp": 4.53,
+        "label": "logo_toyota",
+        "score": 0.7871951460838318,
+        "frame": 136
+      },
+      {
+        "timestamp": 4.53,
+        "label": "logo_toyota",
+        "score": 0.37605050206184387,
+        "frame": 136
+      },
+      {
+        "timestamp": 4.57,
+        "label": "logo_toyota",
+        "score": 0.7871850728988647,
+        "frame": 137
+      },
+      {
+        "timestamp": 4.57,
+        "label": "logo_toyota",
+        "score": 0.3759240210056305,
+        "frame": 137
+      },
+      {
+        "timestamp": 4.6,
+        "label": "logo_toyota",
+        "score": 0.7864711880683899,
+        "frame": 138
+      },
+      {
+        "timestamp": 4.6,
+        "label": "logo_toyota",
+        "score": 0.43401163816452026,
+        "frame": 138
+      },
+      {
+        "timestamp": 4.63,
+        "label": "logo_toyota",
+        "score": 0.7861813306808472,
+        "frame": 139
+      },
+      {
+        "timestamp": 4.63,
+        "label": "logo_toyota",
+        "score": 0.43415403366088867,
+        "frame": 139
+      },
+      {
+        "timestamp": 4.67,
+        "label": "logo_toyota",
+        "score": 0.786113977432251,
+        "frame": 140
+      },
+      {
+        "timestamp": 4.67,
+        "label": "logo_toyota",
+        "score": 0.43537768721580505,
+        "frame": 140
+      },
+      {
+        "timestamp": 4.7,
+        "label": "logo_toyota",
+        "score": 0.7859024405479431,
+        "frame": 141
+      },
+      {
+        "timestamp": 4.7,
+        "label": "logo_toyota",
+        "score": 0.4362228810787201,
+        "frame": 141
+      },
+      {
+        "timestamp": 4.73,
+        "label": "logo_toyota",
+        "score": 0.786450982093811,
+        "frame": 142
+      },
+      {
+        "timestamp": 4.73,
+        "label": "logo_toyota",
+        "score": 0.4345559775829315,
+        "frame": 142
+      },
+      {
+        "timestamp": 4.77,
+        "label": "logo_toyota",
+        "score": 0.7864415645599365,
+        "frame": 143
+      },
+      {
+        "timestamp": 4.77,
+        "label": "logo_toyota",
+        "score": 0.434527724981308,
+        "frame": 143
+      },
+      {
+        "timestamp": 4.8,
+        "label": "logo_toyota",
+        "score": 0.7862597107887268,
+        "frame": 144
+      },
+      {
+        "timestamp": 4.8,
+        "label": "logo_toyota",
+        "score": 0.42987608909606934,
+        "frame": 144
+      },
+      {
+        "timestamp": 4.83,
+        "label": "logo_toyota",
+        "score": 0.7873342633247375,
+        "frame": 145
+      },
+      {
+        "timestamp": 4.83,
+        "label": "logo_toyota",
+        "score": 0.41359686851501465,
+        "frame": 145
+      },
+      {
+        "timestamp": 4.87,
+        "label": "logo_toyota",
+        "score": 0.7872914671897888,
+        "frame": 146
+      },
+      {
+        "timestamp": 4.87,
+        "label": "logo_toyota",
+        "score": 0.41407325863838196,
+        "frame": 146
+      },
+      {
+        "timestamp": 4.9,
+        "label": "logo_toyota",
+        "score": 0.7870745062828064,
+        "frame": 147
+      },
+      {
+        "timestamp": 4.9,
+        "label": "logo_toyota",
+        "score": 0.4140988290309906,
+        "frame": 147
+      },
+      {
+        "timestamp": 4.93,
+        "label": "logo_toyota",
+        "score": 0.7869178652763367,
+        "frame": 148
+      },
+      {
+        "timestamp": 4.93,
+        "label": "logo_toyota",
+        "score": 0.4170219302177429,
+        "frame": 148
+      },
+      {
+        "timestamp": 4.97,
+        "label": "logo_toyota",
+        "score": 0.7872016429901123,
+        "frame": 149
+      },
+      {
+        "timestamp": 4.97,
+        "label": "logo_toyota",
+        "score": 0.40977978706359863,
+        "frame": 149
+      },
+      {
+        "timestamp": 5.0,
+        "label": "logo_toyota",
+        "score": 0.787006676197052,
+        "frame": 150
+      },
+      {
+        "timestamp": 5.0,
+        "label": "logo_toyota",
+        "score": 0.40628284215927124,
+        "frame": 150
+      },
+      {
+        "timestamp": 5.03,
+        "label": "logo_toyota",
+        "score": 0.7868227362632751,
+        "frame": 151
+      },
+      {
+        "timestamp": 5.03,
+        "label": "logo_toyota",
+        "score": 0.40560808777809143,
+        "frame": 151
+      },
+      {
+        "timestamp": 5.07,
+        "label": "logo_toyota",
+        "score": 0.786781370639801,
+        "frame": 152
+      },
+      {
+        "timestamp": 5.07,
+        "label": "logo_toyota",
+        "score": 0.4322640597820282,
+        "frame": 152
+      },
+      {
+        "timestamp": 5.1,
+        "label": "logo_toyota",
+        "score": 0.7872349619865417,
+        "frame": 153
+      },
+      {
+        "timestamp": 5.1,
+        "label": "logo_toyota",
+        "score": 0.4314972758293152,
+        "frame": 153
+      },
+      {
+        "timestamp": 5.13,
+        "label": "logo_toyota",
+        "score": 0.7868940234184265,
+        "frame": 154
+      },
+      {
+        "timestamp": 5.13,
+        "label": "logo_toyota",
+        "score": 0.43169966340065,
+        "frame": 154
+      },
+      {
+        "timestamp": 5.17,
+        "label": "logo_toyota",
+        "score": 0.7868950366973877,
+        "frame": 155
+      },
+      {
+        "timestamp": 5.17,
+        "label": "logo_toyota",
+        "score": 0.4315842092037201,
+        "frame": 155
+      },
+      {
+        "timestamp": 5.2,
+        "label": "logo_toyota",
+        "score": 0.7868643999099731,
+        "frame": 156
+      },
+      {
+        "timestamp": 5.2,
+        "label": "logo_toyota",
+        "score": 0.4330880045890808,
+        "frame": 156
+      },
+      {
+        "timestamp": 5.23,
+        "label": "logo_toyota",
+        "score": 0.7877485156059265,
+        "frame": 157
+      },
+      {
+        "timestamp": 5.23,
+        "label": "logo_toyota",
+        "score": 0.434700071811676,
+        "frame": 157
+      },
+      {
+        "timestamp": 5.27,
+        "label": "logo_toyota",
+        "score": 0.7883588671684265,
+        "frame": 158
+      },
+      {
+        "timestamp": 5.27,
+        "label": "logo_toyota",
+        "score": 0.43204009532928467,
+        "frame": 158
+      },
+      {
+        "timestamp": 5.3,
+        "label": "logo_toyota",
+        "score": 0.7873573303222656,
+        "frame": 159
+      },
+      {
+        "timestamp": 5.3,
+        "label": "logo_toyota",
+        "score": 0.4183846116065979,
+        "frame": 159
+      },
+      {
+        "timestamp": 5.33,
+        "label": "logo_toyota",
+        "score": 0.7875639200210571,
+        "frame": 160
+      },
+      {
+        "timestamp": 5.33,
+        "label": "logo_toyota",
+        "score": 0.41653701663017273,
+        "frame": 160
+      },
+      {
+        "timestamp": 5.37,
+        "label": "logo_toyota",
+        "score": 0.7875697612762451,
+        "frame": 161
+      },
+      {
+        "timestamp": 5.37,
+        "label": "logo_toyota",
+        "score": 0.41662654280662537,
+        "frame": 161
+      },
+      {
+        "timestamp": 5.4,
+        "label": "logo_toyota",
+        "score": 0.7883812189102173,
+        "frame": 162
+      },
+      {
+        "timestamp": 5.4,
+        "label": "logo_toyota",
+        "score": 0.41485315561294556,
+        "frame": 162
+      },
+      {
+        "timestamp": 5.43,
+        "label": "logo_toyota",
+        "score": 0.7882748246192932,
+        "frame": 163
+      },
+      {
+        "timestamp": 5.43,
+        "label": "logo_toyota",
+        "score": 0.41453900933265686,
+        "frame": 163
+      },
+      {
+        "timestamp": 5.47,
+        "label": "logo_toyota",
+        "score": 0.7882920503616333,
+        "frame": 164
+      },
+      {
+        "timestamp": 5.47,
+        "label": "logo_toyota",
+        "score": 0.41454359889030457,
+        "frame": 164
+      },
+      {
+        "timestamp": 5.5,
+        "label": "logo_toyota",
+        "score": 0.788030743598938,
+        "frame": 165
+      },
+      {
+        "timestamp": 5.5,
+        "label": "logo_toyota",
+        "score": 0.41494107246398926,
+        "frame": 165
+      },
+      {
+        "timestamp": 5.53,
+        "label": "logo_toyota",
+        "score": 0.7880576848983765,
+        "frame": 166
+      },
+      {
+        "timestamp": 5.53,
+        "label": "logo_toyota",
+        "score": 0.41616401076316833,
+        "frame": 166
+      },
+      {
+        "timestamp": 5.57,
+        "label": "logo_toyota",
+        "score": 0.7880659103393555,
+        "frame": 167
+      },
+      {
+        "timestamp": 5.57,
+        "label": "logo_toyota",
+        "score": 0.41587525606155396,
+        "frame": 167
+      },
+      {
+        "timestamp": 5.6,
+        "label": "logo_toyota",
+        "score": 0.7871627807617188,
+        "frame": 168
+      },
+      {
+        "timestamp": 5.6,
+        "label": "logo_toyota",
+        "score": 0.4118283689022064,
+        "frame": 168
+      },
+      {
+        "timestamp": 5.63,
+        "label": "logo_toyota",
+        "score": 0.7866761684417725,
+        "frame": 169
+      },
+      {
+        "timestamp": 5.63,
+        "label": "logo_toyota",
+        "score": 0.4109117090702057,
+        "frame": 169
+      },
+      {
+        "timestamp": 5.67,
+        "label": "logo_toyota",
+        "score": 0.7867100238800049,
+        "frame": 170
+      },
+      {
+        "timestamp": 5.67,
+        "label": "logo_toyota",
+        "score": 0.4105904698371887,
+        "frame": 170
+      },
+      {
+        "timestamp": 5.7,
+        "label": "logo_toyota",
+        "score": 0.7866601347923279,
+        "frame": 171
+      },
+      {
+        "timestamp": 5.7,
+        "label": "logo_toyota",
+        "score": 0.41635018587112427,
+        "frame": 171
+      },
+      {
+        "timestamp": 5.73,
+        "label": "logo_toyota",
+        "score": 0.7870182394981384,
+        "frame": 172
+      },
+      {
+        "timestamp": 5.73,
+        "label": "logo_toyota",
+        "score": 0.4154721200466156,
+        "frame": 172
+      },
+      {
+        "timestamp": 5.77,
+        "label": "logo_toyota",
+        "score": 0.7870296239852905,
+        "frame": 173
+      },
+      {
+        "timestamp": 5.77,
+        "label": "logo_toyota",
+        "score": 0.41550496220588684,
+        "frame": 173
+      },
+      {
+        "timestamp": 5.8,
+        "label": "logo_toyota",
+        "score": 0.7870951890945435,
+        "frame": 174
+      },
+      {
+        "timestamp": 5.8,
+        "label": "logo_toyota",
+        "score": 0.41661351919174194,
+        "frame": 174
+      },
+      {
+        "timestamp": 5.83,
+        "label": "logo_toyota",
+        "score": 0.7869927883148193,
+        "frame": 175
+      },
+      {
+        "timestamp": 5.83,
+        "label": "logo_toyota",
+        "score": 0.41706550121307373,
+        "frame": 175
+      },
+      {
+        "timestamp": 5.87,
+        "label": "logo_toyota",
+        "score": 0.7876849174499512,
+        "frame": 176
+      },
+      {
+        "timestamp": 5.87,
+        "label": "logo_toyota",
+        "score": 0.43130385875701904,
+        "frame": 176
+      },
+      {
+        "timestamp": 5.9,
+        "label": "logo_toyota",
+        "score": 0.7875734567642212,
+        "frame": 177
+      },
+      {
+        "timestamp": 5.9,
+        "label": "logo_toyota",
+        "score": 0.4236704111099243,
+        "frame": 177
+      },
+      {
+        "timestamp": 5.93,
+        "label": "logo_toyota",
+        "score": 0.7877007126808167,
+        "frame": 178
+      },
+      {
+        "timestamp": 5.93,
+        "label": "logo_toyota",
+        "score": 0.4258044362068176,
+        "frame": 178
+      },
+      {
+        "timestamp": 5.97,
+        "label": "logo_toyota",
+        "score": 0.7876850366592407,
+        "frame": 179
+      },
+      {
+        "timestamp": 5.97,
+        "label": "logo_toyota",
+        "score": 0.4257790148258209,
+        "frame": 179
+      },
+      {
+        "timestamp": 6.0,
+        "label": "logo_toyota",
+        "score": 0.7872006297111511,
+        "frame": 180
+      },
+      {
+        "timestamp": 6.0,
+        "label": "logo_toyota",
+        "score": 0.42215612530708313,
+        "frame": 180
+      },
+      {
+        "timestamp": 6.03,
+        "label": "logo_toyota",
+        "score": 0.786979615688324,
+        "frame": 181
+      },
+      {
+        "timestamp": 6.03,
+        "label": "logo_toyota",
+        "score": 0.4212751090526581,
+        "frame": 181
+      },
+      {
+        "timestamp": 6.07,
+        "label": "logo_toyota",
+        "score": 0.7869707345962524,
+        "frame": 182
+      },
+      {
+        "timestamp": 6.07,
+        "label": "logo_toyota",
+        "score": 0.4212782084941864,
+        "frame": 182
+      },
+      {
+        "timestamp": 6.1,
+        "label": "logo_toyota",
+        "score": 0.7881879806518555,
+        "frame": 183
+      },
+      {
+        "timestamp": 6.1,
+        "label": "logo_toyota",
+        "score": 0.42461109161376953,
+        "frame": 183
+      },
+      {
+        "timestamp": 6.13,
+        "label": "logo_toyota",
+        "score": 0.7874721884727478,
+        "frame": 184
+      },
+      {
+        "timestamp": 6.13,
+        "label": "logo_toyota",
+        "score": 0.4250878393650055,
+        "frame": 184
+      },
+      {
+        "timestamp": 6.17,
+        "label": "logo_toyota",
+        "score": 0.7874350547790527,
+        "frame": 185
+      },
+      {
+        "timestamp": 6.17,
+        "label": "logo_toyota",
+        "score": 0.42642226815223694,
+        "frame": 185
+      },
+      {
+        "timestamp": 6.23,
+        "label": "logo_toyota",
+        "score": 0.709274172782898,
+        "frame": 187
+      },
+      {
+        "timestamp": 6.27,
+        "label": "logo_toyota",
+        "score": 0.717208743095398,
+        "frame": 188
+      },
+      {
+        "timestamp": 6.3,
+        "label": "logo_toyota",
+        "score": 0.7202175259590149,
+        "frame": 189
+      },
+      {
+        "timestamp": 6.33,
+        "label": "logo_toyota",
+        "score": 0.7248904705047607,
+        "frame": 190
+      },
+      {
+        "timestamp": 6.37,
+        "label": "logo_toyota",
+        "score": 0.7253571152687073,
+        "frame": 191
+      },
+      {
+        "timestamp": 6.4,
+        "label": "logo_toyota",
+        "score": 0.7252753376960754,
+        "frame": 192
+      },
+      {
+        "timestamp": 6.43,
+        "label": "logo_toyota",
+        "score": 0.7304302453994751,
+        "frame": 193
+      },
+      {
+        "timestamp": 6.47,
+        "label": "logo_toyota",
+        "score": 0.7375078201293945,
+        "frame": 194
+      },
+      {
+        "timestamp": 6.5,
+        "label": "logo_toyota",
+        "score": 0.7488638162612915,
+        "frame": 195
+      },
+      {
+        "timestamp": 6.53,
+        "label": "logo_toyota",
+        "score": 0.746536374092102,
+        "frame": 196
+      },
+      {
+        "timestamp": 6.57,
+        "label": "logo_toyota",
+        "score": 0.7441576719284058,
+        "frame": 197
+      },
+      {
+        "timestamp": 6.6,
+        "label": "logo_toyota",
+        "score": 0.7430732846260071,
+        "frame": 198
+      },
+      {
+        "timestamp": 6.63,
+        "label": "logo_toyota",
+        "score": 0.7477704286575317,
+        "frame": 199
+      },
+      {
+        "timestamp": 6.67,
+        "label": "logo_toyota",
+        "score": 0.7390037775039673,
+        "frame": 200
+      },
+      {
+        "timestamp": 6.7,
+        "label": "logo_toyota",
+        "score": 0.7303220629692078,
+        "frame": 201
+      },
+      {
+        "timestamp": 6.73,
+        "label": "logo_toyota",
+        "score": 0.7408477067947388,
+        "frame": 202
+      },
+      {
+        "timestamp": 6.77,
+        "label": "logo_toyota",
+        "score": 0.7178341150283813,
+        "frame": 203
+      },
+      {
+        "timestamp": 6.8,
+        "label": "logo_toyota",
+        "score": 0.7008219957351685,
+        "frame": 204
+      },
+      {
+        "timestamp": 6.83,
+        "label": "logo_toyota",
+        "score": 0.6979852318763733,
+        "frame": 205
+      },
+      {
+        "timestamp": 6.87,
+        "label": "logo_toyota",
+        "score": 0.6987552642822266,
+        "frame": 206
+      },
+      {
+        "timestamp": 6.9,
+        "label": "logo_toyota",
+        "score": 0.7127447128295898,
+        "frame": 207
+      },
+      {
+        "timestamp": 6.93,
+        "label": "logo_toyota",
+        "score": 0.70762038230896,
+        "frame": 208
+      },
+      {
+        "timestamp": 6.97,
+        "label": "logo_toyota",
+        "score": 0.7167506814002991,
+        "frame": 209
+      },
+      {
+        "timestamp": 7.0,
+        "label": "logo_toyota",
+        "score": 0.7248148322105408,
+        "frame": 210
+      },
+      {
+        "timestamp": 7.03,
+        "label": "logo_toyota",
+        "score": 0.721568763256073,
+        "frame": 211
+      },
+      {
+        "timestamp": 7.07,
+        "label": "logo_toyota",
+        "score": 0.7215842604637146,
+        "frame": 212
+      },
+      {
+        "timestamp": 7.1,
+        "label": "logo_toyota",
+        "score": 0.7211061716079712,
+        "frame": 213
+      },
+      {
+        "timestamp": 7.13,
+        "label": "logo_toyota",
+        "score": 0.7173150777816772,
+        "frame": 214
+      },
+      {
+        "timestamp": 7.17,
+        "label": "logo_toyota",
+        "score": 0.7105025053024292,
+        "frame": 215
+      },
+      {
+        "timestamp": 7.2,
+        "label": "logo_toyota",
+        "score": 0.7148422002792358,
+        "frame": 216
+      },
+      {
+        "timestamp": 7.23,
+        "label": "logo_toyota",
+        "score": 0.7267094254493713,
+        "frame": 217
+      },
+      {
+        "timestamp": 7.27,
+        "label": "logo_toyota",
+        "score": 0.7318651676177979,
+        "frame": 218
+      },
+      {
+        "timestamp": 7.3,
+        "label": "logo_toyota",
+        "score": 0.7473447918891907,
+        "frame": 219
+      },
+      {
+        "timestamp": 7.33,
+        "label": "logo_toyota",
+        "score": 0.7451336979866028,
+        "frame": 220
+      },
+      {
+        "timestamp": 7.37,
+        "label": "logo_toyota",
+        "score": 0.7448282837867737,
+        "frame": 221
+      },
+      {
+        "timestamp": 7.4,
+        "label": "logo_toyota",
+        "score": 0.7205298542976379,
+        "frame": 222
+      },
+      {
+        "timestamp": 7.43,
+        "label": "logo_toyota",
+        "score": 0.705187201499939,
+        "frame": 223
+      },
+      {
+        "timestamp": 7.47,
+        "label": "logo_toyota",
+        "score": 0.7108418941497803,
+        "frame": 224
+      },
+      {
+        "timestamp": 7.5,
+        "label": "logo_toyota",
+        "score": 0.7082453370094299,
+        "frame": 225
+      },
+      {
+        "timestamp": 7.53,
+        "label": "logo_toyota",
+        "score": 0.7383202314376831,
+        "frame": 226
+      },
+      {
+        "timestamp": 7.57,
+        "label": "logo_toyota",
+        "score": 0.7016355991363525,
+        "frame": 227
+      },
+      {
+        "timestamp": 7.6,
+        "label": "logo_toyota",
+        "score": 0.691023051738739,
+        "frame": 228
+      },
+      {
+        "timestamp": 7.63,
+        "label": "logo_toyota",
+        "score": 0.699003279209137,
+        "frame": 229
+      },
+      {
+        "timestamp": 7.67,
+        "label": "logo_toyota",
+        "score": 0.6786812543869019,
+        "frame": 230
+      },
+      {
+        "timestamp": 7.7,
+        "label": "logo_toyota",
+        "score": 0.6862503290176392,
+        "frame": 231
+      },
+      {
+        "timestamp": 7.73,
+        "label": "logo_toyota",
+        "score": 0.6923179626464844,
+        "frame": 232
+      },
+      {
+        "timestamp": 7.77,
+        "label": "logo_toyota",
+        "score": 0.6997280120849609,
+        "frame": 233
+      },
+      {
+        "timestamp": 7.8,
+        "label": "logo_toyota",
+        "score": 0.7006967067718506,
+        "frame": 234
+      },
+      {
+        "timestamp": 7.83,
+        "label": "logo_toyota",
+        "score": 0.7138068675994873,
+        "frame": 235
+      },
+      {
+        "timestamp": 7.87,
+        "label": "logo_toyota",
+        "score": 0.7064512968063354,
+        "frame": 236
+      },
+      {
+        "timestamp": 7.9,
+        "label": "logo_toyota",
+        "score": 0.6981101036071777,
+        "frame": 237
+      },
+      {
+        "timestamp": 7.93,
+        "label": "logo_toyota",
+        "score": 0.6810606122016907,
+        "frame": 238
+      },
+      {
+        "timestamp": 7.97,
+        "label": "logo_toyota",
+        "score": 0.6840972304344177,
+        "frame": 239
+      },
+      {
+        "timestamp": 8.0,
+        "label": "logo_toyota",
+        "score": 0.6810539364814758,
+        "frame": 240
+      },
+      {
+        "timestamp": 8.03,
+        "label": "logo_toyota",
+        "score": 0.6799024343490601,
+        "frame": 241
+      },
+      {
+        "timestamp": 8.07,
+        "label": "logo_toyota",
+        "score": 0.692657470703125,
+        "frame": 242
+      },
+      {
+        "timestamp": 8.1,
+        "label": "logo_toyota",
+        "score": 0.6836501955986023,
+        "frame": 243
+      },
+      {
+        "timestamp": 8.13,
+        "label": "logo_toyota",
+        "score": 0.6850788593292236,
+        "frame": 244
+      },
+      {
+        "timestamp": 8.17,
+        "label": "logo_toyota",
+        "score": 0.6838453412055969,
+        "frame": 245
+      },
+      {
+        "timestamp": 8.2,
+        "label": "logo_toyota",
+        "score": 0.677554190158844,
+        "frame": 246
+      },
+      {
+        "timestamp": 8.23,
+        "label": "logo_toyota",
+        "score": 0.6866925954818726,
+        "frame": 247
+      },
+      {
+        "timestamp": 8.27,
+        "label": "logo_toyota",
+        "score": 0.6648353338241577,
+        "frame": 248
+      },
+      {
+        "timestamp": 8.3,
+        "label": "logo_toyota",
+        "score": 0.6825984716415405,
+        "frame": 249
+      },
+      {
+        "timestamp": 8.33,
+        "label": "logo_toyota",
+        "score": 0.6837072372436523,
+        "frame": 250
+      },
+      {
+        "timestamp": 8.37,
+        "label": "logo_toyota",
+        "score": 0.6700750589370728,
+        "frame": 251
+      },
+      {
+        "timestamp": 8.4,
+        "label": "logo_toyota",
+        "score": 0.6788952350616455,
+        "frame": 252
+      },
+      {
+        "timestamp": 10.1,
+        "label": "logo_toyota",
+        "score": 0.280075341463089,
+        "frame": 303
+      },
+      {
+        "timestamp": 10.47,
+        "label": "logo_toyota",
+        "score": 0.3557213544845581,
+        "frame": 314
+      },
+      {
+        "timestamp": 10.5,
+        "label": "logo_toyota",
+        "score": 0.335126668214798,
+        "frame": 315
+      },
+      {
+        "timestamp": 10.53,
+        "label": "logo_toyota",
+        "score": 0.3369435966014862,
+        "frame": 316
+      },
+      {
+        "timestamp": 10.57,
+        "label": "logo_toyota",
+        "score": 0.42780259251594543,
+        "frame": 317
+      },
+      {
+        "timestamp": 10.6,
+        "label": "logo_toyota",
+        "score": 0.44185736775398254,
+        "frame": 318
+      },
+      {
+        "timestamp": 10.63,
+        "label": "logo_toyota",
+        "score": 0.48263296484947205,
+        "frame": 319
+      },
+      {
+        "timestamp": 10.67,
+        "label": "logo_toyota",
+        "score": 0.4971674084663391,
+        "frame": 320
+      },
+      {
+        "timestamp": 10.7,
+        "label": "logo_toyota",
+        "score": 0.4026634991168976,
+        "frame": 321
+      },
+      {
+        "timestamp": 13.7,
+        "label": "logo_mercedez",
+        "score": 0.2925967872142792,
+        "frame": 411
+      },
+      {
+        "timestamp": 13.83,
+        "label": "logo_mercedez",
+        "score": 0.30462753772735596,
+        "frame": 415
+      },
+      {
+        "timestamp": 13.87,
+        "label": "logo_mercedez",
+        "score": 0.30601388216018677,
+        "frame": 416
+      },
+      {
+        "timestamp": 13.9,
+        "label": "logo_mercedez",
+        "score": 0.36108657717704773,
+        "frame": 417
+      },
+      {
+        "timestamp": 13.93,
+        "label": "logo_mercedez",
+        "score": 0.2974011301994324,
+        "frame": 418
+      },
+      {
+        "timestamp": 13.97,
+        "label": "logo_mercedez",
+        "score": 0.29621660709381104,
+        "frame": 419
+      },
+      {
+        "timestamp": 14.2,
+        "label": "logo_toyota",
+        "score": 0.3094513714313507,
+        "frame": 426
+      },
+      {
+        "timestamp": 14.23,
+        "label": "logo_toyota",
+        "score": 0.3032563626766205,
+        "frame": 427
+      },
+      {
+        "timestamp": 14.23,
+        "label": "logo_toyota",
+        "score": 0.301143616437912,
+        "frame": 427
+      },
+      {
+        "timestamp": 14.23,
+        "label": "logo_mercedez",
+        "score": 0.2727136015892029,
+        "frame": 427
+      },
+      {
+        "timestamp": 14.27,
+        "label": "logo_toyota",
+        "score": 0.31176626682281494,
+        "frame": 428
+      },
+      {
+        "timestamp": 14.27,
+        "label": "logo_toyota",
+        "score": 0.30200546979904175,
+        "frame": 428
+      },
+      {
+        "timestamp": 14.27,
+        "label": "logo_mercedez",
+        "score": 0.26931139826774597,
+        "frame": 428
+      }
+    ],
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-02T11:19:10.983680",
+    "fps_estimated": 30.0,
+    "processed_secs": 75.79561638832092
+  }
+}

@@ -1,38 +1,54 @@
+// ===============================================
+// AppPage.jsx - Página principal del detector de logos
+// ===============================================
+// Maneja 4 tipos de análisis: Imagen, Video, YouTube y Streaming
 import React, { useState } from 'react'
 import ImageUploader from '../components/ImageUploader'
 import VideoUploader from '../components/VideoUploader'
 import YoutubeInput from '../components/YoutubeInput'
-import StreamingCamera from '../components/StreamingCamera' // Importar nuestro nuevo componente
+import StreamingCamera from '../components/StreamingCamera' 
 import ResultViewer from '../components/ResultViewer'
 
 export default function AppPage({data, setData, setJobId, jobId}){
-  const [activeOption, setActiveOption] = useState(0)
-  const [youtubeUrl, setYoutubeUrl] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [hasFile, setHasFile] = useState(false)
-  const [showResults, setShowResults] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-  // Array de opciones disponibles en el carousel
-  // Cada opción tiene un id, título y el componente que se renderiza
+  
+  // ===============================================
+  // ESTADOS DEL COMPONENTE
+  // ===============================================
+  const [activeOption, setActiveOption] = useState(0)      // Opción activa del carousel (0-3)
+  const [youtubeUrl, setYoutubeUrl] = useState('')         // URL de YouTube
+  const [loading, setLoading] = useState(false)            // Estado de carga
+  const [hasFile, setHasFile] = useState(false)            // Si hay input listo
+  const [selectedFile, setSelectedFile] = useState(null)   // Archivo seleccionado
+  const [showResults, setShowResults] = useState(false)    // Mostrar resultados
+  const [errorMessage, setErrorMessage] = useState('')     // Mensajes de error
+
+  // ===============================================
+  // CONFIGURACIÓN DEL CAROUSEL
+  // ===============================================
   const options = [
     { id: 0, title: 'Imagen', component: ImageUploader },
     { id: 1, title: 'Video', component: VideoUploader },
     { id: 2, title: 'YouTube', component: YoutubeInput },
-    { id: 3, title: 'Streaming', component: StreamingCamera } // Nueva opción agregada
+    { id: 3, title: 'Streaming', component: StreamingCamera }
   ]
-
+  // ===============================================
+  // FUNCIONES DE NAVEGACIÓN
+  // ===============================================
   const nextOption = () => {
     setActiveOption((prev) => (prev + 1) % options.length)
   }
+  
   const prevOption = () => {
     setActiveOption((prev) => (prev - 1 + options.length) % options.length)
   }
   
+  // ===============================================
+  // FUNCIÓN PRINCIPAL - PROCESAR SEGÚN TIPO
+  // ===============================================
   const handleProcess = async () => {
     setErrorMessage('')
     
-    // Validaciones según la opción activa
-    // Cada opción tiene sus propios requisitos antes de poder procesar
+    // Validaciones previas según opción activa
     if (activeOption === 0 && !hasFile) {
       setErrorMessage('Por favor, selecciona una imagen primero')
       return
@@ -46,36 +62,113 @@ export default function AppPage({data, setData, setJobId, jobId}){
       return
     }
     if (activeOption === 3 && !hasFile) {
-      // Para streaming, hasFile se pone en true cuando la cámara está encendida
       setErrorMessage('Por favor, enciende la cámara primero')
       return
-    }    setLoading(true)
+    }
+
+    setLoading(true)
     
-    // Procesar según el tipo de opción seleccionada
     try {
-      if (activeOption === 2) { 
-        // Opción YouTube - simulado por ahora
-        setTimeout(() => {
-          const sample = {
-            video_url: youtubeUrl,
-            detections: [
-              { class: 'logo-brand', score: 0.81, bbox: [60,50,100,100], timestamp: 15 },
-              { class: 'logo-brand', score: 0.75, bbox: [200,80,90,90], timestamp: 45 }
-            ],
-            total_video_time_segs: 120
-          }
-          setJobId('youtube-job-42')
-          setData(sample)
-          setShowResults(true)
-          setLoading(false)
-        }, 2000)
+      // ===============================================
+      // PROCESAR SEGÚN TIPO DE OPCIÓN
+      // ===============================================
+      
+      if (activeOption === 0) {
+        // IMAGEN - Enviar al backend
+        if (!selectedFile) {
+          throw new Error('No se ha seleccionado ninguna imagen')
+        }
+        
+        const formData = new FormData()
+        formData.append('file', selectedFile)
+        
+        const response = await fetch('http://localhost:8000/process/image', {
+          method: 'POST',
+          body: formData
+        })
+        
+        if (!response.ok) {
+          throw new Error(`Error al procesar la imagen: ${response.statusText}`)
+        }
+        
+        const result = await response.json()
+        
+        const sample = {
+          image_url: URL.createObjectURL(selectedFile),
+          detections: result.detections || [],
+          annotated_jpg_base64: result.annotated_jpg_base64,
+          original_jpg_base64: result.original_jpg_base64
+        }
+        
+        setJobId(null)
+        setData(sample)
+        setShowResults(true)
+        
+      } else if (activeOption === 1) {
+        // VIDEO - Enviar archivo al backend
+        if (!selectedFile) {
+          throw new Error('No se ha seleccionado ningún archivo de video')
+        }
+        
+        const formData = new FormData()
+        formData.append('file', selectedFile)
+        
+        const response = await fetch('http://localhost:8000/predict/mp4', {
+          method: 'POST',
+          body: formData
+        })
+        
+        if (!response.ok) {
+          throw new Error(`Error al procesar el video: ${response.statusText}`)
+        }
+        
+        const result = await response.json()
+        
+        const sample = {
+          video_file: selectedFile.name,
+          video_url: URL.createObjectURL(selectedFile),
+          detections: result.detections || []
+        }
+        
+        setJobId(result.job_id || `video-job-${Date.now()}`)
+        setData(sample)
+        setShowResults(true)
+        
+      } else if (activeOption === 2) {
+        // YOUTUBE - Enviar URL al backend
+        const response = await fetch('http://localhost:8000/process/youtube', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ url: youtubeUrl })
+        })
+        
+        if (!response.ok) {
+          throw new Error(`Error al procesar el video: ${response.statusText}`)
+        }
+        
+        const result = await response.json()
+        
+        if (result.error) {
+          throw new Error(result.error)
+        }
+        
+        const sample = {
+          video_url: youtubeUrl,
+          detections: result.detections || [],
+          total_video_time_segs: result.total_video_time_segs || 0
+        }
+        
+        setJobId(`youtube-job-${Date.now()}`)
+        setData(sample)
+        setShowResults(true)
         
       } else if (activeOption === 3) {
-        // Opción STREAMING - Aquí conectamos con el backend
+        // STREAMING - Iniciar análisis en tiempo real
         console.log('Iniciando streaming de detección...')
         
-        // TODO: Aquí irá la conexión real con el backend
-        // Por ahora simulamos datos de streaming
+        // TODO: Conexión real con backend de streaming
         setTimeout(() => {
           const streamingData = {
             type: 'streaming',
@@ -87,55 +180,75 @@ export default function AppPage({data, setData, setJobId, jobId}){
           setJobId('streaming-' + Date.now())
           setData(streamingData)
           setShowResults(true)
-          setLoading(false)
         }, 1000)
-        
-      } else {
-        // Opción Imagen y Video - simulado
-        setTimeout(() => {
-          const sample = {
-            detections: [
-              { class: 'logo-brand', score: 0.88, bbox: [80,40,120,120], timestamp: activeOption === 1 ? 3.2 : null }
-            ]
-          }
-          setJobId(activeOption === 1 ? 'video-job-1' : null)
-          setData(sample)
-          setShowResults(true)
-          setLoading(false)
-        }, 2000)
       }
       
     } catch (error) {
-      // Si algo sale mal, mostrar el error
       console.error('Error al procesar:', error)
       setErrorMessage(`Error: ${error.message}`)
+    } finally {
       setLoading(false)
     }
   }
-
-  const shouldShowButton = () => {
-    return true // Siempre visible
+  // ===============================================
+  // MANEJADORES DE EVENTOS DE COMPONENTES HIJOS
+  // ===============================================
+  const handleComponentResult = (result, id) => {
+    if (result === "camera-ready") {
+      // Cámara lista para streaming
+      setHasFile(true)
+      setShowResults(false)
+      setErrorMessage('')
+    } else if (result === "camera-off") {
+      // Cámara apagada
+      setHasFile(false)
+      setShowResults(false)
+      setErrorMessage('')
+    } else {
+      // Archivo subido (imagen/video)
+      setHasFile(true)
+      setSelectedFile(result)
+      setShowResults(false)
+      setErrorMessage('')
+    }
   }
 
-  const ActiveComponent = options[activeOption].component
+  const handleUrlChange = (url) => {
+    // Solo para YouTube - actualizar URL
+    setYoutubeUrl(url)
+    setHasFile(!!url.trim())
+    setShowResults(false)
+    setErrorMessage('')
+  }
 
+  // ===============================================
+  // COMPONENTE DINÁMICO SEGÚN OPCIÓN ACTIVA
+  // ===============================================
+  const ActiveComponent = options[activeOption].component
+  // ===============================================
+  // RENDER DEL COMPONENTE
+  // ===============================================
   return (
     <div className="page-container">
+      {/* Header principal */}
       <section className="hero hero--about">
         <h1>Detector de Logos</h1>
         <p>Sube tu contenido y detecta logotipos de marcas reconocidas</p>
       </section>
 
       <div className="app-layout">
-        {/* Carousel Section */}
+        {/* Sección del carousel y controles */}
         <div className="carousel-section">
+          
+          {/* Navegador de opciones */}
           <div className="carousel-container">
             <button className="carousel-btn prev" onClick={prevOption}>
               ‹
             </button>
             
             <div className="carousel-track">
-              {options.map((option, index) => (                <div 
+              {options.map((option, index) => (
+                <div 
                   key={option.id}
                   className={`carousel-item ${index === activeOption ? 'active' : ''}`}
                   onClick={() => setActiveOption(index)}
@@ -148,63 +261,47 @@ export default function AppPage({data, setData, setJobId, jobId}){
             <button className="carousel-btn next" onClick={nextOption}>
               ›
             </button>
-          </div>          {/* Active Component - Aquí se renderiza el componente seleccionado */}
+          </div>
+
+          {/* Componente activo según opción seleccionada */}
           <div className="active-uploader">
             <ActiveComponent 
-              onResult={(r, id) => {
-                // Esta función se ejecuta cuando el componente hijo notifica algo
-                
-                if (r === "camera-ready") {
-                  // Caso especial: la cámara está lista para streaming
-                  setHasFile(true) // Permitir que se active el botón Analizar
-                  setShowResults(false) 
-                  setErrorMessage('')
-                } else if (r === "camera-off") {
-                  // Caso especial: la cámara se apagó
-                  setHasFile(false) // Deshabilitar el botón Analizar
-                  setShowResults(false)
-                  setErrorMessage('')
-                } else {
-                  // Casos normales: imagen o video subido
-                  setHasFile(true)
-                  setShowResults(false) 
-                  setErrorMessage('')
-                }
-              }}
-              onUrlChange={activeOption === 2 ? (url) => {
-                // Solo para YouTube: actualizar URL
-                setYoutubeUrl(url)
-                setHasFile(!!url.trim())
-                setShowResults(false)
-                setErrorMessage('')
-              } : undefined}
+              onResult={handleComponentResult}
+              onUrlChange={activeOption === 2 ? handleUrlChange : undefined}
             />
-          </div>{/*Button */}
-          {shouldShowButton() && (
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem', marginBottom: '2rem'}}>
-              <button 
-                className="button analyze-button" 
-                onClick={handleProcess}
-                disabled={loading}
-              >
-                {loading ? 'Procesando...' : 'Analizar'}
-              </button>
-              
-              {/* Error Message */}
-              {errorMessage && (
-                <div style={{
-                  color: 'var(--white)', 
-                  fontSize: '0.9rem', 
-                  marginTop: '0.5rem',
-                  textAlign: 'center',
-                  opacity: '0.8'
-                }}>
-                  {errorMessage}
-                </div>
-              )}
-            </div>
-          )}
-        </div>{/* Results Section */}
+          </div>
+
+          {/* Botón de análisis y mensajes de error */}
+          <div style={{
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            marginTop: '2rem', 
+            marginBottom: '2rem'
+          }}>
+            <button 
+              className="button analyze-button" 
+              onClick={handleProcess}
+              disabled={loading}
+            >
+              {loading ? 'Procesando...' : 'Analizar'}
+            </button>
+            
+            {errorMessage && (
+              <div style={{
+                color: 'var(--white)', 
+                fontSize: '0.9rem', 
+                marginTop: '0.5rem',
+                textAlign: 'center',
+                opacity: '0.8'
+              }}>
+                {errorMessage}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Sección de resultados */}
         {showResults && (
           <div className="results-section">
             <ResultViewer data={data} jobId={jobId} />
