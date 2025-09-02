@@ -360,6 +360,41 @@ class VideoProcessor:
 
 # Uso
 if __name__ == "__main__":
+
+    import json  # Importa la librería json
+    if len(sys.argv) > 1:
+        video_url = sys.argv[1]
+        
+        processor = VideoProcessor("../best.pt", video_url)
+        success = processor.process_video()
+        
+        # Prepara el objeto de respuesta JSON
+        response_data = {
+            "success": success,
+            "url": video_url,
+            "detections": {}
+        }
+        
+        if success:
+            metrics = processor.get_processing_metrics()
+            # Si hay detecciones, las añade al objeto de respuesta
+            if 'detection_results' in metrics and metrics['detection_results']:
+                response_data["detections"] = metrics['detection_results']
+            
+            # También puedes añadir más datos si los necesitas, como la duración
+            response_data["duration_sec"] = metrics['video_info']['total_video_time_segs']
+            response_data["frames_processed"] = metrics['total_frames_processed']
+
+            logger.success(f"Éxito con {video_url}")
+        else:
+            logger.warning(f"✗ Falló {video_url}")
+
+        # Imprime el objeto JSON en la salida estándar
+        print(json.dumps(response_data))
+        
+    else:
+        print("Por favor, proporciona una URL de YouTube como argumento al ejecutar el script.")
+
     import sys
     if len(sys.argv) > 1:
         video_url = sys.argv[1]

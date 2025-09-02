@@ -55,3 +55,38 @@ def predict_url(data: PredictUrlRequest):
         "processed_secs": data.duration_sec,
         "detections": data.detections,
     }
+
+@router.post("/process/youtube")
+def process_youtube(data: YoutubeRequest):
+    """
+    Procesa un video de YouTube y retorna las métricas.
+    """
+    import json # Importa la librería json
+    try:
+        # Llama al script como subproceso
+        result = subprocess.run([
+            sys.executable,
+            "services/detection_image_youtube_slow.py", # La ruta que ya corregiste
+            data.url
+        ], capture_output=True, text=True, timeout=600)
+        
+        # Si el subproceso falla, devuelve el error
+        if result.returncode != 0:
+            return {"error": result.stderr}
+
+        # Parsea la salida del subproceso como JSON
+        # El script ahora devuelve un JSON en lugar de texto plano
+        response_data = json.loads(result.stdout)
+        
+        # Si el script reporta un fallo, lo manejas
+        if not response_data.get("success", False):
+            raise HTTPException(status_code=500, detail="El procesamiento del video falló.")
+        
+        return response_data
+
+    except json.JSONDecodeError:
+        # Si la salida del script no es un JSON válido, algo falló
+        raise HTTPException(status_code=500, detail="Error al procesar la respuesta del script.")
+    except Exception as e:
+        # Otros errores de ejecución
+        raise HTTPException(status_code=500, detail=str(e))
