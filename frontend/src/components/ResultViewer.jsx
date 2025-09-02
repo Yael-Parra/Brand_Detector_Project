@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-export default function ResultViewer({data, jobId}){
+export default function ResultViewer({data: initialData, jobId}){
   const canvasRef = useRef()
   const videoRef = useRef()
+  const [data, setData] = useState(initialData)
   const [summary, setSummary] = useState(null)
   const [processingStatus, setProcessingStatus] = useState('')
   const [isLiveProcessing, setIsLiveProcessing] = useState(false)
@@ -129,10 +130,64 @@ export default function ResultViewer({data, jobId}){
             
             // Actualizar los datos con el resultado final si no existen
             if (!data) {
-              setData({
-                detections: Array.isArray(statusData.detections) ? statusData.detections : statusData.detections_list || [],
-                video_url: processingVideoUrl // Usar la URL del video que ya tenemos
-              })
+              console.log('Obteniendo URL del video procesado con force_processed=true')
+              // Obtener la URL del video procesado con un nuevo timestamp para evitar caché
+              fetch(`http://localhost:8000/video/${id}?force_processed=true`)
+                .then(response => response.ok ? response.json() : null)
+                .then(videoData => {
+                  if (videoData && videoData.video_url) {
+                    // Añadir timestamp para forzar recarga del video procesado
+                    const videoUrlWithTimestamp = `${videoData.video_url}?t=${new Date().getTime()}`
+                    console.log('URL del video procesado con timestamp:', videoUrlWithTimestamp)
+                    console.log('Información completa del video procesado:', videoData)
+                    
+                    // Verificar si es realmente el video procesado
+                    if (videoData.video_info && videoData.video_info.is_processed) {
+                      console.log('✅ Confirmado: Es el video procesado')
+                    } else if (videoData.video_info && videoData.video_info.is_original) {
+                      console.warn('⚠️ Advertencia: Se está usando el video original como fallback')
+                    }
+                    
+                    // Convertir la URL a blob para mejorar la compatibilidad
+                    console.log('Convirtiendo URL a blob para mejorar compatibilidad:', videoUrlWithTimestamp)
+                    fetch(`http://localhost:8000${videoUrlWithTimestamp}`)
+                      .then(response => response.blob())
+                      .then(blob => {
+                        const blobUrl = URL.createObjectURL(blob)
+                        console.log('URL de blob creada:', blobUrl)
+                        
+                        setData({
+                          detections: Array.isArray(statusData.detections) ? statusData.detections : statusData.detections_list || [],
+                          video_url: blobUrl,
+                          video_info: videoData.video_info // Guardar la información del video
+                        })
+                      })
+                      .catch(error => {
+                        console.error('Error al convertir a blob:', error)
+                        // Fallback a URL directa si falla la conversión a blob
+                        setData({
+                          detections: Array.isArray(statusData.detections) ? statusData.detections : statusData.detections_list || [],
+                          video_url: videoUrlWithTimestamp,
+                          video_info: videoData.video_info
+                        })
+                      })
+                  } else {
+                    // Fallback al video que ya tenemos si no podemos obtener uno nuevo
+                    console.warn('No se pudo obtener la URL del video procesado, usando fallback')
+                    setData({
+                      detections: Array.isArray(statusData.detections) ? statusData.detections : statusData.detections_list || [],
+                      video_url: processingVideoUrl
+                    })
+                  }
+                })
+                .catch(error => {
+                  console.error('Error al obtener URL del video procesado:', error)
+                  // Usar la URL que ya tenemos como fallback
+                  setData({
+                    detections: Array.isArray(statusData.detections) ? statusData.detections : statusData.detections_list || [],
+                    video_url: processingVideoUrl
+                  })
+                })
             }
           }
         } else if (statusData.status === 'error') {
@@ -184,7 +239,7 @@ export default function ResultViewer({data, jobId}){
         console.log(`Modo de procesamiento en vivo activado para ${jobId}`)
         
         // Solicitar la URL del video para reproducción durante el procesamiento
-        fetch(`http://localhost:8000/video/${jobId}`)
+        fetch(`http://localhost:8000/video/${jobId}?force_original=true`)
           .then(response => {
             if (response.ok) {
               return response.json()
@@ -194,7 +249,24 @@ export default function ResultViewer({data, jobId}){
           .then(data => {
             if (data.video_url) {
               console.log('URL de video obtenida para reproducción durante procesamiento:', data.video_url)
-              setProcessingVideoUrl(data.video_url)
+              // Añadir un parámetro de timestamp para evitar caché del navegador
+              const videoUrlWithTimestamp = `${data.video_url}?t=${new Date().getTime()}`
+              console.log('URL con timestamp para evitar caché:', videoUrlWithTimestamp)
+              
+              // Convertir la URL a blob para mejorar la compatibilidad
+              console.log('Convirtiendo URL a blob para mejorar compatibilidad:', videoUrlWithTimestamp)
+              fetch(`http://localhost:8000${videoUrlWithTimestamp}`)
+                .then(response => response.blob())
+                .then(blob => {
+                  const blobUrl = URL.createObjectURL(blob)
+                  console.log('URL de blob creada para video original:', blobUrl)
+                  setProcessingVideoUrl(blobUrl)
+                })
+                .catch(error => {
+                  console.error('Error al convertir a blob:', error)
+                  // Fallback a URL directa si falla la conversión a blob
+                  setProcessingVideoUrl(videoUrlWithTimestamp)
+                })
             }
           })
           .catch(error => {
@@ -398,47 +470,13 @@ export default function ResultViewer({data, jobId}){
         </div>
       )}
 
-      {/* Mostrar video cuando está completado el procesamiento */}
-      {data && (data.video_url || processingVideoUrl) && (
-        <div className="preview">
-          <video 
-            ref={videoRef} 
-            controls 
-            src={data.video_url || processingVideoUrl} 
-            style={{maxWidth:'100%', borderRadius: '10px'}}
-          />
-          <div style={{marginTop: '1.5rem'}}>
-            <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>⏱️ Timestamps con logos detectados:</h4>
-            <div style={{background: 'var(--gray-dark)', padding: '1rem', borderRadius: '10px'}}>
-              {(data.detections||[]).map((det, i) => (
-                <div key={i} style={{padding: '0.5rem 0', borderBottom: i < summary?.frames.length - 1 ? '1px solid var(--gray)' : 'none'}}>
-                  <strong style={{color: 'var(--white)'}}>{det.timestamp}s</strong> - 
-                  {det.label || det.class}: {Math.round(det.score*100)}%
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* El video procesado se mostrará después del resumen */}
       
-      {/* Mostrar video durante el procesamiento (solo si no hay datos completos) */}
-      {!data && isLiveProcessing && processingVideoUrl && (
-        <div className="preview">
-          <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>Video en procesamiento:</h4>
-          <video 
-            ref={videoRef} 
-            controls 
-            autoPlay 
-            src={processingVideoUrl} 
-            style={{maxWidth:'100%', borderRadius: '10px'}}
-          />
-          <div style={{marginTop: '0.5rem', color: 'var(--white)', fontSize: '0.9rem'}}>
-            El video se está procesando. Las detecciones se mostrarán cuando se complete el procesamiento.
-          </div>
-        </div>
-      )}
+      {/* Durante el procesamiento, solo mostrar la caja de estado */}
+      {/* El video procesado se mostrará solo cuando el procesamiento esté completo */}
 
-      {summary && (        <div style={{marginTop: '2rem', padding: '1.5rem', background: 'var(--gray-dark)', borderRadius: '15px'}}>
+      {summary && (
+        <div style={{marginTop: '2rem', padding: '1.5rem', background: 'var(--gray-dark)', borderRadius: '15px'}}>
           <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>Resumen</h4>
           <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem'}}>
             <div>
@@ -467,6 +505,368 @@ export default function ResultViewer({data, jobId}){
               </div>
             </div>
           )}
+        </div>
+      )}
+      
+      {/* Mostrar video procesado después del resumen cuando el procesamiento está completo */}
+      {data && (data.video_url || processingVideoUrl) && processingStatus === 'Procesamiento completado' && (
+        <div className="preview" style={{marginTop: '2rem'}}>
+          <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>Video Procesado</h4>
+          
+          {/* Información de diagnóstico del video */}
+          <div style={{background: 'rgba(0,0,0,0.2)', padding: '0.5rem', borderRadius: '5px', marginBottom: '1rem', fontSize: '0.8rem'}}>
+            <div><strong>URL del video:</strong> {data.video_url || processingVideoUrl}</div>
+            <div><strong>Tipo:</strong> {data.video_url ? 'Procesado final' : 'Durante procesamiento'}</div>
+            {data.video_info && (
+              <>
+                <div><strong>Ruta:</strong> {data.video_info.path}</div>
+                <div><strong>Tamaño:</strong> {(data.video_info.size / 1024 / 1024).toFixed(2)} MB</div>
+                <div><strong>Tipo de video:</strong> {data.video_info.type}</div>
+                <div><strong>Es procesado:</strong> {data.video_info.is_processed ? 'Sí' : 'No'}</div>
+                <div><strong>Es original:</strong> {data.video_info.is_original ? 'Sí' : 'No'}</div>
+                <div><strong>Estado del trabajo:</strong> {data.video_info.job_status}</div>
+              </>
+            )}
+            <div style={{display: 'flex', gap: '0.5rem', marginTop: '0.5rem', flexWrap: 'wrap'}}>
+              <button 
+                onClick={() => {
+                  const videoElement = videoRef.current;
+                  if (videoElement) {
+                    videoElement.load();
+                    videoElement.play();
+                    console.log('Video recargado manualmente');
+                  }
+                }}
+                style={{background: '#444', border: 'none', color: 'white', padding: '0.25rem 0.5rem', borderRadius: '3px', cursor: 'pointer'}}
+              >
+                Recargar video
+              </button>
+              <button 
+                onClick={() => {
+                  // Mostrar información detallada en la consola
+                  console.log('=== DIAGNÓSTICO DETALLADO DEL VIDEO ===');
+                  console.log('URL actual:', data.video_url || processingVideoUrl);
+                  console.log('Información del video:', data.video_info);
+                  console.log('Es blob URL:', (data.video_url || processingVideoUrl).startsWith('blob:'));
+                  console.log('JobID:', jobId);
+                  console.log('Estado de procesamiento:', processingStatus);
+                  
+                  // Verificar si hay caché del navegador para esta URL
+                  const videoElement = videoRef.current;
+                  if (videoElement) {
+                    console.log('Estado del elemento video:');
+                    console.log('- readyState:', videoElement.readyState);
+                    console.log('- networkState:', videoElement.networkState);
+                    console.log('- currentSrc:', videoElement.currentSrc);
+                    console.log('- error:', videoElement.error);
+                  }
+                  
+                  alert('Información de diagnóstico enviada a la consola del navegador (F12)');
+                }}
+                style={{background: '#17a2b8', border: 'none', color: 'white', padding: '0.25rem 0.5rem', borderRadius: '3px', cursor: 'pointer'}}
+              >
+                Diagnóstico consola
+              </button>
+              <button 
+                onClick={() => {
+                  // Crear un nuevo elemento video con una URL única para evitar caché
+                  const videoElement = videoRef.current;
+                  if (videoElement && (data.video_url || processingVideoUrl)) {
+                    const timestamp = new Date().getTime();
+                    const newUrl = `${data.video_url || processingVideoUrl}?nocache=${timestamp}`;
+                    console.log('Limpiando caché del video con nueva URL:', newUrl);
+                    
+                    // Actualizar la URL del video con un parámetro único
+                    videoElement.src = newUrl;
+                    videoElement.load();
+                    videoElement.play();
+                    
+                    // Actualizar los datos para que la UI refleje la nueva URL
+                    if (data.video_url) {
+                      setData(prevData => ({
+                        ...prevData,
+                        video_url: newUrl
+                      }));
+                    } else {
+                      setProcessingVideoUrl(newUrl);
+                    }
+                  }
+                }}
+                style={{background: '#6c757d', border: 'none', color: 'white', padding: '0.25rem 0.5rem', borderRadius: '3px', cursor: 'pointer'}}
+              >
+                Limpiar caché
+              </button>
+              <button 
+                onClick={() => {
+                  if (jobId) {
+                    console.log('Verificando estado detallado del video');
+                    // Asegurarse de usar la URL correcta para la API
+                    const apiUrl = `/status/${jobId}?include_video_info=true`;
+                    console.log('Consultando API:', apiUrl);
+                    fetch(apiUrl)
+                      .then(response => response.json())
+                      .then(data => {
+                        console.log('Información detallada del video:', data);
+                        alert(`Información del trabajo:\n\n` +
+                              `- Estado: ${data.status}\n` +
+                              `- Progreso: ${data.progress}%\n` +
+                              `- Detecciones: ${data.detections || 0}\n` +
+                              `- Archivo: ${data.file_name}\n\n` +
+                              `Información completa en la consola.`);
+                      })
+                      .catch(error => {
+                        console.error('Error al verificar estado:', error);
+                        alert('Error al verificar el estado del video');
+                      });
+                  } else {
+                    alert('No hay un trabajo activo para verificar');
+                  }
+                }}
+                style={{background: '#28a745', border: 'none', color: 'white', padding: '0.25rem 0.5rem', borderRadius: '3px', cursor: 'pointer', marginRight: '0.5rem'}}
+              >
+                Verificar estado
+              </button>
+              <button 
+                onClick={() => {
+                  if (jobId) {
+                    console.log('Verificando archivos de video en el servidor');
+                    fetch(`/api/status/${jobId}?include_video_info=true`)
+                      .then(response => response.json())
+                      .then(data => {
+                        console.log('Información de archivos de video:', data.video_files_info);
+                        
+                        // Formatear la información de los archivos
+                        let originalInfo = 'No disponible';
+                        let processedInfo = 'No disponible';
+                        
+                        if (data.video_files_info && data.video_files_info.original) {
+                          const original = data.video_files_info.original;
+                          originalInfo = `Existe: ${original.exists ? 'SÍ' : 'NO'}\n` +
+                                         `Tamaño: ${original.size} bytes\n` +
+                                         `Ruta: ${original.path}\n` +
+                                         `Modificado: ${original.last_modified}`;
+                        }
+                        
+                        if (data.video_files_info && data.video_files_info.processed) {
+                          const processed = data.video_files_info.processed;
+                          processedInfo = `Existe: ${processed.exists ? 'SÍ' : 'NO'}\n` +
+                                          `Tamaño: ${processed.size} bytes\n` +
+                                          `Ruta: ${processed.path}\n` +
+                                          `Modificado: ${processed.last_modified}`;
+                        }
+                        
+                        alert(`INFORMACIÓN DE ARCHIVOS DE VIDEO\n\n` +
+                              `VIDEO ORIGINAL:\n${originalInfo}\n\n` +
+                              `VIDEO PROCESADO:\n${processedInfo}`);
+                      })
+                      .catch(error => {
+                        console.error('Error al verificar archivos:', error);
+                        alert('Error al verificar los archivos de video');
+                      });
+                  } else {
+                    alert('No hay un trabajo activo para verificar');
+                  }
+                }}
+                style={{background: '#17a2b8', border: 'none', color: 'white', padding: '0.25rem 0.5rem', borderRadius: '3px', cursor: 'pointer'}}
+              >
+                Verificar archivos
+              </button>
+              <button 
+                onClick={() => {
+                  if (jobId) {
+                    console.log('Forzando video procesado');
+                    fetch(`http://localhost:8000/video/${jobId}?force_processed=true`)
+                      .then(response => response.ok ? response.json() : null)
+                      .then(videoData => {
+                        if (videoData && videoData.video_url) {
+                          const videoUrlWithTimestamp = `${videoData.video_url}?t=${new Date().getTime()}`;
+                          console.log('URL del video procesado forzado:', videoUrlWithTimestamp);
+                          console.log('Información del video:', videoData.video_info);
+                          
+                          // Convertir la URL a blob para mejorar la compatibilidad
+                          console.log('Convirtiendo URL a blob para mejorar compatibilidad:', videoUrlWithTimestamp);
+                          fetch(`http://localhost:8000${videoUrlWithTimestamp}`)
+                            .then(response => response.blob())
+                            .then(blob => {
+                              const blobUrl = URL.createObjectURL(blob);
+                              console.log('URL de blob creada para video procesado:', blobUrl);
+                              
+                              // Actualizar el video y la información de diagnóstico
+                              const videoElement = videoRef.current;
+                              if (videoElement) {
+                                videoElement.src = blobUrl;
+                                videoElement.load();
+                                videoElement.play();
+                              }
+                              
+                              // Actualizar los datos con la nueva información
+                              setData(prevData => ({
+                                ...prevData,
+                                video_url: blobUrl,
+                                video_info: videoData.video_info
+                              }));
+                            })
+                            .catch(error => {
+                              console.error('Error al convertir a blob:', error);
+                              // Fallback a URL directa si falla la conversión a blob
+                              const videoElement = videoRef.current;
+                              if (videoElement) {
+                                videoElement.src = `http://localhost:8000${videoUrlWithTimestamp}`;
+                                videoElement.load();
+                                videoElement.play();
+                              }
+                              
+                              // Actualizar los datos con la URL directa
+                              setData(prevData => ({
+                                ...prevData,
+                                video_url: `http://localhost:8000${videoUrlWithTimestamp}`,
+                                video_info: videoData.video_info
+                              }));
+                            });
+                        }
+                      })
+                      .catch(error => console.error('Error al forzar video procesado:', error));
+                  }
+                }}
+                style={{background: '#007bff', border: 'none', color: 'white', padding: '0.25rem 0.5rem', borderRadius: '3px', cursor: 'pointer'}}
+              >
+                Forzar video procesado
+              </button>
+              <button 
+                onClick={() => {
+                  if (jobId) {
+                    console.log('Forzando video original');
+                    fetch(`http://localhost:8000/video/${jobId}?force_original=true`)
+                      .then(response => response.ok ? response.json() : null)
+                      .then(videoData => {
+                        if (videoData && videoData.video_url) {
+                          const videoUrlWithTimestamp = `${videoData.video_url}?t=${new Date().getTime()}`;
+                          console.log('URL del video original forzado:', videoUrlWithTimestamp);
+                          console.log('Información del video:', videoData.video_info);
+                          
+                          // Convertir la URL a blob para mejorar la compatibilidad
+                          console.log('Convirtiendo URL a blob para mejorar compatibilidad:', videoUrlWithTimestamp);
+                          fetch(`http://localhost:8000${videoUrlWithTimestamp}`)
+                            .then(response => response.blob())
+                            .then(blob => {
+                              const blobUrl = URL.createObjectURL(blob);
+                              console.log('URL de blob creada para video original:', blobUrl);
+                              
+                              // Actualizar el video y la información de diagnóstico
+                              const videoElement = videoRef.current;
+                              if (videoElement) {
+                                videoElement.src = blobUrl;
+                                videoElement.load();
+                                videoElement.play();
+                              }
+                              
+                              // Actualizar los datos con la nueva información
+                              setData(prevData => ({
+                                ...prevData,
+                                video_url: blobUrl,
+                                video_info: videoData.video_info
+                              }));
+                            })
+                            .catch(error => {
+                              console.error('Error al convertir a blob:', error);
+                              // Fallback a URL directa si falla la conversión a blob
+                              const videoElement = videoRef.current;
+                              if (videoElement) {
+                                videoElement.src = videoUrlWithTimestamp;
+                                videoElement.load();
+                                videoElement.play();
+                              }
+                              
+                              setData(prevData => ({
+                                ...prevData,
+                                video_url: videoUrlWithTimestamp,
+                                video_info: videoData.video_info
+                              }));
+                            });
+                        }
+                      })
+                      .catch(error => console.error('Error al forzar video original:', error));
+                  }
+                }}
+                style={{background: '#dc3545', border: 'none', color: 'white', padding: '0.25rem 0.5rem', borderRadius: '3px', cursor: 'pointer'}}
+              >
+                Forzar video original
+              </button>
+            </div>
+          </div>
+          
+          <video 
+            ref={videoRef} 
+            controls 
+            key={`video-${new Date().getTime()}`} /* Añadir key con timestamp para forzar recreación del elemento */
+            src={data.video_url || processingVideoUrl} 
+            style={{maxWidth:'100%', borderRadius: '10px'}}
+            onError={(e) => {
+              console.error('Error al cargar el video:', e);
+              alert('Error al cargar el video. Intente recargar o usar los botones de diagnóstico.');
+            }}
+            onLoadedData={() => {
+              console.log('Video cargado correctamente:', data.video_url || processingVideoUrl);
+              // Verificar si es un blob URL (video sin procesar)
+              if ((data.video_url || processingVideoUrl).startsWith('blob:')) {
+                console.warn('⚠️ ADVERTENCIA: Se está usando un blob URL, lo que indica que podría ser el video sin procesar');
+              }
+            }}
+          />
+          <div style={{marginTop: '1.5rem'}}>
+            <div style={{marginBottom: '1rem', padding: '0.5rem', backgroundColor: '#2a2a2a', borderRadius: '5px'}}>
+              <h4 style={{margin: '0 0 0.5rem 0', color: 'var(--white)'}}>Información del video actual:</h4>
+              <button 
+                onClick={() => {
+                  const videoElement = videoRef.current;
+                  if (videoElement) {
+                    // Obtener información detallada del elemento video
+                    const info = {
+                      currentSrc: videoElement.currentSrc,
+                      readyState: videoElement.readyState,
+                      networkState: videoElement.networkState,
+                      duration: videoElement.duration,
+                      videoWidth: videoElement.videoWidth,
+                      videoHeight: videoElement.videoHeight,
+                      error: videoElement.error,
+                      isBlob: videoElement.currentSrc.startsWith('blob:'),
+                      isProcessed: videoElement.currentSrc.includes('force_processed=true'),
+                      isOriginal: videoElement.currentSrc.includes('force_original=true'),
+                    };
+                    
+                    console.log('=== INFORMACIÓN DEL ELEMENTO VIDEO ===', info);
+                    
+                    // Mostrar información en un alert formateado
+                    const message = `Información del video:\n\n` +
+                      `- URL: ${info.currentSrc}\n` +
+                      `- Es blob: ${info.isBlob}\n` +
+                      `- Forzado como: ${info.isProcessed ? 'PROCESADO' : info.isOriginal ? 'ORIGINAL' : 'NINGUNO'}\n` +
+                      `- Estado: ${['HAVE_NOTHING', 'HAVE_METADATA', 'HAVE_CURRENT_DATA', 'HAVE_FUTURE_DATA', 'HAVE_ENOUGH_DATA'][info.readyState]}\n` +
+                      `- Red: ${['EMPTY', 'IDLE', 'LOADING', 'NO_SOURCE'][info.networkState]}\n` +
+                      `- Dimensiones: ${info.videoWidth}x${info.videoHeight}\n` +
+                      `- Duración: ${info.duration ? info.duration.toFixed(2) + 's' : 'N/A'}\n` +
+                      `- Error: ${info.error ? 'SÍ' : 'NO'}\n\n` +
+                      `Información completa en la consola.`;
+                    
+                    alert(message);
+                  }
+                }}
+                style={{background: '#28a745', border: 'none', color: 'white', padding: '0.25rem 0.5rem', borderRadius: '3px', cursor: 'pointer', marginRight: '0.5rem'}}
+              >
+                Verificar video actual
+              </button>
+            </div>
+            
+            <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>⏱️ Timestamps con logos detectados:</h4>
+            <div style={{background: 'var(--gray-dark)', padding: '1rem', borderRadius: '10px'}}>
+              {(data.detections||[]).map((det, i) => (
+                <div key={i} style={{padding: '0.5rem 0', borderBottom: i < summary?.frames.length - 1 ? '1px solid var(--gray)' : 'none'}}>
+                  <strong style={{color: 'var(--white)'}}>{det.timestamp}s</strong> - 
+                  {det.label || det.class}: {Math.round(det.score*100)}%
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
