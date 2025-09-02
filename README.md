@@ -46,24 +46,30 @@ Este proyecto de <strong>Computer Vision</strong> está diseñado para <strong>d
 
 ## 🔧 General Project Overview
 
+Este proyecto de **Computer Vision** permite la **detección y análisis de logos** en imágenes, vídeos, enlaces o streaming en vivo, utilizando un modelo **YOLO** entrenado con **Roboflow** e integrado en un backend **FastAPI**.  
+El sistema procesa el contenido, identifica marcas, calcula métricas de aparición y almacena los resultados en una base de datos **PostgreSQL (Neon)**.  
+El frontend, desarrollado con **React + Vite**, ofrece una interfaz intuitiva para subir o capturar contenido y visualizar los resultados.
+
 ### Features
 
-
-| ✅ Pros                                                             | ❌ Cons                                                                             |
-|---------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-
+| ✅ Pros                                                                 | ❌ Cons                                                                                  |
+|-------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| Detección en tiempo real de logos en múltiples formatos                 | Requiere hardware con GPU para un rendimiento óptimo                                     |
+| Integración completa backend (FastAPI) + frontend (React + Vite)        | Entrenamiento del modelo dependiente de datasets de calidad                              |
+| Métricas detalladas: tiempo total, porcentaje de aparición, FPS         | Procesamiento de vídeos largos puede ser más lento                                       |
+| Base de datos estructurada con historial de detecciones                 |                       |
+| Escalable y adaptable a nuevos logos o marcas                           |                              |
 
 ---
 
 ## 🧠 Architecture & Services
 
-### 
 
+- **Frontend:** React + Vite para carga de contenido y visualización de resultados.  
+- **Backend:** FastAPI para procesar peticiones y ejecutar el modelo YOLO.  
+- **Modelo de IA:** YOLO entrenado con Roboflow para detección de logos.  
+- **Base de datos:** PostgreSQL (Neon) para almacenar metadatos y resultados.  
+- **Servicios adicionales:** Integración con streaming en vivo y análisis en tiempo real.  
 
 ---
 
