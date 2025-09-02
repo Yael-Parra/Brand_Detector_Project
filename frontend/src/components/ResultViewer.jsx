@@ -60,6 +60,14 @@ export default function ResultViewer({data, jobId}){
                 processingProgress: statusData.progress || 0,
                 labelCounts: labelCounts // Añadir conteo de etiquetas
               }))
+              
+              // Si el procesamiento está completo, actualizar los datos
+              if ((statusData.progress || 0) >= 100 && !data) {
+                setData({
+                  detections: statusData.detections_list || [],
+                  video_url: processingVideoUrl // Usar la URL del video que ya tenemos
+                })
+              }
             } else if (Array.isArray(statusData.detections)) {
               // Formato nuevo: detections es un array de objetos con detecciones
               // Calcular el conteo de etiquetas a partir del array de detecciones
@@ -77,6 +85,14 @@ export default function ResultViewer({data, jobId}){
                 labelCounts: labelCounts,
                 detectionsList: statusData.detections // Guardar la lista de detecciones
               }))
+              
+              // Si el procesamiento está completo, actualizar los datos
+              if ((statusData.progress || 0) >= 100 && !data) {
+                setData({
+                  detections: statusData.detections,
+                  video_url: processingVideoUrl // Usar la URL del video que ya tenemos
+                })
+              }
             }
           }
         } else if (statusData.status === 'completed') {
@@ -110,6 +126,14 @@ export default function ResultViewer({data, jobId}){
               labelCounts: labelCounts,
               processingProgress: 100
             }))
+            
+            // Actualizar los datos con el resultado final si no existen
+            if (!data) {
+              setData({
+                detections: Array.isArray(statusData.detections) ? statusData.detections : statusData.detections_list || [],
+                video_url: processingVideoUrl // Usar la URL del video que ya tenemos
+              })
+            }
           }
         } else if (statusData.status === 'error') {
           clearInterval(statusCheckInterval.current)
@@ -375,9 +399,15 @@ export default function ResultViewer({data, jobId}){
       )}
 
       {/* Mostrar video cuando está completado el procesamiento */}
-      {data && data.video_url && (
+      {data && (data.video_url || processingVideoUrl) && (
         <div className="preview">
-          <video ref={videoRef} controls src={data.video_url} style={{maxWidth:'100%', borderRadius: '10px'}}/>          <div style={{marginTop: '1.5rem'}}>
+          <video 
+            ref={videoRef} 
+            controls 
+            src={data.video_url || processingVideoUrl} 
+            style={{maxWidth:'100%', borderRadius: '10px'}}
+          />
+          <div style={{marginTop: '1.5rem'}}>
             <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>⏱️ Timestamps con logos detectados:</h4>
             <div style={{background: 'var(--gray-dark)', padding: '1rem', borderRadius: '10px'}}>
               {(data.detections||[]).map((det, i) => (
@@ -391,7 +421,7 @@ export default function ResultViewer({data, jobId}){
         </div>
       )}
       
-      {/* Mostrar video durante el procesamiento */}
+      {/* Mostrar video durante el procesamiento (solo si no hay datos completos) */}
       {!data && isLiveProcessing && processingVideoUrl && (
         <div className="preview">
           <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>Video en procesamiento:</h4>
@@ -403,7 +433,7 @@ export default function ResultViewer({data, jobId}){
             style={{maxWidth:'100%', borderRadius: '10px'}}
           />
           <div style={{marginTop: '0.5rem', color: 'var(--white)', fontSize: '0.9rem'}}>
-            El video se está procesando. Las detecciones se mostrarán cuando finalice el análisis.
+            El video se está procesando. Las detecciones se mostrarán cuando se complete el procesamiento.
           </div>
         </div>
       )}
