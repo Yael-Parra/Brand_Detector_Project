@@ -3,7 +3,7 @@ import cv2
 import time
 
 # Cargamos el modelo YOLO
-model = YOLO("best2.pt")
+model = YOLO("best_v5.pt")
 #model = YOLO("yolo11n.pt")
 
 # Diccionario para almacenar el tiempo de aparición de cada etiqueta

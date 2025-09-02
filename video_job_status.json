@@ -1,0 +1,90 @@
+{
+  "video-job-1756726557857": {
+    "status": "completed",
+    "file_name": "V\u00eddeo sin t\u00edtulo \u2010 Hecho con Clipchamp (1).mp4",
+    "start_time": "2025-09-01T13:35:57.887872",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "end_time": "2025-09-01T13:37:08.810769",
+    "fps_estimated": 30.0,
+    "processed_secs": 70.91288590431213
+  },
+  "video-job-1756726933345": {
+    "status": "completed",
+    "file_name": "V\u00eddeo sin t\u00edtulo \u2010 Hecho con Clipchamp (1).mp4",
+    "start_time": "2025-09-01T13:42:13.373024",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "end_time": "2025-09-01T13:43:22.764062",
+    "fps_estimated": 30.0,
+    "processed_secs": 69.38540363311768
+  },
+  "video-job-1756727431127": {
+    "status": "completed",
+    "file_name": "V\u00eddeo sin t\u00edtulo \u2010 Hecho con Clipchamp (1).mp4",
+    "start_time": "2025-09-01T13:50:31.158173",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "end_time": "2025-09-01T13:51:42.582140",
+    "fps_estimated": 30.0,
+    "processed_secs": 71.41738700866699
+  },
+  "video-job-1756729666451": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T14:27:46.485914",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T14:29:06.091679",
+    "fps_estimated": 30.0,
+    "processed_secs": 79.59775042533875
+  }
+}
