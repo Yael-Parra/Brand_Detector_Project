@@ -15,24 +15,33 @@ router = APIRouter()
 async def process_image(file: UploadFile = File(...)):
 	"""
 	Procesa una imagen subida y retorna si se detectó un logo o no, junto con las detecciones y la imagen anotada (base64).
+	También devuelve la imagen original en base64 para mostrarla durante el procesamiento.
 	"""
 	content = await file.read()
 	nparr = np.frombuffer(content, np.uint8)
 	image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 	if image is None:
 		raise HTTPException(status_code=400, detail="Imagen inválida")
+	
+	# Guardar la imagen original en base64 para mostrarla durante el procesamiento
+	ok_original, buf_original = cv2.imencode(".jpg", image)
+	original_img_b64 = base64.b64encode(buf_original).decode("ascii") if ok_original else None
+	
 	model = YOLO("best_v5.pt")
 	results = model(image)
 	detections = []
 	for result in results:
 		names = [result.names[int(label)] for label in result.boxes.cls]
 		xyxys = result.boxes.xyxy
+		confidences = result.boxes.conf
 		for i, xyxy in enumerate(xyxys):
 			x1, y1 = int(xyxy[0]), int(xyxy[1])
 			x2, y2 = int(xyxy[2]), int(xyxy[3])
+			# Usar el nombre real de la etiqueta en lugar de "logo-brand"
 			detections.append({
 				"bbox_xyxy": [x1, y1, x2, y2],
 				"label": names[i],
+				"score": float(confidences[i])
 			})
 		# Anotar imagen
 		annotated = result.plot()
@@ -43,5 +52,6 @@ async def process_image(file: UploadFile = File(...)):
 	return JSONResponse(content={
 		"mensaje": mensaje,
 		"detections": detections,
-		"annotated_jpg_base64": img_b64
+		"annotated_jpg_base64": img_b64,
+		"original_jpg_base64": original_img_b64
 	})

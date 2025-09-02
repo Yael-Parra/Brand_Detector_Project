@@ -86,5 +86,412 @@
     "end_time": "2025-09-01T14:29:06.091679",
     "fps_estimated": 30.0,
     "processed_secs": 79.59775042533875
+  },
+  "video-job-1756730903927": {
+    "status": "completed",
+    "file_name": "skynet_l8zwBjjW.mp4",
+    "start_time": "2025-09-01T14:48:23.928133",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "labels": {},
+    "end_time": "2025-09-01T14:48:29.625425",
+    "fps_estimated": 10.0,
+    "processed_secs": 5.696101903915405
+  },
+  "video-job-1756731296160": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T14:54:56.185316",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T14:56:14.725601",
+    "fps_estimated": 30.0,
+    "processed_secs": 78.53527164459229
+  },
+  "video-job-1756732193218": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-01T15:09:53.219996",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpyk2v0dz7.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T15:10:55.449726",
+    "fps_estimated": 10.0,
+    "processed_secs": 62.06484007835388
+  },
+  "video-job-1756732536640": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-01T15:15:36.641219",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpfgyio_rq.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T15:15:45.283885",
+    "fps_estimated": 10.0,
+    "processed_secs": 8.635663509368896
+  },
+  "video-job-1756734139954": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-01T15:42:19.955348",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpozbr2ohq.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T15:43:04.854671",
+    "fps_estimated": 10.0,
+    "processed_secs": 44.80216884613037
+  },
+  "video-job-1756734310380": {
+    "status": "completed",
+    "file_name": "skynet_l8zwBjjW.mp4",
+    "start_time": "2025-09-01T15:45:10.380839",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpfv7xnp3k.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T15:45:15.874913",
+    "fps_estimated": 10.0,
+    "processed_secs": 5.492074489593506
+  },
+  "video-job-1756738277663": {
+    "status": "processing",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T16:51:17.690702",
+    "detections": 30,
+    "frame_count": 40,
+    "progress": 8.333333333333332,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpiwbtq6rr.mp4",
+    "labels": {
+      "logo_toyota": 30
+    }
+  },
+  "video-job-1756740821859": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T17:33:41.909098",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmph2qt9vac.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T17:35:19.143682",
+    "fps_estimated": 30.0,
+    "processed_secs": 97.16857028007507
+  },
+  "video-job-1756742970272": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T18:09:30.303813",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpurnq4epx.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T18:10:40.572414",
+    "fps_estimated": 30.0,
+    "processed_secs": 70.26260018348694
+  },
+  "youtube-job-1756743197620": {
+    "status": "processing",
+    "file_name": "unknown_file.mp4",
+    "start_time": "2025-09-01T18:13:17.626451",
+    "detections": 0,
+    "frame_count": 0,
+    "progress": 0,
+    "total_frames": 100
+  },
+  "video-job-1756743703214": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-01T18:21:43.215543",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpnbwl5lrz.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T18:21:51.205535",
+    "fps_estimated": 10.0,
+    "processed_secs": 7.982110500335693
+  },
+  "video-job-1756743899634": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T18:24:59.674146",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpbt5csepi.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T18:26:11.508525",
+    "fps_estimated": 30.0,
+    "processed_secs": 71.82937574386597
+  },
+  "video-job-1756744064721": {
+    "status": "completed",
+    "file_name": "skynet_l8zwBjjW.mp4",
+    "start_time": "2025-09-01T18:27:44.722043",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmp9ibj07bd.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T18:27:49.926075",
+    "fps_estimated": 10.0,
+    "processed_secs": 5.203031539916992
+  },
+  "video-job-1756749342159": {
+    "status": "processing",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T19:55:42.197916",
+    "detections": 179,
+    "frame_count": 190,
+    "progress": 39.58333333333333,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmplp0h97fe.mp4",
+    "labels": {
+      "logo_toyota": 179
+    }
+  },
+  "video-job-1756749461827": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T19:57:41.859121",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpjzzqp4xn.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T19:58:52.788773",
+    "fps_estimated": 30.0,
+    "processed_secs": 70.92672371864319
+  },
+  "video-job-1756754373582": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T21:19:33.615314",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpjni08qhq.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T21:20:46.519934",
+    "fps_estimated": 30.0,
+    "processed_secs": 72.88777184486389
+  },
+  "video-job-1756754985427": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-01T21:29:45.427813",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpo13mc7d_.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T21:29:53.367620",
+    "fps_estimated": 10.0,
+    "processed_secs": 7.93880820274353
+  },
+  "video-job-1756755048146": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-01T21:30:48.147207",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmp1p48b6vq.mp4",
+    "labels": {},
+    "end_time": "2025-09-01T21:30:55.240045",
+    "fps_estimated": 10.0,
+    "processed_secs": 7.0908379554748535
+  },
+  "video-job-1756761759975": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-01T23:22:40.008846",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpbexfiyit.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-01T23:23:50.416888",
+    "fps_estimated": 30.0,
+    "processed_secs": 70.40164566040039
+  },
+  "video-job-1756794313964": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-02T08:25:13.989333",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmp8svq034w.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-02T08:26:24.319238",
+    "fps_estimated": 30.0,
+    "processed_secs": 70.32439947128296
+  },
+  "video-job-1756796690995": {
+    "status": "completed",
+    "file_name": "skynet.mp4",
+    "start_time": "2025-09-02T09:04:50.996912",
+    "detections": {},
+    "frame_count": 30,
+    "progress": 100,
+    "total_frames": 36,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpsx0ie9w3.mp4",
+    "labels": {},
+    "end_time": "2025-09-02T09:05:02.377040",
+    "fps_estimated": 10.0,
+    "processed_secs": 11.361138820648193
+  },
+  "video-job-1756799389583": {
+    "status": "completed",
+    "file_name": "video16s.mp4",
+    "start_time": "2025-09-02T09:49:49.610322",
+    "detections": {
+      "logo_toyota": {
+        "frames": 256,
+        "percentage": 53.333333333333336
+      },
+      "logo_mercedez": {
+        "frames": 8,
+        "percentage": 1.6666666666666667
+      }
+    },
+    "frame_count": 480,
+    "progress": 100,
+    "total_frames": 480,
+    "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpq0plmh42.mp4",
+    "labels": {
+      "logo_toyota": 256,
+      "logo_mercedez": 8
+    },
+    "end_time": "2025-09-02T09:51:00.772345",
+    "fps_estimated": 30.0,
+    "processed_secs": 71.156001329422
   }
 }

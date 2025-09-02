@@ -1,0 +1,60 @@
+[2025-09-02T06:25:13.996Z] [INFO] [ResultViewer] Estado de reproducción: isLiveProcessing=false, hasVideoUrl=false, hasData=true
+[2025-09-02T06:25:13.997Z] [INFO] [ResultViewer] Activando modo de procesamiento en vivo para video-job-1756794313964
+[2025-09-02T06:25:13.997Z] [INFO] [ResultViewer] Actualizando resumen con datos completos
+[2025-09-02T06:25:13.998Z] [INFO] [ResultViewer] Construyendo resumen de detecciones
+[2025-09-02T06:25:13.998Z] [INFO] [ResultViewer] Resumen construido: 0 detecciones totales
+[2025-09-02T06:25:14.000Z] [INFO] [StatusPolling] Deteniendo polling de estado
+[2025-09-02T06:25:14.000Z] [INFO] [ResultViewer] Iniciando monitoreo para job_id: video-job-1756794313964
+[2025-09-02T06:25:14.000Z] [INFO] [StatusPolling] Iniciando polling para job video-job-1756794313964 cada 3000ms
+[2025-09-02T06:25:14.000Z] [INFO] [StatusPolling] Verificando estado para job_id: video-job-1756794313964
+[2025-09-02T06:25:14.000Z] [INFO] [ResultViewer] Activando modo de procesamiento en vivo para video-job-1756794313964
+[2025-09-02T06:25:14.000Z] [INFO] [ResultViewer] Actualizando resumen con datos completos
+[2025-09-02T06:25:14.000Z] [INFO] [ResultViewer] Construyendo resumen de detecciones
+[2025-09-02T06:25:14.001Z] [INFO] [ResultViewer] Resumen construido: 0 detecciones totales
+[2025-09-02T06:25:14.001Z] [INFO] [StatusPolling] Deteniendo polling de estado
+[2025-09-02T06:25:13.996Z] [INFO] [ResultViewer] Estado de reproducción: isLiveProcessing=false, hasVideoUrl=false, hasData=true
+[2025-09-02T06:25:13.997Z] [INFO] [ResultViewer] Iniciando monitoreo para job_id: video-job-1756794313964
+[2025-09-02T06:25:13.997Z] [INFO] [StatusPolling] Iniciando polling para job video-job-1756794313964 cada 3000ms
+[2025-09-02T06:25:13.997Z] [INFO] [StatusPolling] Verificando estado para job_id: video-job-1756794313964
+[2025-09-02T06:25:14.010Z] [INFO] [StatusPolling] Estado recibido para video-job-1756794313964: {"status": "processing", "file_name": "video16s.mp4", "start_time": "2025-09-02T08:25:13.989333", "detections": 0, "frame_count": 0, "progress": 0, "total_frames": 0, "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmp8svq034w.mp4"}
+[2025-09-02T06:25:14.036Z] [INFO] [StatusPolling] Estado recibido para video-job-1756794313964: {"status": "processing", "file_name": "video16s.mp4", "start_time": "2025-09-02T08:25:13.989333", "detections": 0, "frame_count": 0, "progress": 0, "total_frames": 0, "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmp8svq034w.mp4"}
+[2025-09-02T06:25:14.502Z] [INFO] [VideoProcessing] Activando modo de procesamiento en vivo
+[2025-09-02T06:25:14.503Z] [INFO] [VideoProcessing] Obteniendo video para job video-job-1756794313964
+[2025-09-02T06:25:14.503Z] [INFO] [VideoProcessing] Activando modo de procesamiento en vivo
+[2025-09-02T06:25:14.503Z] [INFO] [VideoProcessing] Obteniendo video para job video-job-1756794313964
+[2025-09-02T06:25:14.535Z] [INFO] [VideoProcessing] Tipo de contenido: video/mp4
+[2025-09-02T06:25:14.586Z] [INFO] [VideoProcessing] Tipo de contenido: video/mp4
+[2025-09-02T06:25:14.616Z] [INFO] [VideoProcessing] Tamaño del blob: 39582467 bytes
+[2025-09-02T06:25:14.617Z] [INFO] [VideoProcessing] URL del blob creada: blob:http://localhost:3000/d22e63e6-8bf0-4ddb-9820-d62d214547c9
+[2025-09-02T06:25:14.654Z] [INFO] [VideoProcessing] Tamaño del blob: 39582467 bytes
+[2025-09-02T06:25:14.654Z] [INFO] [VideoProcessing] URL del blob creada: blob:http://localhost:3000/b2a409a7-3bc7-4876-9ffb-5c3658d80f8e
+[2025-09-02T07:04:51.000Z] [INFO] [ResultViewer] Estado de reproducción: isLiveProcessing=false, hasVideoUrl=false, hasData=true
+[2025-09-02T07:04:51.000Z] [INFO] [ResultViewer] Estado de reproducción: isLiveProcessing=false, hasVideoUrl=false, hasData=true
+[2025-09-02T07:04:51.001Z] [INFO] [ResultViewer] Iniciando monitoreo para job_id: video-job-1756796690995
+[2025-09-02T07:04:51.001Z] [INFO] [StatusPolling] Iniciando polling para job video-job-1756796690995 cada 3000ms
+[2025-09-02T07:04:51.001Z] [INFO] [StatusPolling] Verificando estado para job_id: video-job-1756796690995
+[2025-09-02T07:04:51.017Z] [INFO] [StatusPolling] Estado recibido para video-job-1756796690995: {"status": "processing", "file_name": "skynet.mp4", "start_time": "2025-09-02T09:04:50.996912", "detections": 0, "frame_count": 0, "progress": 0, "total_frames": 0, "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpsx0ie9w3.mp4"}
+[2025-09-02T07:04:51.001Z] [INFO] [ResultViewer] Activando modo de procesamiento en vivo para video-job-1756796690995
+[2025-09-02T07:04:51.001Z] [INFO] [ResultViewer] Actualizando resumen con datos completos
+[2025-09-02T07:04:51.002Z] [INFO] [ResultViewer] Construyendo resumen de detecciones
+[2025-09-02T07:04:51.002Z] [INFO] [ResultViewer] Resumen construido: 0 detecciones totales
+[2025-09-02T07:04:51.003Z] [INFO] [StatusPolling] Deteniendo polling de estado
+[2025-09-02T07:04:51.003Z] [INFO] [ResultViewer] Iniciando monitoreo para job_id: video-job-1756796690995
+[2025-09-02T07:04:51.003Z] [INFO] [StatusPolling] Iniciando polling para job video-job-1756796690995 cada 3000ms
+[2025-09-02T07:04:51.003Z] [INFO] [StatusPolling] Verificando estado para job_id: video-job-1756796690995
+[2025-09-02T07:04:51.004Z] [INFO] [ResultViewer] Activando modo de procesamiento en vivo para video-job-1756796690995
+[2025-09-02T07:04:51.004Z] [INFO] [ResultViewer] Actualizando resumen con datos completos
+[2025-09-02T07:04:51.004Z] [INFO] [ResultViewer] Construyendo resumen de detecciones
+[2025-09-02T07:04:51.004Z] [INFO] [ResultViewer] Resumen construido: 0 detecciones totales
+[2025-09-02T07:04:51.005Z] [INFO] [StatusPolling] Deteniendo polling de estado
+[2025-09-02T07:04:51.034Z] [INFO] [StatusPolling] Estado recibido para video-job-1756796690995: {"status": "processing", "file_name": "skynet.mp4", "start_time": "2025-09-02T09:04:50.996912", "detections": 0, "frame_count": 0, "progress": 0, "total_frames": 0, "video_path": "C:\\Users\\Yho\\AppData\\Local\\Temp\\tmpsx0ie9w3.mp4"}
+[2025-09-02T07:04:51.505Z] [INFO] [VideoProcessing] Activando modo de procesamiento en vivo
+[2025-09-02T07:04:51.506Z] [INFO] [VideoProcessing] Obteniendo video para job video-job-1756796690995
+[2025-09-02T07:04:51.506Z] [INFO] [VideoProcessing] Activando modo de procesamiento en vivo
+[2025-09-02T07:04:51.506Z] [INFO] [VideoProcessing] Obteniendo video para job video-job-1756796690995
+[2025-09-02T07:04:51.513Z] [INFO] [VideoProcessing] Tipo de contenido: video/mp4
+[2025-09-02T07:04:51.516Z] [INFO] [VideoProcessing] Tamaño del blob: 32104 bytes
+[2025-09-02T07:04:51.517Z] [INFO] [VideoProcessing] URL del blob creada: blob:http://localhost:3000/d9559566-bfc7-46cb-a549-3ca1c9eed36e
+[2025-09-02T07:04:51.517Z] [INFO] [VideoProcessing] Tipo de contenido: video/mp4
+[2025-09-02T07:04:51.518Z] [INFO] [VideoProcessing] Tamaño del blob: 32104 bytes
+[2025-09-02T07:04:51.518Z] [INFO] [VideoProcessing] URL del blob creada: blob:http://localhost:3000/2e9d85ca-58ab-4408-acc9-6aa7002b1f50

@@ -48,16 +48,36 @@ export default function ResultViewer({data, jobId}){
           }
           
           // Actualizar el resumen con las detecciones en tiempo real
-          if (statusData.detections && typeof statusData.detections === 'number') {
-            // Crear un objeto para las etiquetas si está disponible
-            const labelCounts = statusData.labels || {}
-            
-            setSummary(prev => ({
-              ...prev,
-              totalDetections: statusData.detections,
-              processingProgress: statusData.progress || 0,
-              labelCounts: labelCounts // Añadir conteo de etiquetas
-            }))
+          if (statusData.detections) {
+            // Verificar si detections es un número o un array
+            if (typeof statusData.detections === 'number') {
+              // Formato antiguo: detections es un número
+              const labelCounts = statusData.labels || {}
+              
+              setSummary(prev => ({
+                ...prev,
+                totalDetections: statusData.detections,
+                processingProgress: statusData.progress || 0,
+                labelCounts: labelCounts // Añadir conteo de etiquetas
+              }))
+            } else if (Array.isArray(statusData.detections)) {
+              // Formato nuevo: detections es un array de objetos con detecciones
+              // Calcular el conteo de etiquetas a partir del array de detecciones
+              const labelCounts = {}
+              statusData.detections.forEach(detection => {
+                if (detection.label) {
+                  labelCounts[detection.label] = (labelCounts[detection.label] || 0) + 1
+                }
+              })
+              
+              setSummary(prev => ({
+                ...prev,
+                totalDetections: statusData.detections.length,
+                processingProgress: statusData.progress || 0,
+                labelCounts: labelCounts,
+                detectionsList: statusData.detections // Guardar la lista de detecciones
+              }))
+            }
           }
         } else if (statusData.status === 'completed') {
           // Si el procesamiento ha terminado, detener el intervalo
@@ -113,6 +133,9 @@ export default function ResultViewer({data, jobId}){
     }
   }
 
+  // Estado para almacenar la URL del video durante el procesamiento
+  const [processingVideoUrl, setProcessingVideoUrl] = useState(null)
+
   // Efecto para iniciar la verificación de estado cuando hay un jobId
   useEffect(() => {
     if (jobId) {
@@ -135,6 +158,24 @@ export default function ResultViewer({data, jobId}){
       if (jobId.startsWith('youtube-job-') || jobId.startsWith('video-job-')) {
         setIsLiveProcessing(true)
         console.log(`Modo de procesamiento en vivo activado para ${jobId}`)
+        
+        // Solicitar la URL del video para reproducción durante el procesamiento
+        fetch(`http://localhost:8000/video/${jobId}`)
+          .then(response => {
+            if (response.ok) {
+              return response.json()
+            }
+            throw new Error('No se pudo obtener la URL del video')
+          })
+          .then(data => {
+            if (data.video_url) {
+              console.log('URL de video obtenida para reproducción durante procesamiento:', data.video_url)
+              setProcessingVideoUrl(data.video_url)
+            }
+          })
+          .catch(error => {
+            console.error('Error al obtener URL del video:', error)
+          })
       }
       
       // Establecer un timeout de seguridad para detener el intervalo después de 10 minutos
@@ -188,14 +229,18 @@ export default function ResultViewer({data, jobId}){
   }, [isLiveProcessing, data])
   
   function buildSummary(d){
-    const totalDetections = (d.detections||[]).filter(x=>x.class==='logo-brand').length
-    const frames = (d.detections||[]).filter(x=>x.class==='logo-brand')
+    // Usar el campo label en lugar de class para las detecciones
+    const totalDetections = (d.detections||[]).length
+    const frames = (d.detections||[])
     
     // Crear un objeto para contar las etiquetas detectadas
     const labelCounts = {}
     if (d.detections && Array.isArray(d.detections)) {
       d.detections.forEach(detection => {
-        if (detection.class) {
+        if (detection.label) {
+          labelCounts[detection.label] = (labelCounts[detection.label] || 0) + 1
+        } else if (detection.class) {
+          // Mantener compatibilidad con el formato anterior
           labelCounts[detection.class] = (labelCounts[detection.class] || 0) + 1
         }
       })
@@ -216,12 +261,32 @@ export default function ResultViewer({data, jobId}){
       ctx.lineWidth = 4
       ctx.font = 'bold 16px Inter, sans-serif'
       detections.forEach(box=>{
-        const [x,y,w,h] = box.bbox
-        ctx.strokeRect(x,y,w,h)
+        // Verificar si tenemos bbox_xyxy (formato nuevo) o bbox (formato antiguo)
+        let x, y, w, h;
+        if (box.bbox_xyxy) {
+          // Formato nuevo: [x1, y1, x2, y2]
+          const [x1, y1, x2, y2] = box.bbox_xyxy;
+          x = x1;
+          y = y1;
+          w = x2 - x1;
+          h = y2 - y1;
+        } else if (box.bbox) {
+          // Formato antiguo: [x, y, w, h]
+          [x, y, w, h] = box.bbox;
+        } else {
+          // No hay información de bounding box
+          return;
+        }
+        
+        ctx.strokeRect(x, y, w, h)
         ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
         ctx.fillRect(x, y-30, 160, 30)
         ctx.fillStyle = '#000000'
-        ctx.fillText(`${box.class} ${Math.round(box.score*100)}%`, x+8, y-8)
+        
+        // Usar label si está disponible, sino usar class
+        const label = box.label || box.class || 'desconocido';
+        const score = box.score ? Math.round(box.score*100) : 0;
+        ctx.fillText(`${label} ${score}%`, x+8, y-8)
       })
     }
     img.src = url
@@ -267,6 +332,21 @@ export default function ResultViewer({data, jobId}){
           {isLiveProcessing && summary && summary.totalDetections !== undefined && (
             <div style={{marginTop: '0.5rem', color: 'var(--white)'}}>
               <p>Detecciones encontradas: {summary.totalDetections}</p>
+              
+              {/* Mostrar etiquetas detectadas en tiempo real */}
+              {summary.labelCounts && Object.keys(summary.labelCounts).length > 0 && (
+                <div style={{marginTop: '0.5rem'}}>
+                  <p>Etiquetas detectadas:</p>
+                  <div style={{background: 'rgba(0,0,0,0.2)', padding: '0.5rem', borderRadius: '5px', marginTop: '0.5rem'}}>
+                    {Object.entries(summary.labelCounts).map(([label, count], index) => (
+                      <div key={index} style={{display: 'flex', justifyContent: 'space-between', padding: '0.25rem 0'}}>
+                        <span>{label}</span>
+                        <span style={{fontWeight: 'bold'}}>{count}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -274,22 +354,56 @@ export default function ResultViewer({data, jobId}){
 
       {data && data.image_url && (
         <div className="preview">
-          <canvas ref={canvasRef} style={{maxWidth: '100%', height: 'auto'}}></canvas>
+          {/* Mostrar la imagen original y la imagen procesada lado a lado */}
+          <div style={{display: 'flex', flexDirection: 'row', gap: '20px', flexWrap: 'wrap'}}>
+            {data.original_jpg_base64 && (
+              <div style={{flex: '1', minWidth: '300px'}}>
+                <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>Imagen Original</h4>
+                <img 
+                  src={`data:image/jpeg;base64,${data.original_jpg_base64}`} 
+                  alt="Imagen Original" 
+                  style={{maxWidth: '100%', height: 'auto', borderRadius: '10px'}}
+                />
+              </div>
+            )}
+            <div style={{flex: '1', minWidth: '300px'}}>
+              <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>Imagen Procesada</h4>
+              <canvas ref={canvasRef} style={{maxWidth: '100%', height: 'auto', borderRadius: '10px'}}></canvas>
+            </div>
+          </div>
         </div>
       )}
 
+      {/* Mostrar video cuando está completado el procesamiento */}
       {data && data.video_url && (
         <div className="preview">
           <video ref={videoRef} controls src={data.video_url} style={{maxWidth:'100%', borderRadius: '10px'}}/>          <div style={{marginTop: '1.5rem'}}>
             <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>⏱️ Timestamps con logos detectados:</h4>
             <div style={{background: 'var(--gray-dark)', padding: '1rem', borderRadius: '10px'}}>
-              {(data.detections||[]).filter(d=>d.class==='logo-brand').map((det, i) => (
+              {(data.detections||[]).map((det, i) => (
                 <div key={i} style={{padding: '0.5rem 0', borderBottom: i < summary?.frames.length - 1 ? '1px solid var(--gray)' : 'none'}}>
                   <strong style={{color: 'var(--white)'}}>{det.timestamp}s</strong> - 
-                  Confianza: {Math.round(det.score*100)}%
+                  {det.label || det.class}: {Math.round(det.score*100)}%
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Mostrar video durante el procesamiento */}
+      {!data && isLiveProcessing && processingVideoUrl && (
+        <div className="preview">
+          <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>Video en procesamiento:</h4>
+          <video 
+            ref={videoRef} 
+            controls 
+            autoPlay 
+            src={processingVideoUrl} 
+            style={{maxWidth:'100%', borderRadius: '10px'}}
+          />
+          <div style={{marginTop: '0.5rem', color: 'var(--white)', fontSize: '0.9rem'}}>
+            El video se está procesando. Las detecciones se mostrarán cuando finalice el análisis.
           </div>
         </div>
       )}

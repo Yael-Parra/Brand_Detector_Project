@@ -54,7 +54,8 @@ async def predict_mp4(background_tasks: BackgroundTasks, file: UploadFile = File
             "detections": 0,
             "frame_count": 0,
             "progress": 0,
-            "total_frames": 0
+            "total_frames": 0,
+            "video_path": temp_video_path  # Guardar la ruta del video para acceso posterior
         }
         # Guardar el estado actual en un archivo para depuración
         try:
@@ -71,6 +72,65 @@ async def predict_mp4(background_tasks: BackgroundTasks, file: UploadFile = File
     )
     
     return {"job_id": job_id, "status": "processing"}
+
+# Endpoint para obtener la URL del video durante el procesamiento
+@router.get("/video/{job_id}")
+async def get_video_url(job_id: str):
+    """Obtiene la URL del video para reproducción durante el procesamiento."""
+    from fastapi.responses import JSONResponse
+    from fastapi.staticfiles import StaticFiles
+    import os
+    
+    with video_job_status_lock:
+        if job_id not in video_job_status:
+            # Intentar cargar desde el archivo
+            try:
+                if os.path.exists('video_job_status.json'):
+                    with open('video_job_status.json', 'r') as f:
+                        saved_status = json.load(f)
+                        if job_id in saved_status:
+                            video_job_status[job_id] = saved_status[job_id]
+            except Exception as e:
+                print(f"Error al cargar estado desde archivo: {e}")
+        
+        if job_id in video_job_status and "video_path" in video_job_status[job_id]:
+            video_path = video_job_status[job_id]["video_path"]
+            
+            # Verificar que el archivo existe
+            if os.path.exists(video_path):
+                # Crear una URL temporal para el video
+                video_url = f"/temp/{os.path.basename(video_path)}"
+                
+                # Montar el directorio temporal como un directorio estático si no está montado
+                # Importar app de manera que funcione tanto en modo módulo como en modo script
+                try:
+                    # Intento de importación relativa
+                    from ..main import app
+                except ImportError:
+                    # Fallback para cuando se ejecuta como script
+                    import sys
+                    import importlib.util
+                    # Importación absoluta usando la ruta del archivo
+                    sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+                    from backend.main import app
+                
+                temp_dir = os.path.dirname(video_path)
+                
+                # Verificar si ya está montado
+                mounted = False
+                for route in app.routes:
+                    if hasattr(route, "path") and route.path == "/temp":
+                        mounted = True
+                        break
+                
+                if not mounted:
+                    app.mount("/temp", StaticFiles(directory=temp_dir), name="temp")
+                
+                return {"video_url": video_url}
+            else:
+                return JSONResponse(status_code=404, content={"detail": "Video file not found"})
+        else:
+            return JSONResponse(status_code=404, content={"detail": "Video path not found for job"})
 
 # Endpoint para verificar el estado de un trabajo de procesamiento de video
 @router.get("/status/{job_id}", response_model=dict)
@@ -166,8 +226,16 @@ async def get_job_status(job_id: str):
                 else:
                     return JSONResponse(status_code=404, content={"detail": "Error checking job status"})
         
-        # Devolver una copia del estado para evitar problemas de concurrencia
-        return dict(video_job_status[job_id])
+        # Preparar la respuesta con la lista de detecciones si existe
+        status_data = dict(video_job_status[job_id])
+        
+        # Si hay una lista de detecciones, asegurarse de que se incluya en la respuesta
+        if "detections_list" in status_data:
+            # Mantener el campo detections_list pero también asignar a detections para compatibilidad
+            if isinstance(status_data["detections"], int):
+                status_data["detections"] = status_data["detections_list"]
+        
+        return status_data
 
 def process_video_in_background(video_path: str, job_id: str, filename: str):
     """Procesa un video en segundo plano y actualiza el estado del trabajo."""
@@ -204,10 +272,26 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
                 boxes = r.boxes
                 for box in boxes:
                     cls = int(box.cls[0]) if hasattr(box, 'cls') else None
+                    # Usar el nombre real de la etiqueta del modelo en lugar de "logo-brand"
                     label = model.names.get(cls, str(cls))
+                    confidence = float(box.conf[0]) if hasattr(box, 'conf') else 0.0
+                    
                     if label:
+                        # Guardar la etiqueta con su nombre real
                         label_frames[label] = label_frames.get(label, 0) + 1
                         frame_detections += 1
+                        
+                        # Guardar la detección con timestamp para mostrarla en la interfaz
+                        timestamp = frame_idx / fps if fps > 0 else 0
+                        if "detections_list" not in video_job_status[job_id]:
+                            video_job_status[job_id]["detections_list"] = []
+                            
+                        video_job_status[job_id]["detections_list"].append({
+                            "timestamp": round(timestamp, 2),
+                            "label": label,
+                            "score": confidence,
+                            "frame": frame_idx
+                        })
             
             # Actualizar contadores
             frame_idx += 1
