@@ -683,6 +683,17 @@ export default function ResultViewer({data: initialData, jobId}){
                           console.log('URL del video procesado forzado:', videoUrlWithTimestamp);
                           console.log('Información del video:', videoData.video_info);
                           
+                          // Obtener la duración del video cuando esté disponible
+                          const getDuration = (videoElement) => {
+                            if (videoElement && videoElement.duration) {
+                              const duration = videoElement.duration;
+                              const minutes = Math.floor(duration / 60);
+                              const seconds = Math.floor(duration % 60);
+                              return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                            }
+                            return 'Desconocida';
+                          };
+                          
                           // Convertir la URL a blob para mejorar la compatibilidad
                           console.log('Convirtiendo URL a blob para mejorar compatibilidad:', videoUrlWithTimestamp);
                           fetch(`http://localhost:8000${videoUrlWithTimestamp}`)
@@ -697,14 +708,39 @@ export default function ResultViewer({data: initialData, jobId}){
                                 videoElement.src = blobUrl;
                                 videoElement.load();
                                 videoElement.play();
+                                
+                                // Actualizar la duración cuando el video esté cargado
+                                videoElement.onloadedmetadata = () => {
+                                  const videoDuration = getDuration(videoElement);
+                                  console.log('Duración del video procesado:', videoDuration);
+                                  
+                                  // Actualizar los datos con la nueva información y mantener las métricas
+                                  setData(prevData => ({
+                                    ...prevData,
+                                    video_url: blobUrl,
+                                    video_info: {
+                                      ...videoData.video_info,
+                                      duration: videoDuration
+                                    },
+                                    is_processed_video: true
+                                  }));
+                                };
+                              } else {
+                                // Actualizar los datos con la nueva información y mantener las métricas
+                                setData(prevData => ({
+                                  ...prevData,
+                                  video_url: blobUrl,
+                                  video_info: {
+                                    ...videoData.video_info,
+                                    duration: videoDuration,
+                                    codec: videoData.video_info?.codec || 'Desconocido',
+                                    size: videoData.video_info?.size || 0,
+                                    width: videoElement.videoWidth,
+                                    height: videoElement.videoHeight
+                                  },
+                                  is_processed_video: true
+                                }));
                               }
-                              
-                              // Actualizar los datos con la nueva información
-                              setData(prevData => ({
-                                ...prevData,
-                                video_url: blobUrl,
-                                video_info: videoData.video_info
-                              }));
                             })
                             .catch(error => {
                               console.error('Error al convertir a blob:', error);
@@ -714,14 +750,32 @@ export default function ResultViewer({data: initialData, jobId}){
                                 videoElement.src = `http://localhost:8000${videoUrlWithTimestamp}`;
                                 videoElement.load();
                                 videoElement.play();
+                                
+                                // Actualizar la duración cuando el video esté cargado
+                                videoElement.onloadedmetadata = () => {
+                                  const videoDuration = getDuration(videoElement);
+                                  console.log('Duración del video procesado:', videoDuration);
+                                  
+                                  // Actualizar los datos con la URL directa y mantener las métricas
+                                  setData(prevData => ({
+                                    ...prevData,
+                                    video_url: `http://localhost:8000${videoUrlWithTimestamp}`,
+                                    video_info: {
+                                      ...videoData.video_info,
+                                      duration: videoDuration
+                                    },
+                                    is_processed_video: true
+                                  }));
+                                };
+                              } else {
+                                // Actualizar los datos con la URL directa y mantener las métricas
+                                setData(prevData => ({
+                                  ...prevData,
+                                  video_url: `http://localhost:8000${videoUrlWithTimestamp}`,
+                                  video_info: videoData.video_info,
+                                  is_processed_video: true
+                                }));
                               }
-                              
-                              // Actualizar los datos con la URL directa
-                              setData(prevData => ({
-                                ...prevData,
-                                video_url: `http://localhost:8000${videoUrlWithTimestamp}`,
-                                video_info: videoData.video_info
-                              }));
                             });
                         }
                       })
@@ -744,6 +798,17 @@ export default function ResultViewer({data: initialData, jobId}){
                           console.log('URL del video original forzado:', videoUrlWithTimestamp);
                           console.log('Información del video:', videoData.video_info);
                           
+                          // Obtener la duración del video cuando esté disponible
+                          const getDuration = (videoElement) => {
+                            if (videoElement && videoElement.duration) {
+                              const duration = videoElement.duration;
+                              const minutes = Math.floor(duration / 60);
+                              const seconds = Math.floor(duration % 60);
+                              return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                            }
+                            return 'Desconocida';
+                          };
+                          
                           // Convertir la URL a blob para mejorar la compatibilidad
                           console.log('Convirtiendo URL a blob para mejorar compatibilidad:', videoUrlWithTimestamp);
                           fetch(`http://localhost:8000${videoUrlWithTimestamp}`)
@@ -758,14 +823,36 @@ export default function ResultViewer({data: initialData, jobId}){
                                 videoElement.src = blobUrl;
                                 videoElement.load();
                                 videoElement.play();
+                                
+                                // Actualizar la duración cuando el video esté cargado
+                                videoElement.onloadedmetadata = () => {
+                                  const videoDuration = getDuration(videoElement);
+                                  console.log('Duración del video original:', videoDuration);
+                                  
+                                  // Actualizar los datos con la nueva información y mantener las métricas
+                                  setData(prevData => ({
+                                    ...prevData,
+                                    video_url: blobUrl,
+                                    video_info: {
+                                      ...videoData.video_info,
+                                      duration: videoDuration,
+                                      codec: videoData.video_info?.codec || 'Desconocido',
+                                      size: videoData.video_info?.size || 0,
+                                      width: videoElement.videoWidth,
+                                      height: videoElement.videoHeight
+                                    },
+                                    is_processed_video: false
+                                  }));
+                                };
+                              } else {
+                                // Actualizar los datos con la nueva información y mantener las métricas
+                                setData(prevData => ({
+                                  ...prevData,
+                                  video_url: blobUrl,
+                                  video_info: videoData.video_info,
+                                  is_processed_video: false
+                                }));
                               }
-                              
-                              // Actualizar los datos con la nueva información
-                              setData(prevData => ({
-                                ...prevData,
-                                video_url: blobUrl,
-                                video_info: videoData.video_info
-                              }));
                             })
                             .catch(error => {
                               console.error('Error al convertir a blob:', error);
@@ -816,6 +903,41 @@ export default function ResultViewer({data: initialData, jobId}){
           <div style={{marginTop: '1.5rem'}}>
             <div style={{marginBottom: '1rem', padding: '0.5rem', backgroundColor: '#2a2a2a', borderRadius: '5px'}}>
               <h4 style={{margin: '0 0 0.5rem 0', color: 'var(--white)'}}>Información del video actual:</h4>
+              
+              {/* Mostrar información básica del video */}
+              <div style={{marginBottom: '0.5rem', color: 'var(--white)', backgroundColor: '#3a3a3a', padding: '0.5rem', borderRadius: '5px'}}>
+                <p style={{margin: '0 0 0.25rem 0'}}>
+                  <strong>Tipo:</strong> {data.is_processed_video ? '🔄 Video Procesado' : '📹 Video Original'}
+                </p>
+                {data.video_info && (
+                  <>
+                    {data.video_info.duration && (
+                      <p style={{margin: '0 0 0.25rem 0'}}>
+                        <strong>Duración:</strong> {data.video_info.duration}
+                      </p>
+                    )}
+                    {data.video_info.width && data.video_info.height && (
+                      <p style={{margin: '0 0 0.25rem 0'}}>
+                        <strong>Resolución:</strong> {data.video_info.width}x{data.video_info.height}
+                      </p>
+                    )}
+                    {data.video_info.codec && (
+                      <p style={{margin: '0 0 0.25rem 0'}}>
+                        <strong>Codec:</strong> {data.video_info.codec}
+                      </p>
+                    )}
+                    {data.video_info.size && (
+                      <p style={{margin: '0 0 0.25rem 0'}}>
+                        <strong>Tamaño:</strong> {(data.video_info.size / (1024 * 1024)).toFixed(2)} MB
+                      </p>
+                    )}
+                    <p style={{margin: '0 0 0.25rem 0'}}>
+                      <strong>Detecciones:</strong> {summary?.totalDetections || 0}
+                    </p>
+                  </>
+                )}
+              </div>
+              
               <button 
                 onClick={() => {
                   const videoElement = videoRef.current;
