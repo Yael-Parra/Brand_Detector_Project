@@ -31,7 +31,7 @@ resumen
 ---
 ## 📎 Useful links
 
-- 
+- https://app.roboflow.com/test1mrm/customlogomercedez-hxxq6/overview 
 ---
 
 ## 🎯 Target Audience
@@ -176,8 +176,8 @@ Feel free to explore, fork, or connect with us for ideas, feedback, or collabora
 
 | Name                  | GitHub                                                                                                                     | LinkedIn                                                                                                                                             |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Yael Parra**        | [![GitHub](https://img.shields.io/badge/GitHub-10b981?logo=github&logoColor=white)](https://github.com/Yael-Parra)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yael-parra/)                   |
-| **nombre**        | [![GitHub](https://img.shields.io/badge/GitHub-10b981?logo=github&logoColor=white)](https://github.com/Yael-Parra)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yael-parra/)                   |
-| **nombre**        | [![GitHub](https://img.shields.io/badge/GitHub-10b981?logo=github&logoColor=white)](https://github.com/Yael-Parra)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yael-parra/)                   |
-| **nombre**        | [![GitHub](https://img.shields.io/badge/GitHub-10b981?logo=github&logoColor=white)](https://github.com/Yael-Parra)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yael-parra/)                   |
-| **nombre**        | [![GitHub](https://img.shields.io/badge/GitHub-10b981?logo=github&logoColor=white)](https://github.com/Yael-Parra)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yael-parra/)                   |
+| **Yael Parra**        | [![GitHub](https://img.shields.io/badge/GitHub-ffffff?logo=github&logoColor=black)](https://github.com/Yael-Parra)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=black)](https://www.linkedin.com/in/yael-parra/)                   |
+| **Max Belrtán**       | [![GitHub](https://img.shields.io/badge/GitHub-ffffff?logo=github&logoColor=black)](https://github.com/mr-melenas)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/max-beltran/)                   |
+| **Alla Haruty**       | [![GitHub](https://img.shields.io/badge/GitHub-ffffff?logo=github&logoColor=black)](https://github.com/alharuty)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/allaharuty/)                   |
+| **Stephany Ángeles**  | [![GitHub](https://img.shields.io/badge/GitHub-ffffff?logo=github&logoColor=black)](https://github.com/stephyangeles)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/stephyangeles/)                   |
+| **Orlando Alcalá**    | [![GitHub](https://img.shields.io/badge/GitHub-ffffff?logo=github&logoColor=black)](https://github.com/odar1997)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/yael-parra/](https://www.linkedin.com/in/orlando-david-71417411b/))                   |
