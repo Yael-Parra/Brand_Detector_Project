@@ -58,21 +58,6 @@ resumen
 
 ---
 
-## 🌐 Routes & Agents
-
-### fgfdhfhfdghd
-
-
-| ✅ Pros                                                             | ❌ Cons                                                                             |
-|---------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-
----
-
 ## 🧠 Architecture & Services
 
 ### 
@@ -93,10 +78,13 @@ resumen
 
 ### ⚙️ Backend
 
-![FastAPI](https://img.shields.io/badge/-FastAPI-009688?logo=fastapi&logoColor=white)
-![Pydantic](https://img.shields.io/badge/-Pydantic-3c77ff?logo=pydantic&logoColor=white)
-![Uvicorn](https://img.shields.io/badge/-Uvicorn-000000?logo=uvicorn&logoColor=white)
-
+![React](https://img.shields.io/badge/-React-ffffff?logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/-Vite-ffffff?logo=vite&logoColor=black)
+![FastAPI](https://img.shields.io/badge/-FastAPI-ffffff?logo=fastapi&logoColor=black)
+![Roboflow](https://img.shields.io/badge/-Roboflow-ffffff?logo=roboflow&logoColor=black)
+![Python](https://img.shields.io/badge/-Python-ffffff?logo=python&logoColor=black)
+![YOLO](https://img.shields.io/badge/-YOLO-ffffff?logo=yolo&logoColor=black)
+![Neon](https://img.shields.io/badge/-Neon-ffffff?logo=neon&logoColor=black)
 
 
 ### 🌐 Web UI & Interfaces
@@ -123,28 +111,31 @@ resumen
 ```
 📦 Brand_Detector_Project  
 ├── 📁 backend                                   
-│   └── 📁 database         
+│   └── 📁 database
+│   └── 📁 models
+│   └── 📁 services
+│   └── 📁 HACE FALTA CONTINUAR ESTO!
+│   └── 🗒️ main.py     
 │
+├── 📁 frontend
+│   └── 📁 public
+│   └── 📁 src
+│        └── 📁 components
+│        └── 📁 pages
+│        └── 🗒️ App.jsx
+│        └── 🗒️ main.jsx
+│        └── 🗒️ styles.css
 ├── README.md                
 ├── requirements.txt        
-├── .env                     
+├── .env_example                     
 ├── .gitignore              
-├── .dockerignore            
-├── docker-compose.yml       
-├── Dockerfile.backend       
-├── Dockerfile.frontend      
+  
 
 ```
 ---
 
 ## ✍ Deployment Instructions
 
-📋 Prerequisites
-
-Before you begin, make sure you have:
-
-    Python 3.8
-    Docker Desktop
 
 🧪 1. Clone the repository
 
@@ -156,16 +147,9 @@ Before you begin, make sure you have:
 Create a .env file in the project root and add your variables (e.g.):
 
   
-📦 3. Docker
+📦 3. Install the requirements
 
-    # Open Desktop Docker
-    docker compose build
-    docker compose up
-
-    # To check if everything is going well
-    Docker ps
-    
-    # To access to the front and back, you only have to click on the links you will see on the terminal
+    pip install -r requirements.txt
 
 
 ---
