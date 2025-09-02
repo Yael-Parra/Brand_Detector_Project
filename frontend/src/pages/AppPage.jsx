@@ -100,6 +100,7 @@ export default function AppPage({data, setData, setJobId, jobId}){
         // Crear un objeto de datos con la información recibida
         const sample = {
           video_file: selectedFile.name,
+          video_url: URL.createObjectURL(selectedFile), // Crear URL para el video local
           detections: result.detections || []
         }
         
