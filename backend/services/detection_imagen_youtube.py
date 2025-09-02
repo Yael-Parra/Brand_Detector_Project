@@ -2,8 +2,8 @@ from ultralytics import YOLO
 import cv2
 import imutils
 # Cargamos el modelo YOLO
-
-model = YOLO("best2.pt")
+# model = YOLO("yolo11n.pt")
+model = YOLO("best_v5.pt")
 # Especificar la URL del video
 # source = "https://www.youtube.com/watch?v=SWo_7mELz-o&t"
 source = "https://www.youtube.com/watch?v=oaExWXqwkqg"

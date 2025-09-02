@@ -25,6 +25,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Endpoint directo para status para asegurar que siempre esté disponible
+@app.get("/status/{job_id}")
+async def get_status_endpoint(job_id: str):
+    # Importar aquí para evitar problemas de importación circular
+    from .routes.upload_videos import get_job_status
+    return await get_job_status(job_id)
+
 UPLOAD_DIR = Path("data/uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -205,6 +212,14 @@ from routes.youtube_video import router as youtube_router
 from routes.upload_image import router as upload_image_router
 from routes.upload_videos import router as upload_videos_router
 
-app.include_router(youtube_router)
-app.include_router(upload_image_router)
-app.include_router(upload_videos_router)
+# Registrar los routers con prefijos explícitos para evitar conflictos
+app.include_router(youtube_router, prefix="")
+app.include_router(upload_image_router, prefix="")
+app.include_router(upload_videos_router, prefix="")
+
+# Registrar explícitamente la ruta de estado para asegurar su disponibilidad
+@app.get("/status/{job_id}")
+async def get_job_status_proxy(job_id: str):
+    """Proxy para redirigir a la función de estado en upload_videos."""
+    from .routes.upload_videos import get_job_status
+    return await get_job_status(job_id)
