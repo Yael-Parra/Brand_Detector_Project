@@ -848,6 +848,28 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
                         json.dump({k: v for k, v in video_job_status.items()}, f, indent=2)
                 except Exception as e:
                     print(f"Error al guardar estado final: {e}")
+
+                # Guardar en base de datos
+                try:
+                    from ..main import persist_results
+                    # Adaptar detections_summary para persist_results
+                    detections_for_db = {}
+                    for label, info in detections_summary.items():
+                        detections_for_db[label] = {
+                            "frames": info.get("qty_frames_detected", 0),
+                            "fps": info.get("frame_per_second", 0.0),
+                            "percentage": info.get("frames_appearance_in_percentage", 0.0)
+                        }
+                    id_video = persist_results(
+                        vtype="mp4",
+                        name=filename,
+                        fps=fps,
+                        total_secs=processed_secs,
+                        summary=detections_for_db
+                    )
+                    print(f"[BD] Video guardado en la base de datos con id_video={id_video}")
+                except Exception as e:
+                    print(f"[BD] Error al guardar en la base de datos: {e}")
         
         # Limpiar los archivos temporales
         try:
