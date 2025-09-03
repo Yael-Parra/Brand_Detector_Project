@@ -11,7 +11,7 @@ import json
 import importlib.util
 from datetime import datetime
 from typing import Dict, Optional
-from ..models import YoutubeRequest, PredictUrlRequest
+from models import YoutubeRequest, PredictUrlRequest
 from fastapi import HTTPException
 from main import persist_results
 
@@ -195,3 +195,15 @@ def process_youtube(data: YoutubeRequest):
     except Exception as e:
         # Otros errores de ejecución
         raise HTTPException(status_code=500, detail=str(e))
+    
+from fastapi import APIRouter, Query
+from services.detection_imagen_youtube import stream_youtube
+
+router = APIRouter()
+
+@router.get("/stream/youtube")
+def stream_youtube_route(url: str = Query(..., description="URL de YouTube")):
+    """
+    Stream de un video de YouTube con detección de logos en tiempo real
+    """
+    return stream_youtube(url)
