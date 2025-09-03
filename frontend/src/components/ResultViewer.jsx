@@ -326,13 +326,19 @@ export default function ResultViewer({data: initialData, jobId}){
   
   function buildSummary(d){
     // Usar el campo label en lugar de class para las detecciones
-    const totalDetections = (d.detections||[]).length
-    const frames = (d.detections||[])
+    // Filtrar solo las detecciones con confianza > 75%
+    const filteredDetections = (d.detections || []).filter(detection => {
+      const score = detection.score ? detection.score * 100 : 0;
+      return score > 75;
+    });
+    
+    const totalDetections = filteredDetections.length;
+    const frames = filteredDetections;
     
     // Crear un objeto para contar las etiquetas detectadas
     const labelCounts = {}
-    if (d.detections && Array.isArray(d.detections)) {
-      d.detections.forEach(detection => {
+    if (filteredDetections && Array.isArray(filteredDetections)) {
+      filteredDetections.forEach(detection => {
         if (detection.label) {
           labelCounts[detection.label] = (labelCounts[detection.label] || 0) + 1
         } else if (detection.class) {
@@ -356,7 +362,14 @@ export default function ResultViewer({data: initialData, jobId}){
       ctx.strokeStyle = '#ffffff'
       ctx.lineWidth = 4
       ctx.font = 'bold 16px Inter, sans-serif'
-      detections.forEach(box=>{
+      
+      // Filtrar solo las detecciones con confianza > 75%
+      const filteredDetections = detections.filter(box => {
+        const score = box.score ? box.score * 100 : 0;
+        return score > 75;
+      });
+      
+      filteredDetections.forEach(box=>{
         // Verificar si tenemos bbox_xyxy (formato nuevo) o bbox (formato antiguo)
         let x, y, w, h;
         if (box.bbox_xyxy) {
@@ -464,7 +477,9 @@ export default function ResultViewer({data: initialData, jobId}){
             )}
             <div style={{flex: '1', minWidth: '300px'}}>
               <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>Imagen Procesada</h4>
-              <canvas ref={canvasRef} style={{maxWidth: '100%', height: 'auto', borderRadius: '10px'}}></canvas>
+              <div style={{width: '100%', overflow: 'auto', maxHeight: '100vh'}}>
+                <canvas ref={canvasRef} style={{maxWidth: 'none', width: 'auto', height: 'auto', borderRadius: '10px'}}></canvas>
+              </div>
             </div>
           </div>
         </div>
