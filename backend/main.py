@@ -1,121 +1,162 @@
 import os
 from pathlib import Path
+from typing import Optional
 
-import numpy as np
-from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from .database.db_insertion_data import connect, disconnect, insert_video, insert_detection
+from dotenv import load_dotenv
 
-# =============================
-# Constantes y utilidades
-# =============================
+from .database.db_io import connect, disconnect, insert_video, insert_detection
+from .services.yolo_service import analyze_mp4, analyze_stream_url, analyze_webcam
+
 load_dotenv()
 
 app = FastAPI(title="Brand Logo Detector API", version="1.0.0")
 
-# Configurar CORS para el frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),  # Permite todos los dominios si no hay .env
+    allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Carpeta para uploads
+# Carpeta para subidas
 UPLOAD_DIR = Path("data/uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
-# =============================
-# Persistencia en DB
-# =============================
-def persist_results(*, vtype: str, name: str, fps: float, total_secs: float, summary: dict):
+def persist_results(
+    *,
+    vtype: str,
+    name: str,
+    fps: float,
+    total_secs: float,
+    summary: dict
+):
     """
-    Guarda el video o imagen y sus detecciones en la base de datos.
-    Si no hay detecciones, inserta un placeholder.
+    Crea fila en videos e inserta el conjunto de detecciones.
     """
     conn = connect()
     try:
         id_video = insert_video(conn, vtype=vtype, name=name, total_secs=total_secs)
-        inserted = 0
-        if summary:
-            for label, info in summary.items():
-                insert_detection(
-                    conn,
-                    id_video=id_video,
-                    label_name=label,
-                    qty_frames_detected=int(info.get("frames", 0)),
-                    fps=fps,
-                    percent=float(info.get("percentage", 0.0)),
-                )
-                inserted += 1
-        else:
-            # Insert placeholder si no hay detecciones
+        for label, info in summary.items():
             insert_detection(
                 conn,
                 id_video=id_video,
-                label_name="(ninguno)",
-                qty_frames_detected=0,
+                label_name=label,
+                qty_frames_detected=int(info["frames"]),
                 fps=fps,
-                percent=0.0,
+                percent=float(info["percentage"]),
             )
-            inserted = 1
-        if hasattr(conn, "commit"):
-            conn.commit()
-        print(f"[persist] OK video={id_video} type={vtype} name={name} total_secs={total_secs:.3f} fps={fps:.2f} rows={inserted}")
         return id_video
-    except Exception as e:
-        try:
-            if hasattr(conn, "rollback"):
-                conn.rollback()
-        except Exception:
-            pass
-        print(f"[persist] ERROR: {e}")
-        raise
     finally:
         disconnect(conn)
 
-# =============================
-# Endpoint base
-# =============================
-@app.get("/")
+# ---------- Rutas ----------
+
+@app.get("/health")
 def health():
     return {"status": "ok"}
 
-# =============================
-# Routers separados
-# =============================
-from .routes.youtube_video import router as youtube_router
-from .routes.upload_image import router as upload_image_router
-from .routes.upload_videos import router as upload_videos_router
-
-# Incluir routers sin colisiones
-app.include_router(upload_image_router, prefix="")      # Imagenes
-app.include_router(upload_videos_router, prefix="")     # Videos locales
-app.include_router(youtube_router, prefix="")           # Videos de YouTube
-
-# =============================
-# Endpoints de status separados
-# =============================
-
-# Status genérico para uploads (imagen o video local)
-@app.get("/status/{job_id}")
-async def get_upload_status(job_id: str):
+@app.post("/predict/mp4")
+def predict_mp4(file: UploadFile = File(...)):
     """
-    Proxy para redirigir a la función de estado de upload_videos.
-    Esto solo aplica a videos subidos.
+    Sube un MP4, corre YOLO frame a frame y guarda resultados.
     """
-    from .routes.upload_videos import get_job_status
-    return await get_job_status(job_id)
+    if not file.filename.lower().endswith(".mp4"):
+        raise HTTPException(status_code=400, detail="Se espera un archivo .mp4")
 
-# Status específico para jobs de YouTube
-@app.get("/status/youtube/{job_id}")
-async def get_youtube_status(job_id: str):
+    dest = UPLOAD_DIR / file.filename
+    dest.write_bytes(file.file.read())
+
+    try:
+        fps, total_secs, summary = analyze_mp4(str(dest))
+    except Exception as e:
+        # Limpieza básica
+        try:
+            dest.unlink(missing_ok=True)
+        except Exception:
+            pass
+        raise HTTPException(status_code=500, detail=str(e))
+
+    id_video = persist_results(
+        vtype="mp4",
+        name=file.filename,
+        fps=fps,
+        total_secs=total_secs,
+        summary=summary,
+    )
+
+    return JSONResponse(
+        {
+            "id_video": id_video,
+            "type": "mp4",
+            "name": file.filename,
+            "fps": fps,
+            "total_video_time_segs": total_secs,
+            "detections": summary,
+        }
+    )
+
+@app.post("/predict/url")
+def predict_url(
+    url: str = Form(..., description="YouTube/RTSP/HTTP de video"),
+    duration_sec: int = Form(15, ge=3, le=120)
+):
     """
-    Proxy para redirigir a la función de estado de youtube_video.
-    Esto solo aplica a jobs de YouTube.
+    Procesa un stream por URL durante 'duration_sec' segundos y guarda resultados.
     """
-    from .routes.youtube_video import get_job_status
-    return get_job_status(job_id)
+    try:
+        fps, elapsed, summary = analyze_stream_url(url, duration_sec=duration_sec)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    id_video = persist_results(
+        vtype="url",
+        name=url,
+        fps=fps,
+        total_secs=elapsed,
+        summary=summary,
+    )
+
+    return {
+        "id_video": id_video,
+        "type": "url",
+        "name": url,
+        "fps_estimated": fps,
+        "processed_secs": elapsed,
+        "detections": summary,
+    }
+
+@app.post("/predict/streaming")
+def predict_streaming(
+    duration_sec: int = Form(10, ge=3, le=120),
+    camera_index: int = Form(0)
+):
+    """
+    Toma frames de la webcam 'camera_index' por 'duration_sec' segundos y guarda resultados.
+    """
+    try:
+        fps, elapsed, summary = analyze_webcam(camera_index=camera_index, duration_sec=duration_sec)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    name = f"camera_{camera_index}"
+    id_video = persist_results(
+        vtype="streaming",
+        name=name,
+        fps=fps,
+        total_secs=elapsed,
+        summary=summary,
+    )
+
+    return {
+        "id_video": id_video,
+        "type": "streaming",
+        "name": name,
+        "fps_estimated": fps,
+        "processed_secs": elapsed,
+        "detections": summary,
+    }

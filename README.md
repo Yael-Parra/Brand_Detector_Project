@@ -58,7 +58,6 @@ Este proyecto de <strong>Computer Vision</strong> está diseñado para <strong>d
 
 ## 🧠 Architecture & Services
 
-
 - **Frontend:** React + Vite para carga de contenido y visualización de resultados.  
 - **Backend:** FastAPI para procesar peticiones y ejecutar el modelo YOLO.  
 - **Modelo de IA:** YOLO entrenado con Roboflow para detección de logos.  
@@ -80,6 +79,7 @@ Este proyecto de <strong>Computer Vision</strong> está diseñado para <strong>d
 
 ### ⚙️ Backend
 
+
 ![React](https://img.shields.io/badge/-React-ffffff?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/-Vite-ffffff?logo=vite&logoColor=black)
 ![FastAPI](https://img.shields.io/badge/-FastAPI-ffffff?logo=fastapi&logoColor=black)
@@ -90,7 +90,6 @@ Este proyecto de <strong>Computer Vision</strong> está diseñado para <strong>d
 
 
 ### 🌐 Web UI & Interfaces
-
 -
 
 ---
@@ -100,7 +99,7 @@ Este proyecto de <strong>Computer Vision</strong> está diseñado para <strong>d
 
 
 <p align="center">
-  <img src=https://github.com/Yael-Parra/Brand_Detector_Project/issues/5#issuecomment-3245008872" alt="System Architecture Diagram" width="700"/>
+  <img src=https://github.com/Yael-Parra/Brand_Detector_Project/frontend/public/diagram_arquitecture.png" alt="System Architecture Diagram" width="700"/>
 </p>
 
 
