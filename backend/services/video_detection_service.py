@@ -24,10 +24,13 @@ class VideoMetrics:
     duration_secs: float = 0.0
     processed_frames: int = 0
     detections: Dict[str, int] = None
+    frames_with_label: Dict[str, set] = None  # Frames donde aparece cada etiqueta
     
     def __post_init__(self):
         if self.detections is None:
             self.detections = {}
+        if self.frames_with_label is None:
+            self.frames_with_label = {}
 
 @dataclass
 class ProcessingStatus:
@@ -221,16 +224,24 @@ class VideoDetectionService(BaseDetectionService):
                 results = self.model(frame, verbose=False)
                 detections = self._extract_detections(results)
                 
-                # Filtrar por confianza
+                # Filtrar por confianza (solo detecciones > 50%)
                 filtered_detections = [
                     det for det in detections 
-                    if det['confidence'] >= confidence_threshold
+                    if det['confidence'] > 0.5  # Solo detecciones superiores al 50%
                 ]
                 
                 # Actualizar métricas
+                frame_labels = set()
                 for detection in filtered_detections:
                     label = detection['label']
                     self.metrics.detections[label] = self.metrics.detections.get(label, 0) + 1
+                    frame_labels.add(label)
+                
+                # Registrar frames donde aparece cada etiqueta
+                for label in frame_labels:
+                    if label not in self.metrics.frames_with_label:
+                        self.metrics.frames_with_label[label] = set()
+                    self.metrics.frames_with_label[label].add(frame_count)
                 
                 detections_by_frame.append({
                     "frame_number": frame_count,
@@ -313,10 +324,17 @@ class VideoDetectionService(BaseDetectionService):
         }
         
         for label, count in self.metrics.detections.items():
-            percentage = (count / self.metrics.processed_frames * 100) if self.metrics.processed_frames > 0 else 0
+            # Calcular porcentaje de frames donde aparece la etiqueta
+            frames_with_label = len(self.metrics.frames_with_label.get(label, set()))
+            percentage_of_frames = (frames_with_label / self.metrics.processed_frames * 100) if self.metrics.processed_frames > 0 else 0
+            
+            # Calcular porcentaje de tiempo basado en duración del video
+            time_percentage = (frames_with_label / self.metrics.total_frames * 100) if self.metrics.total_frames > 0 else 0
+            
             summary["detections_by_label"][label] = {
                 "count": count,
-                "percentage_of_frames": percentage
+                "percentage_of_frames": percentage_of_frames,
+                "percentage_of_video_time": round(time_percentage, 2)
             }
         
         return summary
