@@ -1,31 +1,77 @@
 import os
 from pathlib import Path
+from contextlib import asynccontextmanager
 
 import numpy as np
-from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .database.db_insertion_data import connect, disconnect, insert_video, insert_detection
+from backend.config.settings import settings
+from backend.core.logging import app_logger, get_logger
+from backend.core.exceptions import setup_exception_handlers, DatabaseError
+from backend.core.middleware import LoggingMiddleware, SecurityHeadersMiddleware, RequestSizeLimitMiddleware
+from backend.database.db_insertion_data import connect, disconnect, insert_video, insert_detection
 
 # =============================
-# Constantes y utilidades
+# Configuración de la aplicación
 # =============================
-load_dotenv()
+logger = get_logger("main")
 
-app = FastAPI(title="Brand Logo Detector API", version="1.0.0")
 
-# Configurar CORS para el frontend
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),  # Permite todos los dominios si no hay .env
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Gestiona el ciclo de vida de la aplicación"""
+    # Startup
+    logger.info(f"Starting {settings.app_name} v{settings.app_version}")
+    logger.info(f"Environment: {settings.environment}")
+    logger.info(f"Debug mode: {settings.debug}")
+    
+    # Crear directorio de uploads
+    upload_path = Path(settings.upload_dir)
+    upload_path.mkdir(parents=True, exist_ok=True)
+    logger.info(f"Upload directory created: {upload_path.absolute()}")
+    
+    # Verificar conexión a base de datos
+    try:
+        conn = connect()
+        disconnect(conn)
+        logger.info("Database connection verified successfully")
+    except Exception as e:
+        logger.error(f"Database connection failed: {e}")
+        raise DatabaseError("Failed to connect to database", operation="startup", details={"error": str(e)})
+    
+    yield
+    
+    # Shutdown
+    logger.info(f"Shutting down {settings.app_name}")
+
+
+app = FastAPI(
+    title=settings.app_name,
+    version=settings.app_version,
+    debug=settings.debug,
+    lifespan=lifespan
 )
 
-# Carpeta para uploads
-UPLOAD_DIR = Path("data/uploads")
+# Configurar manejo de errores
+setup_exception_handlers(app)
+
+# Configurar CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins,
+    allow_credentials=True,
+    allow_methods=settings.cors_methods,
+    allow_headers=settings.cors_headers,
+)
+
+# Configurar middlewares personalizados
+app.add_middleware(RequestSizeLimitMiddleware)
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(LoggingMiddleware)
+
+# Carpeta para uploads (usando configuración centralizada)
+UPLOAD_DIR = Path(settings.upload_dir)
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 # =============================
@@ -36,9 +82,16 @@ def persist_results(*, vtype: str, name: str, fps: float, total_secs: float, sum
     Guarda el video o imagen y sus detecciones en la base de datos.
     Si no hay detecciones, inserta un placeholder.
     """
-    conn = connect()
+    db_logger = get_logger("database")
+    conn = None
+    
     try:
+        conn = connect()
+        db_logger.debug(f"Connected to database for persisting results: {name}")
+        
         id_video = insert_video(conn, vtype=vtype, name=name, total_secs=total_secs)
+        db_logger.info(f"Video inserted with ID: {id_video}")
+        
         inserted = 0
         if summary:
             for label, info in summary.items():
@@ -51,6 +104,7 @@ def persist_results(*, vtype: str, name: str, fps: float, total_secs: float, sum
                     percent=float(info.get("percentage", 0.0)),
                 )
                 inserted += 1
+                db_logger.debug(f"Detection inserted: {label} - {info.get('frames', 0)} frames")
         else:
             # Insert placeholder si no hay detecciones
             insert_detection(
@@ -62,27 +116,73 @@ def persist_results(*, vtype: str, name: str, fps: float, total_secs: float, sum
                 percent=0.0,
             )
             inserted = 1
+            db_logger.info("No detections found, inserted placeholder")
+        
         if hasattr(conn, "commit"):
             conn.commit()
-        print(f"[persist] OK video={id_video} type={vtype} name={name} total_secs={total_secs:.3f} fps={fps:.2f} rows={inserted}")
+            
+        db_logger.info(
+            f"Results persisted successfully",
+            extra={
+                "video_id": id_video,
+                "type": vtype,
+                "name": name,
+                "total_seconds": round(total_secs, 3),
+                "fps": round(fps, 2),
+                "detections_inserted": inserted
+            }
+        )
         return id_video
+        
     except Exception as e:
-        try:
-            if hasattr(conn, "rollback"):
-                conn.rollback()
-        except Exception:
-            pass
-        print(f"[persist] ERROR: {e}")
-        raise
+        db_logger.error(
+            f"Failed to persist results for {name}",
+            extra={
+                "error": str(e),
+                "type": vtype,
+                "name": name,
+                "total_seconds": total_secs,
+                "fps": fps
+            }
+        )
+        
+        if conn:
+            try:
+                if hasattr(conn, "rollback"):
+                    conn.rollback()
+                    db_logger.debug("Database transaction rolled back")
+            except Exception as rollback_error:
+                db_logger.error(f"Failed to rollback transaction: {rollback_error}")
+        
+        raise DatabaseError(
+            f"Failed to persist results for {name}",
+            operation="persist_results",
+            details={"original_error": str(e), "file_name": name, "file_type": vtype}
+        )
+        
     finally:
-        disconnect(conn)
+        if conn:
+            try:
+                disconnect(conn)
+                db_logger.debug("Database connection closed")
+            except Exception as disconnect_error:
+                db_logger.error(f"Failed to close database connection: {disconnect_error}")
 
 # =============================
 # Endpoint base
 # =============================
 @app.get("/")
 def health():
-    return {"status": "ok"}
+    """Endpoint de salud de la aplicación"""
+    api_logger = get_logger("api")
+    api_logger.debug("Health check requested")
+    
+    return {
+        "status": "ok",
+        "app_name": settings.app_name,
+        "version": settings.app_version,
+        "environment": settings.environment
+    }
 
 # =============================
 # Routers separados
