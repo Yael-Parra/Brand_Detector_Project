@@ -446,6 +446,7 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
             video_job_status[job_id]["processed_video_path"] = processed_video_path
         
         label_frames = {}
+        frames_with_label = {}  # Seguimiento de frames donde aparece cada etiqueta
         frame_idx = 0
         total_detections = 0
         
@@ -459,7 +460,7 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
             results = model(frame)
             frame_detections = 0
             
-            # Dibujar las detecciones en el frame
+            # Dibujar las detecciones en el frame (solo confianza > 50%)
             for r in results:
                 boxes = r.boxes
                 for box in boxes:
@@ -468,9 +469,16 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
                     label = model.names.get(cls, str(cls))
                     confidence = float(box.conf[0]) if hasattr(box, 'conf') else 0.0
                     
-                    if label:
+                    # Solo procesar detecciones con confianza superior al 50%
+                    if label and confidence > 0.5:
                         # Guardar la etiqueta con su nombre real
                         label_frames[label] = label_frames.get(label, 0) + 1
+                        
+                        # Agregar el frame actual al conjunto de frames de esta etiqueta
+                        if label not in frames_with_label:
+                            frames_with_label[label] = set()
+                        frames_with_label[label].add(frame_idx)
+                        
                         frame_detections += 1
                         
                         # Guardar la detección con timestamp para mostrarla en la interfaz
@@ -819,7 +827,7 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
         
         # Generar resumen de detecciones
         from ..services.yolo_service import summarize_counts
-        detections_summary = summarize_counts(label_frames, frame_idx)
+        detections_summary = summarize_counts(label_frames, frame_idx, frames_with_label, fps)
         
         # Actualizar el estado final del trabajo con el mutex
         with video_job_status_lock:
