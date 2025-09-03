@@ -2,6 +2,9 @@
 .env
 .venv
 
+.venv310
+.venv_2/
+
 # uv
 uv.lock
 .python-version
@@ -15,4 +18,14 @@ data/uploads/
 
 runs/
 
+
 .DS_Store
+
+temp_videos/
+
+venv2/
+
+video_job_status.json
+package-lock.json
+
+
