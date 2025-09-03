@@ -26,6 +26,7 @@ export default function AppPage({data, setData, setJobId, jobId}){
   const prevOption = () => {
     setActiveOption((prev) => (prev - 1 + options.length) % options.length)
   }
+
   const handleProcess = async () => {
     setErrorMessage('')
     
@@ -66,14 +67,13 @@ export default function AppPage({data, setData, setJobId, jobId}){
           throw new Error(result.error)
         }
         
-        // Crear un objeto de datos con la información recibida
         const sample = {
           video_url: youtubeUrl,
           detections: result.detections || [],
           total_video_time_segs: result.total_video_time_segs || 0
         }
         
-        setJobId(`youtube-job-${Date.now()}`)
+        setJobId(result.job_id || `youtube-job-${Date.now()}`)
         setData(sample)
         setShowResults(true)
       } else if (activeOption === 1) { // Video MP4
@@ -81,11 +81,9 @@ export default function AppPage({data, setData, setJobId, jobId}){
           throw new Error('No se ha seleccionado ningún archivo de video')
         }
         
-        // Crear un FormData para enviar el archivo
         const formData = new FormData()
         formData.append('file', selectedFile)
         
-        // Enviar el archivo al backend
         const response = await fetch('http://localhost:8000/predict/mp4', {
           method: 'POST',
           body: formData
@@ -97,10 +95,9 @@ export default function AppPage({data, setData, setJobId, jobId}){
         
         const result = await response.json()
         
-        // Crear un objeto de datos con la información recibida
         const sample = {
           video_file: selectedFile.name,
-          video_url: URL.createObjectURL(selectedFile), // Crear URL para el video local
+          video_url: URL.createObjectURL(selectedFile),
           detections: result.detections || []
         }
         
@@ -112,11 +109,9 @@ export default function AppPage({data, setData, setJobId, jobId}){
           throw new Error('No se ha seleccionado ninguna imagen')
         }
         
-        // Crear un FormData para enviar el archivo
         const formData = new FormData()
         formData.append('file', selectedFile)
         
-        // Enviar el archivo al backend
         const response = await fetch('http://localhost:8000/process/image', {
           method: 'POST',
           body: formData
@@ -128,7 +123,6 @@ export default function AppPage({data, setData, setJobId, jobId}){
         
         const result = await response.json()
         
-        // Crear un objeto de datos con la información recibida
         const sample = {
           image_url: URL.createObjectURL(selectedFile),
           detections: result.detections || [],
@@ -146,10 +140,6 @@ export default function AppPage({data, setData, setJobId, jobId}){
     } finally {
       setLoading(false)
     }
-  }
-
-  const shouldShowButton = () => {
-    return true // Siempre visible
   }
 
   const ActiveComponent = options[activeOption].component
@@ -170,7 +160,8 @@ export default function AppPage({data, setData, setJobId, jobId}){
             </button>
             
             <div className="carousel-track">
-              {options.map((option, index) => (                <div 
+              {options.map((option, index) => (                
+                <div 
                   key={option.id}
                   className={`carousel-item ${index === activeOption ? 'active' : ''}`}
                   onClick={() => setActiveOption(index)}
@@ -183,48 +174,50 @@ export default function AppPage({data, setData, setJobId, jobId}){
             <button className="carousel-btn next" onClick={nextOption}>
               ›
             </button>
-          </div>          {/* Active Component */}
+          </div>
+
+          {/* Active Component */}
           <div className="active-uploader">
             <ActiveComponent 
               onResult={(r, id) => {
                 setHasFile(true)
-                setSelectedFile(r) // Guardar el archivo seleccionado
+                setSelectedFile(r)
                 setShowResults(false) 
                 setErrorMessage('')
               }}
               onUrlChange={activeOption === 2 ? (url) => {
                 setYoutubeUrl(url)
-                setHasFile(!!url.trim())
                 setShowResults(false)
                 setErrorMessage('')
               } : undefined}
             />
-          </div>          {/*Button */}
-          {shouldShowButton() && (
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem', marginBottom: '2rem'}}>
-              <button 
-                className="button analyze-button" 
-                onClick={handleProcess}
-                disabled={loading}
-              >
-                {loading ? 'Procesando...' : 'Analizar'}
-              </button>
-              
-              {/* Error Message */}
-              {errorMessage && (
-                <div style={{
-                  color: 'var(--white)', 
-                  fontSize: '0.9rem', 
-                  marginTop: '0.5rem',
-                  textAlign: 'center',
-                  opacity: '0.8'
-                }}>
-                  {errorMessage}
-                </div>
-              )}
-            </div>
-          )}
-        </div>{/* Results Section */}
+          </div>
+
+          {/*Button */}
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem', marginBottom: '2rem'}}>
+            <button 
+              className="button analyze-button" 
+              onClick={handleProcess}
+              disabled={loading}
+            >
+              {loading ? 'Procesando...' : 'Analizar'}
+            </button>
+            
+            {errorMessage && (
+              <div style={{
+                color: 'var(--white)', 
+                fontSize: '0.9rem', 
+                marginTop: '0.5rem',
+                textAlign: 'center',
+                opacity: '0.8'
+              }}>
+                {errorMessage}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Results Section */}
         {showResults && (
           <div className="results-section">
             <ResultViewer data={data} jobId={jobId} />
