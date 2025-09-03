@@ -58,14 +58,11 @@ Este proyecto de <strong>Computer Vision</strong> está diseñado para <strong>d
 
 ## 🧠 Architecture & Services
 
-
-
 - **Frontend:** React + Vite para carga de contenido y visualización de resultados.  
 - **Backend:** FastAPI para procesar peticiones y ejecutar el modelo YOLO.  
 - **Modelo de IA:** YOLO entrenado con Roboflow para detección de logos.  
 - **Base de datos:** PostgreSQL (Neon) para almacenar metadatos y resultados.  
 - **Servicios adicionales:** Integración con streaming en vivo y análisis en tiempo real.  
-
 
 ---
 
@@ -92,9 +89,7 @@ Este proyecto de <strong>Computer Vision</strong> está diseñado para <strong>d
 ![Neon](https://img.shields.io/badge/-Neon-ffffff?logo=neon&logoColor=black)
 
 
-
 ### 🌐 Web UI & Interfaces
-
 -
 
 ---

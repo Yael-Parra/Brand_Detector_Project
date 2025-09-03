@@ -24,8 +24,8 @@ runs/
 temp_videos/
 
 venv2/
-
 video_job_status.json
-package-lock.json
 
+index.html
 
+logs/
