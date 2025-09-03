@@ -18986,5 +18986,59 @@
     "end_time": "2025-09-03T11:09:24.777926",
     "fps_estimated": 30.0,
     "processed_secs": 406.81043100357056
+  },
+  "youtube-job-1756892312419": {
+    "status": "processing",
+    "file_name": "unknown_file.mp4",
+    "start_time": "2025-09-03T11:38:32.446095",
+    "detections": 0,
+    "frame_count": 0,
+    "progress": 0,
+    "total_frames": 100
+  },
+  "youtube-job-1756892793763": {
+    "status": "processing",
+    "file_name": "unknown_file.mp4",
+    "start_time": "2025-09-03T11:46:33.788383",
+    "detections": 0,
+    "frame_count": 0,
+    "progress": 0,
+    "total_frames": 100
+  },
+  "youtube-job-1756893309253": {
+    "status": "processing",
+    "file_name": "unknown_file.mp4",
+    "start_time": "2025-09-03T11:55:09.283013",
+    "detections": 0,
+    "frame_count": 0,
+    "progress": 0,
+    "total_frames": 100
+  },
+  "youtube-job-1756893539376": {
+    "status": "processing",
+    "file_name": "unknown_file.mp4",
+    "start_time": "2025-09-03T11:58:59.405430",
+    "detections": 0,
+    "frame_count": 0,
+    "progress": 0,
+    "total_frames": 100
+  },
+  "youtube-job-1756894040349": {
+    "status": "processing",
+    "file_name": "unknown_file.mp4",
+    "start_time": "2025-09-03T12:07:20.380369",
+    "detections": 0,
+    "frame_count": 0,
+    "progress": 0,
+    "total_frames": 100
+  },
+  "youtube-job-1756894833168": {
+    "status": "processing",
+    "file_name": "unknown_file.mp4",
+    "start_time": "2025-09-03T12:20:33.198076",
+    "detections": 0,
+    "frame_count": 0,
+    "progress": 0,
+    "total_frames": 100
   }
 }
