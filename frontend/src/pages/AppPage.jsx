@@ -100,6 +100,7 @@ export default function AppPage({data, setData, setJobId, jobId}){
         // Crear un objeto de datos con la información recibida
         const sample = {
           video_file: selectedFile.name,
+          video_url: URL.createObjectURL(selectedFile), // Crear URL para el video local
           detections: result.detections || []
         }
         
@@ -107,12 +108,34 @@ export default function AppPage({data, setData, setJobId, jobId}){
         setData(sample)
         setShowResults(true)
       } else { // Imagen
-        // Para imagen (simulado por ahora)
-        const sample = {
-          detections: [
-            { class: 'logo-brand', score: 0.88, bbox: [80,40,120,120], timestamp: null }
-          ]
+        if (!selectedFile) {
+          throw new Error('No se ha seleccionado ninguna imagen')
         }
+        
+        // Crear un FormData para enviar el archivo
+        const formData = new FormData()
+        formData.append('file', selectedFile)
+        
+        // Enviar el archivo al backend
+        const response = await fetch('http://localhost:8000/process/image', {
+          method: 'POST',
+          body: formData
+        })
+        
+        if (!response.ok) {
+          throw new Error(`Error al procesar la imagen: ${response.statusText}`)
+        }
+        
+        const result = await response.json()
+        
+        // Crear un objeto de datos con la información recibida
+        const sample = {
+          image_url: URL.createObjectURL(selectedFile),
+          detections: result.detections || [],
+          annotated_jpg_base64: result.annotated_jpg_base64,
+          original_jpg_base64: result.original_jpg_base64
+        }
+        
         setJobId(null)
         setData(sample)
         setShowResults(true)
