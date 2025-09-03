@@ -11837,7 +11837,6 @@
     "video_codec": "variable",
     "end_time": "2025-09-02T18:01:42.973691",
     "fps_estimated": 30.0,
-<<<<<<< HEAD
     "processed_secs": 75.79561638832092
   },
   "youtube-job-1756814501398": {
@@ -11846,10 +11845,7 @@
     "start_time": "2025-09-02T14:01:41.414038",
     "detections": 0,
     "frame_count": 0,
-    "progress": 0,
-    "total_frames": 100
-=======
-    "processed_secs": 79.27317309379578
->>>>>>> addcde4f39df74fe1142f3213bd25b82c3c6d11d
+    "progress": 0
+  
   }
 }

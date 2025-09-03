@@ -331,8 +331,7 @@ export default function ResultViewer({data: initialData, jobId}){
         }
         clearTimeout(safetyTimeout)
       }
-    }
-  }, [jobId])
+    }  }, [jobId])
   useEffect(()=>{
     if(!data) return
     
