@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Cam -> YOLO</title>
+    <style>
+      body { font-family: system-ui, sans-serif; display: grid; gap: 12px; padding: 16px; }
+      .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      video, img { width: 100%; background: #000; }
+      pre { max-height: 40vh; overflow: auto; background:#111;color:#eee;padding:8px;border-radius:8px; }
+    </style>
+  </head>
+  <body>
+    <h1>Detección en tiempo “casi” real</h1>
+    <div class="row">
+      <video id="video" autoplay playsinline muted></video>
+      <img id="annotated" alt="Annotated result"/>
+    </div>
+    <pre id="json"></pre>
+
+    <script>
+    const API_BASE = "http://localhost:8000";
+
+    const video = document.getElementById("video");
+    const annotated = document.getElementById("annotated");
+    const pre = document.getElementById("json");
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    // Botones UI
+    const controls = document.createElement("div");
+    controls.style.display = "flex";
+    controls.style.gap = "8px";
+    controls.style.marginBottom = "8px";
+    const btnStart = Object.assign(document.createElement("button"), {textContent: "Iniciar"});
+    const btnStop  = Object.assign(document.createElement("button"), {textContent: "Detener y guardar", disabled: true});
+    controls.append(btnStart, btnStop);
+    document.body.insertBefore(controls, document.body.children[1]);
+
+    let stream = null;
+    let timer = null;
+    let sessionId = null;
+
+    function setRunning(running) {
+      btnStart.disabled = running;
+      btnStop.disabled  = !running;
+    }
+
+    async function start() {
+      // 1) crear sesión
+      const r = await fetch(`${API_BASE}/predict/session/start`, { method: "POST" });
+      const data = await r.json();
+      if (!data.session_id) throw new Error("No llegó session_id");
+      sessionId = data.session_id;
+
+      // 2) pedir cámara
+      stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      video.srcObject = stream;
+
+      // 3) empezar envío (4 fps)
+      timer = setInterval(captureAndSend, 250);
+      setRunning(true);
+    }
+
+    async function stopAndSave() {
+      clearInterval(timer);
+      timer = null;
+      if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+
+      // 4) cerrar sesión y guardar en BD
+      if (sessionId) {
+        try {
+          const r = await fetch(`${API_BASE}/predict/session/finish`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ session_id: sessionId }),
+          });
+          const data = await r.json();
+          pre.textContent = JSON.stringify(data, null, 2); // ver resumen / id guardado
+        } catch (e) {
+          pre.textContent = 'Error al guardar sesión: ' + e;
+        }
+      }
+      sessionId = null;
+      // Limpiar imagen y estado
+      annotated.src = "";
+      setRunning(false);
+    }
+
+    async function captureAndSend() {
+      if (!video.videoWidth || !sessionId) return;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0);
+
+      const blob = await new Promise(res => canvas.toBlob(res, "image/jpeg", 0.8));
+      const form = new FormData();
+      form.append("file", blob, "frame.jpg");
+
+      const r = await fetch(`${API_BASE}/predict/frame?session_id=${encodeURIComponent(sessionId)}`, {
+        method: "POST",
+        body: form
+      });
+      const data = await r.json();
+      pre.textContent = JSON.stringify(data.detections, null, 2);
+      if (data.annotated_jpg_base64) {
+        annotated.src = "data:image/jpeg;base64," + data.annotated_jpg_base64;
+      }
+    }
+
+    btnStart.onclick = start;
+    btnStop.onclick  = stopAndSave;
+
+  </script>
+
+  </body>
+</html>
