@@ -12,7 +12,6 @@
 - [📌 Project Overview](#-project-overview)
 - [📎 Useful links](#-useful-links)
 - [🎯 Target Audience](#-target-audience)
-- [⚙️ General Project Overview](#️-general-project-overview)
 - [🚀 Future features & Implementations](#-future-features--implementations)
 - [🛠️ Tools & Technologies](#-tools--technologies)
 - [🧪 Model Architecture](#-model-architecture)
@@ -31,6 +30,7 @@ Este proyecto de <strong>Computer Vision</strong> está diseñado para <strong>d
 
 
 ---
+
 ## 📎 Useful links
 
 - https://app.roboflow.com/test1mrm/customlogomercedez-hxxq6/overview 
@@ -43,12 +43,6 @@ Este proyecto de <strong>Computer Vision</strong> está diseñado para <strong>d
 - **Organizaciones deportivas** y eventos para evaluar visibilidad de patrocinadores.
   
 ---
-
-## 🔧 General Project Overview
-
-Este proyecto de **Computer Vision** permite la **detección y análisis de logos** en imágenes, vídeos, enlaces o streaming en vivo, utilizando un modelo **YOLO** entrenado con **Roboflow** e integrado en un backend **FastAPI**.  
-El sistema procesa el contenido, identifica marcas, calcula métricas de aparición y almacena los resultados en una base de datos **PostgreSQL (Neon)**.  
-El frontend, desarrollado con **React + Vite**, ofrece una interfaz intuitiva para subir o capturar contenido y visualizar los resultados.
 
 ### Features
 
