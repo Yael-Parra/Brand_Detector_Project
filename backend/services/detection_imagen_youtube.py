@@ -3,7 +3,7 @@ import cv2
 import imutils
 # Cargamos el modelo YOLO
 # model = YOLO("yolo11n.pt")
-model = YOLO("best_v5.pt")
+model = YOLO("best.pt")
 # Especificar la URL del video
 # source = "https://www.youtube.com/watch?v=SWo_7mELz-o&t"
 source = "https://www.youtube.com/watch?v=oaExWXqwkqg"
