@@ -1,0 +1,1323 @@
+/* =======================================================================
+   LOGIFIND - BRAND DETECTION APP STYLES
+   =======================================================================
+   
+   ARQUITECTURA DEL DISEÑO:
+   - Color scheme: Negro (#000) con texto blanco (#fff)
+   - Tipografía: Inter font con weights 400 (texto) y 700 (títulos)
+   - Componentes: Cards con bordes blancos y border-radius redondeados
+   - Responsive: Mobile-first con breakpoints en 768px y 1024px
+   - Layout: CSS Grid y Flexbox para disposición de elementos
+   
+   ======================================================================= */
+
+/* ===============================================
+   1. VARIABLES GLOBALES Y CONFIGURACIÓN BASE
+   =============================================== */
+
+/* Variables de color y tipografía */
+:root {
+  --black: #000000;
+  --gray-dark: #1a1a1a;
+  --gray: #333333;
+  --gray-light: #cccccc;
+  --gray-lighter: #e5e5e5;
+  --white: #ffffff;
+  --primary: #4CAF50; /* Color verde para la barra de progreso */
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Reset universal y configuración base del body */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font);
+  font-weight: 400;
+  color: var(--white);
+  background-color: var(--black);
+  scroll-behavior: smooth;
+  line-height: 1.6;
+}
+
+/* Configuración tipográfica global */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font);
+  font-weight: 700;
+  margin: 0;
+}
+
+p, span, div, li, a, input, button, textarea {
+  font-family: var(--font);
+  font-weight: 400;
+}
+
+strong, b {
+  font-weight: 700;
+}
+
+/* ===============================================
+   2. LAYOUT PRINCIPAL Y ESTRUCTURA DE PÁGINAS
+   =============================================== */
+
+/* Contenedor principal de la aplicación */
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Área de contenido principal (excluye header/footer) */
+.main-content {
+  flex: 1;
+  padding-top: 80px; /* Compensa altura del header fijo */
+}
+
+/* Sistema de páginas con navegación por estados */
+.page {
+  display: none;
+  min-height: calc(100vh - 160px);
+  padding: 2rem;
+}
+
+.page.active {
+  display: block;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Contenedor centralizado para el contenido de páginas */
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ===============================================
+   4. COMPONENTES DE PROCESAMIENTO EN TIEMPO REAL
+   =============================================== */
+
+/* Estilos para la barra de progreso */
+.progress-bar-container {
+  width: 100%;
+  height: 10px;
+  background-color: var(--gray-dark);
+  border-radius: 5px;
+  margin: 10px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--primary);
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+/* Estilos para la información de procesamiento */
+.processing-info {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid var(--white);
+}
+
+.processing-info h3 {
+  margin-bottom: 10px;
+  color: var(--white);
+}
+
+.live-detections {
+  margin-top: 10px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+/* ===============================================
+   5. SECCIONES HERO Y PÁGINA DE INICIO
+   =============================================== */
+
+/* Hero base genérico */
+.hero {
+  text-align: center;
+  padding: 4rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 20px rgba(255, 255, 255, 0.05);
+  margin-bottom: 2rem;
+  background: var(--gray-dark);
+  color: var(--white);
+  border-radius: 15px;
+  margin: 1rem 0 2rem 0;
+}
+
+.hero h1 {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--white);
+  text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+  letter-spacing: 1px;
+}
+
+.hero p {
+  font-family: var(--font);
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: var(--white);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Hero especializado para páginas App y Nosotros - solo título con borde */
+.hero--about {
+  background: var(--black);
+  color: var(--white);
+  padding: 3rem 2rem;
+  margin: 1rem 0 2rem 0;
+  text-align: center;
+  border: none;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero--about h1 {
+  background: var(--black);
+  color: var(--white);
+  border: 2px solid var(--white);
+  border-radius: 50px;
+  padding: 1.5rem 2rem;
+  margin: 0 auto 1.5rem auto;
+  display: inline-block;
+  text-align: center;
+}
+
+.hero--about p {
+  color: var(--white);
+  border: none;
+  padding: 0;
+  margin: 0 auto;
+  text-align: center;
+  max-width: 600px;
+}
+
+.hero--about:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* PÁGINA INICIO - Estilo LOGIFIND */
+.hero-main {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4rem 2rem;
+  gap: 4rem;
+}
+
+.hero-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Título principal gigante */
+.main-title {
+  font-family: var(--font);
+  font-weight: 400;
+  font-size: 10rem;
+  line-height: 0.9;
+  color: var(--white);
+  margin-bottom: 2rem;
+  letter-spacing: -0.02em;
+}
+
+/* Badges de tecnología */
+.tech-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: flex-start;
+}
+
+.badge {
+  font-family: var(--font);
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--white);
+  background: transparent;
+  border: 2px solid var(--white);
+  border-radius: 20px;
+  padding: 0.45rem 1rem;
+  letter-spacing: 0.08em;
+}
+
+/* Descripción del hero */
+.hero-description {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 500px;
+}
+
+.hero-description p {
+  font-family: var(--font);
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: var(--white);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.cta-button {
+  font-size: 1.1rem;
+  padding: 18px 40px;
+}
+
+/* ===============================================
+   5. PÁGINA APP - CAROUSEL Y DETECTOR
+   =============================================== */
+
+/* Layout principal de la página App */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Sección del carousel */
+.carousel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Contenedor del carousel con controles */
+.carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+/* Track del carousel con items */
+.carousel-track {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Items individuales del carousel (Imagen, Video, YouTube) */
+.carousel-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 80px;
+  background: var(--black);
+  border: 2px solid var(--white);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  opacity: 0.6;
+  transform: scale(0.9);
+}
+
+.carousel-item.active {
+  opacity: 1;
+  transform: scale(1);
+  border-color: var(--white);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.carousel-item:hover {
+  opacity: 1;
+  transform: scale(0.95);
+  border-color: var(--white);
+}
+
+.carousel-item h3 {
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--white);
+  margin: 0;
+}
+
+/* Botones de navegación del carousel */
+.carousel-btn {
+  background: var(--black);
+  border: 2px solid var(--white);
+  color: var(--white);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.carousel-btn:hover {
+  background: var(--white);
+  color: var(--black);
+  transform: scale(1.1);
+}
+
+/* Uploader activo del carousel */
+.active-uploader {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.active-uploader .card {
+  max-width: 500px;
+  width: 100%;
+  padding: 2.5rem;
+}
+
+/* Sección de resultados */
+.results-section {
+  background: var(--black);
+  border: 2px solid var(--white);
+  border-radius: 20px;
+  padding: 1.5rem;
+  min-height: 300px;
+}
+
+/* Layout legacy para compatibilidad */
+.detector-container {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ===============================================
+   3. HEADER Y NAVEGACIÓN
+   =============================================== */
+
+/* Header fijo con backdrop blur */
+.header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: var(--black);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 20px rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  animation: slideInDown 0.8s ease-out;
+}
+
+/* Logo del header */
+.logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.logo img {
+  height: 60px;
+  transition: all 0.3s ease;
+}
+
+/* Navegación principal */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav a {
+  font-family: var(--font);
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--white);
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  position: relative;
+  border: 2px solid transparent;
+  overflow: hidden;
+}
+
+.nav a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.nav a:hover {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.nav a:hover::before {
+  left: 100%;
+}
+
+.nav a:active {
+  transform: translateY(0);
+}
+
+.nav a.active {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--white);
+}
+
+/* Menu hamburguesa para móvil */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 0.5rem;
+  gap: 4px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.hamburger:hover {
+  border-color: var(--white);
+  background: rgba(255, 255, 255, 0.05);
+  transform: scale(1.05);
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: var(--white);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+/* Animación hamburguesa activa */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Navegación móvil responsiva */
+@media (max-width: 768px) {
+  .nav {
+    position: fixed;
+    top: 70px;
+    right: -100%;
+    width: 300px;
+    height: calc(100vh - 70px);
+    background: var(--black);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 2rem;
+    transition: right 0.3s ease;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav.active {
+    right: 0;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+/* ===============================================
+   6. PÁGINA NOSOTROS - EQUIPO Y CARACTERÍSTICAS
+   =============================================== */
+
+/* Contenido general de la página About */
+.about-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Cards de características */
+.feature-card {
+  background: var(--black);
+  border: 2px solid var(--white);
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  border-color: var(--white);
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.feature-card h3 {
+  font-family: var(--font);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+
+.feature-card p {
+  font-family: var(--font);
+  font-weight: 400;
+  color: var(--white);
+}
+
+/* Sección del equipo */
+.team-section {
+  margin: 3rem 0;
+  padding: 2rem 0;
+}
+
+.team-section h2 {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 2.5rem;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+/* Grid del equipo */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Miembro individual del equipo */
+.team-member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.team-member:hover {
+  transform: translateY(-10px);
+}
+
+/* Foto circular del miembro */
+.team-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid var(--white);
+  background: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.team-photo:hover {
+  border-color: var(--white);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.team-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Placeholder cuando no hay imagen */
+.team-photo:empty::before {
+  content: "📷";
+  font-size: 3rem;
+  color: var(--white);
+  opacity: 0.5;
+}
+
+.team-member h3 {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+
+.team-member p {
+  font-family: var(--font);
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--white);
+  opacity: 0.8;
+  margin-bottom: 1rem;
+}
+
+/* Icono de LinkedIn */
+.linkedin-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 2px solid var(--white);
+  border-radius: 50%;
+  color: var(--white);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.linkedin-icon:hover {
+  background: var(--white);
+  color: var(--black);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+.linkedin-icon svg {
+  width: 20px;
+  height: 20px;
+  transition: all 0.3s ease;
+}
+
+/* ===============================================
+   7. COMPONENTES REUTILIZABLES - CARDS Y BOTONES
+   =============================================== */
+
+/* Cards base con efectos hover */
+.card {
+  background: var(--black);
+  border: 2px solid var(--white);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.15);
+  border-color: var(--white);
+}
+
+.card:hover .button {
+  animation: pulse 2s infinite;
+}
+
+.card h3 {
+  font-family: var(--font);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+/* Botones base */
+.button {
+  font-family: var(--font);
+  font-weight: 600;
+  display: inline-block;
+  padding: 15px 30px;
+  background: var(--black);
+  color: var(--white);
+  border: 2px solid var(--white);
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.button:hover {
+  background: var(--white);
+  color: var(--black);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+.button:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+/* Botón de análisis especializado */
+.analyze-button {
+  font-size: 1.2rem;
+  padding: 20px 50px;
+  font-weight: 600;
+  min-width: 200px;
+}
+
+.analyze-button:hover {
+  transform: translateY(-3px) scale(1.05);
+}
+
+.analyze-button:disabled {
+  opacity: 0.6;
+  transform: none;
+  cursor: not-allowed;
+}
+
+.analyze-button:disabled:hover {
+  transform: none;
+  background: var(--black);
+  color: var(--white);
+}
+
+/* ===============================================
+   8. FORMULARIOS Y ELEMENTOS DE INPUT
+   =============================================== */
+
+/* Inputs de archivo y texto */
+input[type="file"],
+input[type="text"] {
+  font-family: var(--font);
+  font-weight: 400;
+  width: 100%;
+  padding: 1rem;
+  background: var(--black);
+  border: 2px solid var(--white);
+  border-radius: 15px;
+  color: var(--white);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+input[type="file"]:focus,
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--white);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+input[type="file"]:hover {
+  border-color: var(--white);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+input[type="text"]::placeholder {
+  color: var(--gray-light);
+}
+
+/* ===============================================
+   9. ÁREA DE RESULTADOS Y VISUALIZACIÓN
+   =============================================== */
+
+/* Área de resultados base */
+.results {
+  min-height: 500px;
+  background: var(--black);
+  border: 2px solid var(--white);
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+/* Preview de imágenes/videos */
+.preview {
+  position: relative;
+  background: var(--gray-dark);
+  border-radius: 15px;
+  overflow: hidden;
+  margin-top: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Canvas para dibujo de detecciones */
+canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 15px;
+}
+
+/* Estado de carga */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--white);
+  animation: spin 1s ease-in-out infinite;
+}
+
+/* ===============================================
+   10. FOOTER
+   =============================================== */
+
+.footer {
+  padding: 2rem;
+  text-align: center;
+  color: var(--white);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -2px 20px rgba(255, 255, 255, 0.05);
+  background: var(--black);
+}
+
+.footer p {
+  font-family: var(--font);
+  font-weight: 400;
+}
+
+/* ===============================================
+   11. ANIMACIONES Y EFECTOS
+   =============================================== */
+
+/* Animación de entrada para páginas */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efecto pulse para botones */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+/* Animación de carga */
+@keyframes spin {
+  to { 
+    transform: rotate(360deg); 
+  }
+}
+
+/* Animación de entrada del header */
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación de brillo para botones */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* ===============================================
+   11. CURSOR FOLLOWER - LOGO SEGUIDOR
+   =============================================== */
+
+/* Seguidor del cursor con logo 6.png */
+.cursor-follower {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transform: scale(0.3) rotate(-15deg);
+  transition: all 0.2s ease-out;
+  filter: drop-shadow(0 4px 12px rgba(255, 255, 255, 0.4));
+}
+
+.cursor-follower.visible {
+  opacity: 0.8;
+  transform: scale(1) rotate(0deg);
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+.cursor-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(1.2) contrast(1.1);
+}
+
+/* Animación de flotación suave */
+@keyframes logoFloat {
+  0%, 100% {
+    transform: scale(1) translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.05) translateY(-2px) rotate(1deg);
+  }
+  50% {
+    transform: scale(1) translateY(0px) rotate(0deg);
+  }
+  75% {
+    transform: scale(1.05) translateY(-2px) rotate(-1deg);
+  }
+}
+
+/* Ocultar en dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+  .cursor-follower {
+    display: none;
+  }
+}
+
+/* Reducir tamaño en pantallas más pequeñas */
+@media (max-width: 768px) {
+  .cursor-follower {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+/* ===============================================
+   12. RESPONSIVE DESIGN - MOBILE FIRST
+   =============================================== */
+
+/* Tablets y desktop pequeño (1024px y menor) */
+@media (max-width: 1024px) {
+  /* Hero principal responsive */
+  .hero-main {
+    flex-direction: column;
+    text-align: center;
+    gap: 3rem;
+  }
+  
+  .main-title {
+    font-size: 8rem;
+  }
+  
+  .tech-badges {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+  
+  .badge {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+
+  /* Detector layout responsive */
+  .detector-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+/* Mobile y tablets pequeñas (768px y menor) */
+@media (max-width: 768px) {
+  /* Tipografía móvil */
+  .hero h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+  }
+  
+  .hero p {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+  
+  /* Layout móvil */
+  .page {
+    padding: 1rem;
+  }
+  
+  .card {
+    padding: 1.5rem;
+  }
+
+  /* Hero principal móvil */
+  .main-title {
+    font-size: 6rem;
+  }
+  
+  .hero-description p {
+    font-size: 1rem;
+  }
+  
+  .tech-badges {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .badge {
+    font-size: 0.8rem;
+    padding: 0.45rem 0.9rem;
+  }
+
+  /* Carousel móvil */
+  .carousel-item {
+    width: 100px;
+    height: 70px;
+  }
+  
+  .carousel-item h3 {
+    font-size: 0.9rem;
+  }
+  
+  .carousel-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+  }
+  
+  .app-layout {
+    gap: 1.5rem;
+  }
+  /* Equipo móvil */
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .team-photo {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .team-section h2 {
+    font-size: 2rem;
+  }
+  
+  .linkedin-icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .linkedin-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Mobile especial - Inicio alineado a la izquierda */
+@media (max-width: 768px) {
+  .hero-main {
+    flex-direction: column;
+    text-align: left;
+    align-items: flex-start;
+    padding: 2.5rem 1rem;
+    gap: 1.5rem;
+  }
+
+  .hero-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .main-title {
+    font-size: 6rem;
+    line-height: 0.95;
+    text-align: left;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .tech-badges {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 0.25rem;
+  }
+
+  .badge {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .hero-description {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .hero-description p {
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  .hero-description .button,
+  .hero-description .cta-button {
+    align-self: flex-start;
+  }
+}
+
+/* Mobile muy pequeño (480px y menor) */
+@media (max-width: 480px) {
+  /* Carousel extra pequeño */
+  .carousel-track {
+    gap: 0.5rem;
+  }
+  
+  .carousel-item {
+    width: 80px;
+    height: 60px;
+  }
+  
+  .carousel-item h3 {
+    font-size: 0.8rem;
+  }
+
+  /* Equipo extra pequeño */
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .team-photo {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .team-member h3 {
+    font-size: 0.9rem;
+  }
+    .team-member p {
+    font-size: 0.8rem;
+  }
+  
+  .linkedin-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .linkedin-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* ===============================================
+   13. LEGACY STYLES Y COMPATIBILIDAD
+   =============================================== */
+
+/* Layout legacy para contenedor principal */
+.container {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 2rem;
+}
+
+/* Hero legacy duplicado para compatibilidad */
+.hero.hero--about {
+  background: var(--black);
+  color: var(--white);
+  padding: 1.5rem 2rem;
+  border-radius: 0;
+  margin: 1rem 0 2rem 0;
+  text-align: center;
+  border: none;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero.hero--about h1 {
+  background: var(--black);
+  color: var(--white);
+  border: 2px solid var(--white);
+  border-radius: 50px;
+  padding: 1.5rem 2rem;
+  margin: 0 auto 1.5rem auto;
+  display: inline-block;
+  text-align: center;
+}
+
+.hero.hero--about p {
+  color: var(--white);
+  border: none;
+  padding: 0;
+  margin: 0 auto;
+  text-align: center;
+  max-width: 600px;
+}
+
+.hero.hero--about:hover {
+  transform: none;
+  box-shadow: none;
+}
