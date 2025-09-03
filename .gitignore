@@ -27,3 +27,5 @@ venv2/
 video_job_status.json
 
 index.html
+
+logs/
