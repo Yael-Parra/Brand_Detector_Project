@@ -529,17 +529,11 @@ export default function ResultViewer({data: initialData, jobId}){
           <h4 style={{color: 'var(--white)', marginBottom: '1rem'}}>Video Procesado</h4>
           
           {/* Información de diagnóstico del video */}
-          <div style={{background: 'rgba(0,0,0,0.2)', padding: '0.5rem', borderRadius: '5px', marginBottom: '1rem', fontSize: '0.8rem'}}>
-            <div><strong>URL del video:</strong> {data.video_url || processingVideoUrl}</div>
-            <div><strong>Tipo:</strong> {data.video_url ? 'Procesado final' : 'Durante procesamiento'}</div>
+          <div style={{background: 'rgba(0,0,0,0.2)', padding: '0.5rem', borderRadius: '5px', marginBottom: '1rem', fontSize: '0.8rem'}}>       
             {data.video_info && (
               <>
-                <div><strong>Ruta:</strong> {data.video_info.path}</div>
-                <div><strong>Tamaño:</strong> {(data.video_info.size / 1024 / 1024).toFixed(2)} MB</div>
-                <div><strong>Tipo de video:</strong> {data.video_info.type}</div>
-                <div><strong>Es procesado:</strong> {data.video_info.is_processed ? 'Sí' : 'No'}</div>
-                <div><strong>Es original:</strong> {data.video_info.is_original ? 'Sí' : 'No'}</div>
-                <div><strong>Estado del trabajo:</strong> {data.video_info.job_status}</div>
+                {data.frames_processed && <div><strong>Frames procesados:</strong> {data.frames_processed}</div>}
+                {data.total_video_time_segs && <div><strong>Duración total:</strong> {data.total_video_time_segs}s</div>}
               </>
             )}
             <div style={{display: 'flex', gap: '0.5rem', marginTop: '0.5rem', flexWrap: 'wrap'}}>
@@ -737,7 +731,11 @@ export default function ResultViewer({data: initialData, jobId}){
                                       ...videoData.video_info,
                                       duration: videoDuration
                                     },
-                                    is_processed_video: true
+                                    is_processed_video: true,
+                                    // Mantener las detecciones y métricas existentes
+                                    detections: prevData.detections || [],
+                                    total_video_time_segs: prevData.total_video_time_segs,
+                                    frames_processed: prevData.frames_processed || videoData.frames_processed
                                   }));
                                 };
                               } else {
@@ -753,7 +751,11 @@ export default function ResultViewer({data: initialData, jobId}){
                                     width: videoElement.videoWidth,
                                     height: videoElement.videoHeight
                                   },
-                                  is_processed_video: true
+                                  is_processed_video: true,
+                                  // Mantener las detecciones y métricas existentes
+                                  detections: prevData.detections || [],
+                                  total_video_time_segs: prevData.total_video_time_segs,
+                                  frames_processed: prevData.frames_processed || videoData.frames_processed
                                 }));
                               }
                             })
@@ -779,7 +781,11 @@ export default function ResultViewer({data: initialData, jobId}){
                                       ...videoData.video_info,
                                       duration: videoDuration
                                     },
-                                    is_processed_video: true
+                                    is_processed_video: true,
+                                    // Mantener las detecciones y métricas existentes
+                                    detections: prevData.detections || [],
+                                    total_video_time_segs: prevData.total_video_time_segs,
+                                    frames_processed: prevData.frames_processed || videoData.frames_processed
                                   }));
                                 };
                               } else {
@@ -788,7 +794,11 @@ export default function ResultViewer({data: initialData, jobId}){
                                   ...prevData,
                                   video_url: `http://localhost:8000${videoUrlWithTimestamp}`,
                                   video_info: videoData.video_info,
-                                  is_processed_video: true
+                                  is_processed_video: true,
+                                  // Mantener las detecciones y métricas existentes
+                                  detections: prevData.detections || [],
+                                  total_video_time_segs: prevData.total_video_time_segs,
+                                  frames_processed: prevData.frames_processed || videoData.frames_processed
                                 }));
                               }
                             });
@@ -856,7 +866,11 @@ export default function ResultViewer({data: initialData, jobId}){
                                       width: videoElement.videoWidth,
                                       height: videoElement.videoHeight
                                     },
-                                    is_processed_video: false
+                                    is_processed_video: false,
+                                    // Mantener las detecciones y métricas existentes
+                                    detections: prevData.detections || [],
+                                    total_video_time_segs: prevData.total_video_time_segs,
+                                    frames_processed: prevData.frames_processed || videoData.frames_processed
                                   }));
                                 };
                               } else {
@@ -865,7 +879,11 @@ export default function ResultViewer({data: initialData, jobId}){
                                   ...prevData,
                                   video_url: blobUrl,
                                   video_info: videoData.video_info,
-                                  is_processed_video: false
+                                  is_processed_video: false,
+                                  // Mantener las detecciones y métricas existentes
+                                  detections: prevData.detections || [],
+                                  total_video_time_segs: prevData.total_video_time_segs,
+                                  frames_processed: prevData.frames_processed || videoData.frames_processed
                                 }));
                               }
                             })
@@ -882,7 +900,11 @@ export default function ResultViewer({data: initialData, jobId}){
                               setData(prevData => ({
                                 ...prevData,
                                 video_url: videoUrlWithTimestamp,
-                                video_info: videoData.video_info
+                                video_info: videoData.video_info,
+                                // Mantener las detecciones y métricas existentes
+                                detections: prevData.detections || [],
+                                total_video_time_segs: prevData.total_video_time_segs,
+                                frames_processed: prevData.frames_processed || videoData.frames_processed
                               }));
                             });
                         }
@@ -931,6 +953,11 @@ export default function ResultViewer({data: initialData, jobId}){
                         <strong>Duración:</strong> {data.video_info.duration}
                       </p>
                     )}
+                    {data.total_video_time_segs && (
+                      <p style={{margin: '0 0 0.25rem 0'}}>
+                        <strong>Tiempo total:</strong> {data.total_video_time_segs}s
+                      </p>
+                    )}
                     {data.video_info.width && data.video_info.height && (
                       <p style={{margin: '0 0 0.25rem 0'}}>
                         <strong>Resolución:</strong> {data.video_info.width}x{data.video_info.height}
@@ -949,6 +976,31 @@ export default function ResultViewer({data: initialData, jobId}){
                     <p style={{margin: '0 0 0.25rem 0'}}>
                       <strong>Detecciones:</strong> {summary?.totalDetections || 0}
                     </p>
+                    {data.frames_processed && (
+                      <p style={{margin: '0 0 0.25rem 0'}}>
+                        <strong>Frames procesados:</strong> {data.frames_processed}
+                      </p>
+                    )}
+                    {summary && summary.labelCounts && Object.keys(summary.labelCounts).length > 0 && (
+                      <div style={{margin: '0.5rem 0'}}>
+                        <strong>Tiempo de visualización por etiqueta:</strong>
+                        <div style={{marginTop: '0.5rem'}}>
+                          {Object.entries(summary.labelCounts).map(([label, count], index) => {
+                            // Calcular el porcentaje de tiempo que aparece la etiqueta
+                            const totalFrames = data.frames_processed || 1;
+                            const percentage = ((count / totalFrames) * 100).toFixed(1);
+                            const timeInSeconds = ((count / totalFrames) * (data.total_video_time_segs || 0)).toFixed(1);
+                            
+                            return (
+                              <div key={index} style={{display: 'flex', justifyContent: 'space-between', padding: '0.25rem 0'}}>
+                                <span>{label}:</span>
+                                <span>{timeInSeconds}s ({percentage}%)</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </>
                 )}
               </div>
