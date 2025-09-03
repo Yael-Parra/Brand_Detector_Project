@@ -29,6 +29,17 @@ Este proyecto de <strong>Computer Vision</strong> está diseñado para <strong>d
 </p>
 
 
+
+### Features
+
+| ✅ Pros                                                                 | ❌ Cons                                                                                  |
+|-------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| Detección en tiempo real de logos en múltiples formatos                 | Requiere hardware con GPU para un rendimiento óptimo                                     |
+| Integración completa backend (FastAPI) + frontend (React + Vite)        | Entrenamiento del modelo dependiente de datasets de calidad                              |
+| Métricas detalladas: tiempo total, porcentaje de aparición, FPS         | Procesamiento de vídeos largos puede ser más lento                                       |
+| Base de datos estructurada con historial de detecciones                 |                       |
+| Escalable y adaptable a nuevos logos o marcas                           |                              |
+
 ---
 
 ## 📎 Useful links
@@ -42,17 +53,6 @@ Este proyecto de <strong>Computer Vision</strong> está diseñado para <strong>d
 - **Medios y transmisiones en vivo** que quieran monitorear logos en su contenido.
 - **Organizaciones deportivas** y eventos para evaluar visibilidad de patrocinadores.
   
----
-
-### Features
-
-| ✅ Pros                                                                 | ❌ Cons                                                                                  |
-|-------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| Detección en tiempo real de logos en múltiples formatos                 | Requiere hardware con GPU para un rendimiento óptimo                                     |
-| Integración completa backend (FastAPI) + frontend (React + Vite)        | Entrenamiento del modelo dependiente de datasets de calidad                              |
-| Métricas detalladas: tiempo total, porcentaje de aparición, FPS         | Procesamiento de vídeos largos puede ser más lento                                       |
-| Base de datos estructurada con historial de detecciones                 |                       |
-| Escalable y adaptable a nuevos logos o marcas                           |                              |
 
 ---
 
