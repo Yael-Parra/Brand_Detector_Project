@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 import cv2
 # Cargamos el modelo YOLO
-model = YOLO("best_v5.pt")
+model = YOLO("best.pt")
 # Cargamos el video de entrada
 #video_path = "ruta video..."
 cap = cv2.VideoCapture(0)

@@ -1,7 +1,10 @@
 # enviroment
 .env
 .venv
+
 .venv310
+.venv_2/
+
 # uv
 uv.lock
 .python-version
@@ -11,13 +14,10 @@ pyproject.toml
 *.pyc
 __pycache__/
 
-#frontend 
-node_modules/
-
-# logs
 data/uploads/
 
 runs/
+
 
 .DS_Store
 
