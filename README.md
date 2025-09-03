@@ -75,31 +75,16 @@ resumen
 
 ## 🧠 Architecture & Services
 
-### Video Processing Pipeline
+### 
 
-El proyecto incluye un sistema avanzado de procesamiento de videos que:
-
-1. **Procesa videos con YOLO**: Detecta objetos y logos en videos subidos por el usuario.
-2. **Conversión de formato compatible con navegadores**: 
-   - Utiliza FFmpeg (recomendado) para convertir videos a formato H.264 compatible con todos los navegadores.
-   - Si FFmpeg no está disponible, utiliza OpenCV como alternativa de respaldo.
-3. **Diagnóstico de videos**: Proporciona información detallada sobre los archivos de video para facilitar la depuración.
-
-### Requisitos para procesamiento de video
-
-- **FFmpeg**: Recomendado para la mejor compatibilidad con navegadores web.
-  - Windows: Descargar de [ffmpeg.org](https://ffmpeg.org/download.html) y añadir al PATH
-  - Linux: `sudo apt install ffmpeg`
-  - macOS: `brew install ffmpeg`
 
 ---
 
 ## 🚀 Future Features & Implementations
 
 ### Planned Improvements
-- Mejora en la interfaz de usuario para mostrar más información de diagnóstico
-- Soporte para más formatos de video y optimización del procesamiento
-- Implementación de streaming adaptativo para videos procesados
+-
+-
 
 
 ---
@@ -111,9 +96,6 @@ El proyecto incluye un sistema avanzado de procesamiento de videos que:
 ![FastAPI](https://img.shields.io/badge/-FastAPI-009688?logo=fastapi&logoColor=white)
 ![Pydantic](https://img.shields.io/badge/-Pydantic-3c77ff?logo=pydantic&logoColor=white)
 ![Uvicorn](https://img.shields.io/badge/-Uvicorn-000000?logo=uvicorn&logoColor=white)
-![OpenCV](https://img.shields.io/badge/-OpenCV-5C3EE8?logo=opencv&logoColor=white)
-![FFmpeg](https://img.shields.io/badge/-FFmpeg-007808?logo=ffmpeg&logoColor=white)
-![YOLO](https://img.shields.io/badge/-YOLO-00FFFF?logo=yolo&logoColor=black)
 
 
 
