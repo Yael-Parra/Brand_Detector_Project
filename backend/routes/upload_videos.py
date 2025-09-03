@@ -35,15 +35,29 @@ except Exception as e:
 # Endpoint para procesar videos mp4 subidos
 # =========================================
 
+# Función para crear directorios temporales en el backend
+def create_temp_directory():
+    """Crea un directorio temporal dentro del backend si no existe"""
+    temp_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "temp_videos")
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
+    return temp_dir
+
 @router.post("/predict/mp4")
 async def predict_mp4(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
     # Generar un ID único para este trabajo usando timestamp para compatibilidad con frontend
     job_id = f"video-job-{int(datetime.now().timestamp() * 1000)}"
     
-    # Guardar el archivo temporalmente
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.mp4') as temp_video:
+    # Crear directorio temporal en el backend
+    temp_dir = create_temp_directory()
+    
+    # Guardar el archivo en el directorio temporal del backend
+    filename = f"{job_id}.mp4"
+    temp_video_path = os.path.join(temp_dir, filename)
+    
+    # Escribir el contenido del archivo
+    with open(temp_video_path, "wb") as temp_video:
         temp_video.write(await file.read())
-        temp_video_path = temp_video.name
     
     # Inicializar el estado del trabajo con el mutex
     with video_job_status_lock:
@@ -75,11 +89,37 @@ async def predict_mp4(background_tasks: BackgroundTasks, file: UploadFile = File
 
 # Endpoint para obtener la URL del video durante el procesamiento
 @router.get("/video/{job_id}")
-async def get_video_url(job_id: str):
-    """Obtiene la URL del video para reproducción durante el procesamiento."""
+async def get_video_url(job_id: str, force_original: bool = False, force_processed: bool = False):
+    """Obtiene la URL del video para reproducción durante el procesamiento.
+    
+    Args:
+        job_id: ID del trabajo de procesamiento
+        force_original: Si es True, fuerza el uso del video original
+        force_processed: Si es True, fuerza el uso del video procesado (tiene prioridad sobre force_original)
+    """
     from fastapi.responses import JSONResponse
     from fastapi.staticfiles import StaticFiles
     import os
+    import time
+    from datetime import datetime
+    
+    print(f"\n[{time.strftime('%Y-%m-%d %H:%M:%S')}] SOLICITUD DE VIDEO para job_id: {job_id}")
+    print(f"Parámetros: force_original={force_original}, force_processed={force_processed}")
+    
+    # Información de diagnóstico para ambos videos
+    original_info = {
+        "exists": False,
+        "size": 0,
+        "path": "",
+        "last_modified": ""
+    }
+    
+    processed_info = {
+        "exists": False,
+        "size": 0,
+        "path": "",
+        "last_modified": ""
+    }
     
     with video_job_status_lock:
         if job_id not in video_job_status:
@@ -90,16 +130,83 @@ async def get_video_url(job_id: str):
                         saved_status = json.load(f)
                         if job_id in saved_status:
                             video_job_status[job_id] = saved_status[job_id]
+                            print(f"Estado cargado desde archivo para job_id: {job_id}")
             except Exception as e:
                 print(f"Error al cargar estado desde archivo: {e}")
         
-        if job_id in video_job_status and "video_path" in video_job_status[job_id]:
-            video_path = video_job_status[job_id]["video_path"]
+        if job_id in video_job_status:
+            # Obtener rutas de videos
+            original_path = video_job_status[job_id].get('video_path', '')
+            processed_path = video_job_status[job_id].get('processed_video_path', '')
+            
+            # Verificar video original
+            if original_path and os.path.exists(original_path):
+                original_info["exists"] = True
+                original_info["size"] = os.path.getsize(original_path)
+                original_info["path"] = original_path
+                original_info["last_modified"] = datetime.fromtimestamp(os.path.getmtime(original_path)).strftime('%Y-%m-%d %H:%M:%S')
+            
+            # Verificar video procesado
+            if processed_path and os.path.exists(processed_path):
+                processed_info["exists"] = True
+                processed_info["size"] = os.path.getsize(processed_path)
+                processed_info["path"] = processed_path
+                processed_info["last_modified"] = datetime.fromtimestamp(os.path.getmtime(processed_path)).strftime('%Y-%m-%d %H:%M:%S')
+            
+            # Mostrar información de diagnóstico
+            print(f"Estado actual del trabajo {job_id}:")
+            print(f"  - Status: {video_job_status[job_id].get('status', 'desconocido')}")
+            print(f"  - Video original: {original_path} (existe: {original_info['exists']}, tamaño: {original_info['size']} bytes)")
+            print(f"  - Video procesado: {processed_path} (existe: {processed_info['exists']}, tamaño: {processed_info['size']} bytes)")
+            
+            # Determinar qué video usar según los parámetros y disponibilidad
+            video_path = None
+            video_type = "ninguno"
+            
+            # Prioridad 1: Video procesado forzado
+            if force_processed and processed_info["exists"] and processed_info["size"] > 0:
+                video_path = processed_path
+                video_type = "procesado (forzado)"
+            
+            # Prioridad 2: Video original forzado
+            elif force_original and original_info["exists"] and original_info["size"] > 0:
+                video_path = original_path
+                video_type = "original (forzado)"
+            
+            # Prioridad 3: Video procesado si existe y tiene tamaño
+            elif not force_original and processed_info["exists"] and processed_info["size"] > 0:
+                video_path = processed_path
+                video_type = "procesado"
+                print(f"Video procesado verificado con tamaño: {processed_info['size']} bytes")
+            
+            # Prioridad 4: Video original como fallback
+            elif original_info["exists"] and original_info["size"] > 0:
+                video_path = original_path
+                video_type = "original (fallback)"
             
             # Verificar que el archivo existe
-            if os.path.exists(video_path):
+            if video_path and os.path.exists(video_path):
                 # Crear una URL temporal para el video
-                video_url = f"/temp/{os.path.basename(video_path)}"
+                # Asegurarse de que la URL use el nombre de archivo correcto
+                video_url = f"/temp_videos/{os.path.basename(video_path)}"
+                print(f"URL de video generada: {video_url} para archivo: {video_path}")
+                print(f"Tipo de video seleccionado: {video_type}")
+                
+                # Verificar que el archivo existe y tiene contenido
+                file_size = os.path.getsize(video_path)
+                print(f"Tamaño del archivo de video: {file_size} bytes")
+                
+                # Si el archivo está vacío, intentar regenerar la URL
+                if file_size == 0:
+                    print(f"ADVERTENCIA: El archivo de video tiene tamaño cero: {video_path}")
+                    # Intentar usar el video original si el procesado está vacío
+                    if video_path == processed_path and original_info["exists"] and original_info["size"] > 0:
+                        video_path = original_path
+                        video_url = f"/temp_videos/{os.path.basename(video_path)}"
+                        video_type = "original (fallback por tamaño cero)"
+                        print(f"Usando video original como fallback: {video_path}")
+                        print(f"URL de video regenerada: {video_url}")
+                        print(f"Tipo de video actualizado: {video_type}")
                 
                 # Montar el directorio temporal como un directorio estático si no está montado
                 # Importar app de manera que funcione tanto en modo módulo como en modo script
@@ -114,19 +221,35 @@ async def get_video_url(job_id: str):
                     sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
                     from backend.main import app
                 
-                temp_dir = os.path.dirname(video_path)
+                # Usar el directorio temporal del backend
+                temp_dir = create_temp_directory()
                 
                 # Verificar si ya está montado
                 mounted = False
                 for route in app.routes:
-                    if hasattr(route, "path") and route.path == "/temp":
+                    if hasattr(route, "path") and route.path == "/temp_videos":
                         mounted = True
                         break
                 
                 if not mounted:
-                    app.mount("/temp", StaticFiles(directory=temp_dir), name="temp")
+                    app.mount("/temp_videos", StaticFiles(directory=temp_dir), name="temp_videos")
                 
-                return {"video_url": video_url}
+                # Devolver la URL del video con información de diagnóstico
+                return {
+                    "video_url": video_url,
+                    "video_info": {
+                        "path": video_path,
+                        "size": os.path.getsize(video_path),
+                        "type": video_type,
+                        "is_processed": "processed_video_path" in video_job_status[job_id] and video_path == video_job_status[job_id]["processed_video_path"],
+                        "is_original": "video_path" in video_job_status[job_id] and video_path == video_job_status[job_id]["video_path"],
+                        "job_status": video_job_status[job_id].get("status", "desconocido"),
+                        "last_modified": datetime.fromtimestamp(os.path.getmtime(video_path)).strftime('%Y-%m-%d %H:%M:%S'),
+                        "timestamp": datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+                    },
+                    "original_video": original_info,
+                    "processed_video": processed_info
+                }
             else:
                 return JSONResponse(status_code=404, content={"detail": "Video file not found"})
         else:
@@ -134,9 +257,18 @@ async def get_video_url(job_id: str):
 
 # Endpoint para verificar el estado de un trabajo de procesamiento de video
 @router.get("/status/{job_id}", response_model=dict)
-async def get_job_status(job_id: str):
-    """Obtiene el estado actual de un trabajo de procesamiento de video."""
-    print(f"Solicitud de estado para job_id: {job_id}")
+async def get_job_status(job_id: str, include_video_info: bool = False):
+    """Obtiene el estado actual de un trabajo de procesamiento de video.
+    
+    Args:
+        job_id: ID del trabajo de procesamiento
+        include_video_info: Si es True, incluye información detallada sobre los archivos de video
+    """
+    import time
+    
+    print(f"\n[{time.strftime('%Y-%m-%d %H:%M:%S')}] SOLICITUD DE ESTADO para job_id: {job_id}")
+    print(f"Parámetros: include_video_info={include_video_info}")
+    
     with video_job_status_lock:
         # Intentar cargar el estado desde el archivo si no está en memoria
         if job_id not in video_job_status:
@@ -235,6 +367,32 @@ async def get_job_status(job_id: str):
             if isinstance(status_data["detections"], int):
                 status_data["detections"] = status_data["detections_list"]
         
+        # Añadir información detallada sobre los archivos de video si se solicita
+        if include_video_info:
+            video_info = {}
+            
+            # Verificar el video original
+            if "video_path" in status_data:
+                original_path = status_data["video_path"]
+                video_info["original"] = {
+                    "path": original_path,
+                    "exists": os.path.exists(original_path),
+                    "size": os.path.getsize(original_path) if os.path.exists(original_path) else 0,
+                    "last_modified": time.ctime(os.path.getmtime(original_path)) if os.path.exists(original_path) else "N/A"
+                }
+            
+            # Verificar el video procesado
+            if "processed_video_path" in status_data:
+                processed_path = status_data["processed_video_path"]
+                video_info["processed"] = {
+                    "path": processed_path,
+                    "exists": os.path.exists(processed_path),
+                    "size": os.path.getsize(processed_path) if os.path.exists(processed_path) else 0,
+                    "last_modified": time.ctime(os.path.getmtime(processed_path)) if os.path.exists(processed_path) else "N/A"
+                }
+            
+            status_data["video_files_info"] = video_info
+        
         return status_data
 
 def process_video_in_background(video_path: str, job_id: str, filename: str):
@@ -249,10 +407,43 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
         # Obtener información del video
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         fps = cap.get(cv2.CAP_PROP_FPS) or 0.0
+        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         
-        # Actualizar el estado con el total de frames
+        # Crear un archivo de video para guardar el resultado procesado en el directorio temporal del backend
+        temp_dir = create_temp_directory()
+        processed_video_filename = f"processed_{os.path.basename(video_path)}"
+        processed_video_path = os.path.join(temp_dir, processed_video_filename)
+        print(f"Guardando video procesado en: {processed_video_path}")
+        
+        # Asegurarse de que el codec sea compatible con el sistema
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Alternativas: 'avc1', 'H264', 'XVID'
+        out = cv2.VideoWriter(processed_video_path, fourcc, fps, (width, height))
+        
+        # Verificar que el VideoWriter se haya inicializado correctamente
+        if not out.isOpened():
+            print(f"ERROR: No se pudo crear el VideoWriter para {processed_video_path}")
+            # Intentar con un codec alternativo
+            fourcc = cv2.VideoWriter_fourcc(*'XVID')
+            processed_video_path = processed_video_path.replace('.mp4', '.avi')
+            print(f"Intentando con codec XVID y ruta: {processed_video_path}")
+            out = cv2.VideoWriter(processed_video_path, fourcc, fps, (width, height))
+            
+            # Actualizar la ruta del video procesado en el estado
+            with video_job_status_lock:
+                if job_id in video_job_status:
+                    video_job_status[job_id]["processed_video_path"] = processed_video_path
+                    # Guardar el estado actualizado
+                    try:
+                        with open('video_job_status.json', 'w') as f:
+                            json.dump({k: v for k, v in video_job_status.items()}, f, indent=2)
+                    except Exception as e:
+                        print(f"Error al guardar estado actualizado: {e}")
+        
+        # Actualizar el estado con el total de frames y la ruta del video procesado
         if job_id in video_job_status:
             video_job_status[job_id]["total_frames"] = total_frames
+            video_job_status[job_id]["processed_video_path"] = processed_video_path
         
         label_frames = {}
         frame_idx = 0
@@ -268,6 +459,7 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
             results = model(frame)
             frame_detections = 0
             
+            # Dibujar las detecciones en el frame
             for r in results:
                 boxes = r.boxes
                 for box in boxes:
@@ -292,6 +484,15 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
                             "score": confidence,
                             "frame": frame_idx
                         })
+                        
+                        # Dibujar el bounding box y la etiqueta en el frame
+                        x1, y1, x2, y2 = map(int, box.xyxy[0])
+                        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                        cv2.putText(frame, f"{label} {confidence:.2f}", (x1, y1 - 10), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            
+            # Escribir el frame procesado en el video de salida
+            out.write(frame)
             
             # Actualizar contadores
             frame_idx += 1
@@ -337,6 +538,280 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
         
         # Liberar recursos
         cap.release()
+        out.release()
+        
+        # Verificar que el video procesado se haya guardado correctamente
+        if os.path.exists(processed_video_path):
+            file_size = os.path.getsize(processed_video_path)
+            print(f"Video procesado guardado correctamente en {processed_video_path} con tamaño {file_size} bytes")
+            
+            # Convertir el video a un formato compatible con navegadores web usando FFmpeg
+            if file_size > 0:
+                try:
+                    # Crear un nombre para el video web-compatible
+                    web_video_path = processed_video_path.replace('.mp4', '_web.mp4')
+                    web_video_path = web_video_path.replace('.avi', '_web.mp4')
+                    
+                    # Verificar si FFmpeg está instalado
+                    import subprocess
+                    import shutil
+                    import platform
+                    
+                    # Buscar FFmpeg en ubicaciones comunes según el sistema operativo
+                    ffmpeg_path = shutil.which('ffmpeg')
+                    
+                    if ffmpeg_path is None:
+                        if platform.system() == 'Windows':
+                            # Ubicaciones comunes en Windows
+                            common_locations = [
+                                'C:\\Program Files\\ffmpeg\\bin\\ffmpeg.exe',
+                                'C:\\ffmpeg\\bin\\ffmpeg.exe',
+                                os.path.join(os.environ.get('USERPROFILE', ''), 'ffmpeg', 'bin', 'ffmpeg.exe'),
+                                os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Programs', 'ffmpeg', 'bin', 'ffmpeg.exe'),
+                                os.path.join(os.environ.get('APPDATA', ''), 'ffmpeg', 'bin', 'ffmpeg.exe'),
+                                # Buscar en el directorio actual y subdirectorios
+                                os.path.join(os.getcwd(), 'ffmpeg.exe'),
+                                os.path.join(os.getcwd(), 'bin', 'ffmpeg.exe'),
+                                os.path.join(os.getcwd(), 'ffmpeg', 'bin', 'ffmpeg.exe'),
+                                # Buscar en el directorio del proyecto
+                                os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'ffmpeg.exe'),
+                                os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'bin', 'ffmpeg.exe'),
+                                os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'ffmpeg', 'bin', 'ffmpeg.exe')
+                            ]
+                        elif platform.system() == 'Linux':
+                            # Ubicaciones comunes en Linux
+                            common_locations = [
+                                '/usr/bin/ffmpeg',
+                                '/usr/local/bin/ffmpeg',
+                                '/opt/ffmpeg/bin/ffmpeg',
+                                os.path.join(os.path.expanduser('~'), 'bin', 'ffmpeg')
+                            ]
+                        elif platform.system() == 'Darwin':  # macOS
+                            # Ubicaciones comunes en macOS
+                            common_locations = [
+                                '/usr/local/bin/ffmpeg',
+                                '/opt/homebrew/bin/ffmpeg',
+                                '/opt/local/bin/ffmpeg',
+                                os.path.join(os.path.expanduser('~'), 'bin', 'ffmpeg')
+                            ]
+                        else:
+                            common_locations = []
+                        
+                        for location in common_locations:
+                            if os.path.exists(location):
+                                ffmpeg_path = location
+                                print(f"FFmpeg encontrado en: {ffmpeg_path}")
+                                break
+                    
+                    if ffmpeg_path is None:
+                        print("FFmpeg no encontrado en ninguna ubicación común. Buscando en PATH...")
+                        # Intentar buscar en todas las carpetas del PATH
+                        path_dirs = os.environ.get('PATH', '').split(os.pathsep)
+                        for path_dir in path_dirs:
+                            possible_path = os.path.join(path_dir, 'ffmpeg.exe' if platform.system() == 'Windows' else 'ffmpeg')
+                            if os.path.isfile(possible_path):
+                                ffmpeg_path = possible_path
+                                print(f"FFmpeg encontrado en PATH: {ffmpeg_path}")
+                                break
+                    
+                    if ffmpeg_path is None:
+                        print("ADVERTENCIA: FFmpeg no encontrado. La conversión de video puede fallar.")
+                        print("PATH actual:", os.environ.get('PATH', ''))
+                    else:
+                        print(f"Usando FFmpeg desde: {ffmpeg_path}")
+                    
+                    ffmpeg_available = ffmpeg_path is not None
+                    
+                    if not ffmpeg_available:
+                        print("FFmpeg no está instalado o no está en el PATH. Intentando usar OpenCV para la conversión...")
+                        try:
+                            # Alternativa usando OpenCV para recodificar el video
+                            cap = cv2.VideoCapture(processed_video_path)
+                            fps = cap.get(cv2.CAP_PROP_FPS)
+                            width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                            height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                            
+                            # Intentar con diferentes codecs compatibles con navegadores
+                            codecs_to_try = ['avc1', 'H264', 'X264', 'DIVX', 'XVID', 'mp4v']
+                            out = None
+                            
+                            for codec in codecs_to_try:
+                                try:
+                                    print(f"Intentando con codec {codec}...")
+                                    fourcc = cv2.VideoWriter_fourcc(*codec)
+                                    # Asegurarse de que la extensión sea correcta según el codec
+                                    if codec in ['XVID', 'DIVX']:
+                                        if web_video_path.endswith('.mp4'):
+                                            web_video_path = web_video_path.replace('.mp4', '.avi')
+                                    else:
+                                        if web_video_path.endswith('.avi'):
+                                            web_video_path = web_video_path.replace('.avi', '.mp4')
+                                            
+                                    out = cv2.VideoWriter(web_video_path, fourcc, fps, (width, height))
+                                    if out.isOpened():
+                                        print(f"Codec {codec} funcionó correctamente")
+                                        break
+                                    else:
+                                        print(f"No se pudo abrir el VideoWriter con codec {codec}")
+                                        out.release()  # Liberar recursos antes de intentar otro codec
+                                except Exception as e:
+                                    print(f"Error con codec {codec}: {str(e)}")
+                                    
+                            if out is None or not out.isOpened():
+                                print("No se pudo encontrar un codec compatible. Usando mp4v como último recurso")
+                                fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+                                web_video_path = web_video_path.replace('.avi', '.mp4')
+                                out = cv2.VideoWriter(web_video_path, fourcc, fps, (width, height))
+                            
+                            # Recodificar frame por frame
+                            while cap.isOpened():
+                                ret, frame = cap.read()
+                                if not ret:
+                                    break
+                                out.write(frame)
+                            
+                            cap.release()
+                            out.release()
+                            print(f"Video recodificado con OpenCV: {web_video_path}")
+                        except Exception as cv_error:
+                            print(f"Error al recodificar con OpenCV: {str(cv_error)}")
+                            # Si falla OpenCV, informamos que se necesita FFmpeg
+                            print("Se requiere FFmpeg para la conversión de video. Por favor instálelo con:")
+                            print("  - Windows: Descargar de https://ffmpeg.org/download.html")
+                            print("  - Linux: sudo apt install ffmpeg")
+                            print("  - macOS: brew install ffmpeg")
+                    else:
+                        # Comando FFmpeg para convertir a H.264 (compatible con navegadores)
+                        print(f"Convirtiendo video a formato compatible con navegadores web usando FFmpeg...")
+                        ffmpeg_cmd = [
+                            ffmpeg_path if ffmpeg_path else 'ffmpeg',  # Usar la ruta completa si se encontró
+                            '-i', processed_video_path,  # Archivo de entrada
+                            '-c:v', 'libx264',          # Codec de video H.264
+                            '-preset', 'veryfast',       # Preset de codificación rápida
+                            '-crf', '23',               # Factor de calidad (23 es buen balance)
+                            '-y',                        # Sobrescribir si existe
+                            web_video_path               # Archivo de salida
+                        ]
+                        print(f"Ejecutando comando FFmpeg: {' '.join(ffmpeg_cmd)}")
+                        # Mostrar información sobre la ruta de FFmpeg
+                        print(f"Usando FFmpeg desde: {ffmpeg_path if ffmpeg_path else 'PATH del sistema'}")
+                        # Verificar que el archivo de entrada existe
+                        if not os.path.exists(processed_video_path):
+                            print(f"ERROR: El archivo de entrada no existe: {processed_video_path}")
+                        # Verificar que el directorio de salida existe
+                        output_dir = os.path.dirname(web_video_path)
+                        if not os.path.exists(output_dir):
+                            print(f"Creando directorio de salida: {output_dir}")
+                            os.makedirs(output_dir, exist_ok=True)
+                        print(f"Ejecutando comando FFmpeg: {' '.join(ffmpeg_cmd)}")
+                        # Mostrar información sobre la ruta de FFmpeg
+                        print(f"Usando FFmpeg desde: {ffmpeg_path if ffmpeg_path else 'PATH del sistema'}")
+                        # Verificar que el archivo de entrada existe
+                        if not os.path.exists(processed_video_path):
+                            print(f"ERROR: El archivo de entrada no existe: {processed_video_path}")
+                        # Verificar que el directorio de salida existe
+                        output_dir = os.path.dirname(web_video_path)
+                        if not os.path.exists(output_dir):
+                            print(f"Creando directorio de salida: {output_dir}")
+                            os.makedirs(output_dir, exist_ok=True)
+                        
+                        # Ejecutar FFmpeg con manejo de errores mejorado
+                        result = None
+                        conversion_success = False
+                        conversion_method = None
+                        try:
+                            print(f"Iniciando conversión con FFmpeg...")
+                            result = subprocess.run(ffmpeg_cmd, capture_output=True, text=True)
+                            
+                            # Mostrar salida de FFmpeg para diagnóstico
+                            if result.stdout:
+                                print(f"Salida de FFmpeg:\n{result.stdout}")
+                            if result.stderr:
+                                print(f"Mensajes de FFmpeg (stderr):\n{result.stderr}")
+                                
+                            # Verificar código de salida
+                            if result.returncode != 0:
+                                print(f"ERROR: FFmpeg falló con código de salida {result.returncode}")
+                            else:
+                                print(f"FFmpeg completó la conversión exitosamente")
+                                if os.path.exists(web_video_path) and os.path.getsize(web_video_path) > 0:
+                                    print(f"Archivo convertido creado correctamente: {web_video_path} (Tamaño: {os.path.getsize(web_video_path)} bytes)")
+                                    conversion_success = True
+                                    conversion_method = "ffmpeg"
+                                else:
+                                    print(f"ERROR: El archivo convertido no existe o está vacío: {web_video_path}")
+                        except Exception as e:
+                            print(f"ERROR al ejecutar FFmpeg: {str(e)}")
+                            result = None
+                    
+                    # Verificar si la conversión fue exitosa (para ambos métodos: FFmpeg y OpenCV)
+                    if os.path.exists(web_video_path) and os.path.getsize(web_video_path) > 0:
+                        print(f"Video convertido exitosamente a formato web: {web_video_path}")
+                        print(f"Tamaño del video convertido: {os.path.getsize(web_video_path)} bytes")
+                        
+                        # Verificar el directorio temporal
+                        temp_dir = os.path.dirname(web_video_path)
+                        print(f"Verificando directorio temporal: {temp_dir}")
+                        if not os.path.exists(temp_dir):
+                            print(f"El directorio temporal no existe, creándolo: {temp_dir}")
+                            os.makedirs(temp_dir, exist_ok=True)
+                        else:
+                            print(f"Directorio temporal existe. Contenido:")
+                            for file in os.listdir(temp_dir):
+                                file_path = os.path.join(temp_dir, file)
+                                file_size = os.path.getsize(file_path) if os.path.isfile(file_path) else "<directorio>"
+                                print(f"  - {file}: {file_size} bytes")
+                        
+                        # Actualizar la ruta del video procesado en el estado
+                        processed_video_path = web_video_path
+                        with video_job_status_lock:
+                            if job_id in video_job_status:
+                                video_job_status[job_id]["processed_video_path"] = web_video_path
+                                # Añadir información sobre el método de conversión usado
+                                video_job_status[job_id]["conversion_method"] = "ffmpeg" if ffmpeg_available else "opencv"
+                                # Añadir información sobre el codec utilizado
+                                video_job_status[job_id]["video_codec"] = "h264" if ffmpeg_available else "variable"
+                                # Guardar el estado actualizado
+                                try:
+                                    with open('video_job_status.json', 'w') as f:
+                                        json.dump({k: v for k, v in video_job_status.items()}, f, indent=2)
+                                except Exception as e:
+                                    print(f"Error al guardar estado después de la conversión: {e}")
+                    else:
+                        print(f"ERROR: La conversión de video falló. Usando el video original.")
+                        if ffmpeg_available and result is not None:
+                            if hasattr(result, 'stdout') and result.stdout:
+                                print(f"Salida de FFmpeg: {result.stdout}")
+                            if hasattr(result, 'stderr') and result.stderr:
+                                print(f"Error de FFmpeg: {result.stderr}")
+                        
+                        # Verificar si el directorio temporal existe
+                        if not os.path.exists(temp_dir):
+                            print(f"ERROR: El directorio temporal no existe: {temp_dir}")
+                            try:
+                                os.makedirs(temp_dir, exist_ok=True)
+                                print(f"Directorio temporal creado: {temp_dir}")
+                            except Exception as e:
+                                print(f"ERROR al crear directorio temporal: {str(e)}")
+                        
+                        # Listar archivos en el directorio temporal para diagnóstico
+                        try:
+                            print(f"Contenido del directorio temporal {temp_dir}:")
+                            for file in os.listdir(temp_dir):
+                                file_path = os.path.join(temp_dir, file)
+                                file_size = os.path.getsize(file_path) if os.path.exists(file_path) else 0
+                                print(f"  - {file}: {file_size} bytes")
+                        except Exception as e:
+                            print(f"ERROR al listar directorio temporal: {str(e)}")
+                except Exception as e:
+                    print(f"ERROR al convertir video: {str(e)}")
+                    print("El video procesado puede no ser compatible con todos los navegadores.")
+                    print("Se recomienda instalar FFmpeg para una mejor compatibilidad web.")
+            
+            if file_size == 0:
+                print(f"ADVERTENCIA: El archivo de video procesado tiene tamaño cero: {processed_video_path}")
+        else:
+            print(f"ERROR: No se encontró el archivo de video procesado: {processed_video_path}")
         
         # Calcular tiempo de procesamiento
         end_time = time.time()
@@ -374,11 +849,13 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
                 except Exception as e:
                     print(f"Error al guardar estado final: {e}")
         
-        # Limpiar el archivo temporal
+        # Limpiar los archivos temporales
         try:
-            os.remove(video_path)
+            # No eliminamos los archivos inmediatamente para permitir su visualización
+            # Se podría implementar un sistema de limpieza periódica para eliminar archivos antiguos
+            print(f"Archivos temporales disponibles en: {os.path.dirname(video_path)}")
         except Exception as e:
-            print(f"Error al eliminar archivo temporal: {e}")
+            print(f"Error al gestionar archivos temporales: {e}")
     
     except Exception as e:
         # Actualizar el estado con el error usando el mutex
