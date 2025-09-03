@@ -1,14 +1,15 @@
 import os
 from pathlib import Path
+import base64
+import uuid
+import time
+from typing import Optional, Dict, Any
 
 import numpy as np
+import cv2
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Body, File, UploadFile, Query
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-
-from database.db_io import connect, disconnect, insert_video, insert_detection
-
 from pydantic import BaseModel
 
 # =============================
@@ -16,6 +17,7 @@ from pydantic import BaseModel
 # =============================
 load_dotenv()
 
+# Inicializa la aplicación FastAPI una sola vez.
 app = FastAPI(title="Brand Logo Detector API", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
@@ -24,13 +26,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Endpoint directo para status para asegurar que siempre esté disponible
-@app.get("/status/{job_id}")
-async def get_status_endpoint(job_id: str):
-    # Importar aquí para evitar problemas de importación circular
-    from .routes.upload_videos import get_job_status
-    return await get_job_status(job_id)
 
 UPLOAD_DIR = Path("data/uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -43,6 +38,8 @@ def persist_results(*, vtype: str, name: str, fps: float, total_secs: float, sum
     Guarda el video y sus detecciones (si las hay) en la base de datos.
     Si no hay detecciones, inserta un placeholder.
     """
+    from database.db_io import connect, disconnect, insert_video, insert_detection
+    
     conn = connect()
     try:
         id_video = insert_video(conn, vtype=vtype, name=name, total_secs=total_secs)
@@ -84,16 +81,32 @@ def persist_results(*, vtype: str, name: str, fps: float, total_secs: float, sum
         disconnect(conn)
 
 # =============================
-# Modelos
+# Rutas y Modelos
 # =============================
 
 @app.get("/")
 def health():
     return {"status": "ok"}
 
+# Endpoint directo para status para asegurar que siempre esté disponible
+@app.get("/status/{job_id}")
+async def get_status_endpoint(job_id: str):
+    # Importar aquí para evitar problemas de importación circular
+    from .routes.upload_videos import get_job_status
+    return await get_job_status(job_id)
+
 # =============================
 # Gestión de sesiones y endpoints de streaming
+# (Este código está comentado porque ahora se maneja en un router aparte)
 # =============================
+
+# _sessions = {}
+# _sessions_lock = threading.Lock()
+# _now = time.time
+# model = YOLO("yolov8n.pt") # Asumiendo que el modelo se carga aquí
+
+# class SessionIdReq(BaseModel):
+#     session_id: str
 
 # @app.post("/predict/session/start")
 # def start_session(name: Optional[str] = None):
@@ -206,20 +219,23 @@ def health():
 #         "detections": detections_list,
 #     }
 
-
+# =============================
+# Registro de routers
+# =============================
 
 from routes.youtube_video import router as youtube_router
 from routes.upload_image import router as upload_image_router
 from routes.upload_videos import router as upload_videos_router
+from routes.stream_youtube import router as stream_youtube_router
 
-# Registrar los routers con prefijos explícitos para evitar conflictos
-app.include_router(youtube_router, prefix="")
-app.include_router(upload_image_router, prefix="")
-app.include_router(upload_videos_router, prefix="")
+# Registrar los routers con prefijos y tags para organizar la documentación.
+app.include_router(youtube_router, prefix="/stream", tags=["Streaming"])
+app.include_router(upload_image_router, prefix="/process", tags=["Image Processing"])
+app.include_router(upload_videos_router, prefix="/process", tags=["Video Processing"])
+app.include_router(stream_youtube_router, prefix="/stream", tags=["Streaming"])
 
-# Registrar explícitamente la ruta de estado para asegurar su disponibilidad
-@app.get("/status/{job_id}")
-async def get_job_status_proxy(job_id: str):
-    """Proxy para redirigir a la función de estado en upload_videos."""
-    from .routes.upload_videos import get_job_status
-    return await get_job_status(job_id)
+# Se eliminan las últimas líneas que sobrescribían la aplicación.
+# from fastapi import FastAPI
+# from routes import youtube_video
+# app = FastAPI(title="Brand Detector")
+# app.include_router(youtube_video.router)
