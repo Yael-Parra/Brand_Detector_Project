@@ -12,7 +12,6 @@
 - [📌 Project Overview](#-project-overview)
 - [📎 Useful links](#-useful-links)
 - [🎯 Target Audience](#-target-audience)
-- [⚙️ General Project Overview](#️-general-project-overview)
 - [🚀 Future features & Implementations](#-future-features--implementations)
 - [🛠️ Tools & Technologies](#-tools--technologies)
 - [🧪 Model Architecture](#-model-architecture)
@@ -25,81 +24,54 @@
 ## 📌 Project Overview
 
 <p align="justify">  
+  
+Este proyecto de <strong>Computer Vision</strong> está diseñado para <strong>detectar</strong> y <strong>analizar</strong> la aparición de <strong>logos</strong> en <strong>imágenes</strong>, <strong>vídeos</strong>, <strong>enlaces</strong> o <strong>streaming en vivo</strong>, utilizando un modelo <strong>YOLO</strong> entrenado con <strong>Roboflow</strong> e integrado en un backend <strong>FastAPI</strong>. El sistema <strong>procesa</strong> el contenido, <strong>identifica</strong> las marcas, <strong>calcula</strong> el tiempo total y el porcentaje de aparición, y <strong>almacena</strong> los resultados en una base de datos <strong>PostgreSQL (Neon)</strong> estructurada en dos tablas: <strong>videos</strong>, que registra metadatos como tipo, nombre y duración del vídeo; y <strong>logo_detector</strong>, que guarda las detecciones con información como nombre de la marca, número de frames detectados, <em>FPS</em> y porcentaje de aparición, vinculadas al vídeo correspondiente. El frontend, desarrollado con <strong>React</strong> + <strong>Vite</strong>, ofrece una interfaz intuitiva para <strong>subir</strong> o <strong>capturar</strong> contenido y <strong>visualizar</strong> los resultados procesados.
+</p>
 
-resumen
+
+
+### Features
+
+| ✅ Pros                                                                 | ❌ Cons                                                                                  |
+|-------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| Detección en tiempo real de logos en múltiples formatos                 | Requiere hardware con GPU para un rendimiento óptimo                                     |
+| Integración completa backend (FastAPI) + frontend (React + Vite)        | Entrenamiento del modelo dependiente de datasets de calidad                              |
+| Métricas detalladas: tiempo total, porcentaje de aparición, FPS         | Procesamiento de vídeos largos puede ser más lento                                       |
+| Base de datos estructurada con historial de detecciones                 |                       |
+| Escalable y adaptable a nuevos logos o marcas                           |                              |
 
 ---
+
 ## 📎 Useful links
 
-- 
+- https://app.roboflow.com/test1mrm/customlogomercedez-hxxq6/overview 
 ---
 
 ## 🎯 Target Audience
 
-- 
-- 
-- 
-
----
-
-## 🔧 General Project Overview
-
-### Features
-
-
-| ✅ Pros                                                             | ❌ Cons                                                                             |
-|---------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-
-
----
-
-## 🌐 Routes & Agents
-
-### fgfdhfhfdghd
-
-
-| ✅ Pros                                                             | ❌ Cons                                                                             |
-|---------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
-|                                                                     |                                                                                      |
+- **Equipos de marketing y publicidad** que necesiten medir la exposición de marcas.
+- **Medios y transmisiones en vivo** que quieran monitorear logos en su contenido.
+- **Organizaciones deportivas** y eventos para evaluar visibilidad de patrocinadores.
+  
 
 ---
 
 ## 🧠 Architecture & Services
 
-### Video Processing Pipeline
 
-El proyecto incluye un sistema avanzado de procesamiento de videos que:
-
-1. **Procesa videos con YOLO**: Detecta objetos y logos en videos subidos por el usuario.
-2. **Conversión de formato compatible con navegadores**: 
-   - Utiliza FFmpeg (recomendado) para convertir videos a formato H.264 compatible con todos los navegadores.
-   - Si FFmpeg no está disponible, utiliza OpenCV como alternativa de respaldo.
-3. **Diagnóstico de videos**: Proporciona información detallada sobre los archivos de video para facilitar la depuración.
-
-### Requisitos para procesamiento de video
-
-- **FFmpeg**: Recomendado para la mejor compatibilidad con navegadores web.
-  - Windows: Descargar de [ffmpeg.org](https://ffmpeg.org/download.html) y añadir al PATH
-  - Linux: `sudo apt install ffmpeg`
-  - macOS: `brew install ffmpeg`
+- **Frontend:** React + Vite para carga de contenido y visualización de resultados.  
+- **Backend:** FastAPI para procesar peticiones y ejecutar el modelo YOLO.  
+- **Modelo de IA:** YOLO entrenado con Roboflow para detección de logos.  
+- **Base de datos:** PostgreSQL (Neon) para almacenar metadatos y resultados.  
+- **Servicios adicionales:** Integración con streaming en vivo y análisis en tiempo real.  
 
 ---
 
 ## 🚀 Future Features & Implementations
 
 ### Planned Improvements
-- Mejora en la interfaz de usuario para mostrar más información de diagnóstico
-- Soporte para más formatos de video y optimización del procesamiento
-- Implementación de streaming adaptativo para videos procesados
+-
+-
 
 
 ---
@@ -108,22 +80,18 @@ El proyecto incluye un sistema avanzado de procesamiento de videos que:
 
 ### ⚙️ Backend
 
-![FastAPI](https://img.shields.io/badge/-FastAPI-009688?logo=fastapi&logoColor=white)
-![Pydantic](https://img.shields.io/badge/-Pydantic-3c77ff?logo=pydantic&logoColor=white)
-![Uvicorn](https://img.shields.io/badge/-Uvicorn-000000?logo=uvicorn&logoColor=white)
-![OpenCV](https://img.shields.io/badge/-OpenCV-5C3EE8?logo=opencv&logoColor=white)
-![FFmpeg](https://img.shields.io/badge/-FFmpeg-007808?logo=ffmpeg&logoColor=white)
-![YOLO](https://img.shields.io/badge/-YOLO-00FFFF?logo=yolo&logoColor=black)
-
+![React](https://img.shields.io/badge/-React-ffffff?logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/-Vite-ffffff?logo=vite&logoColor=black)
+![FastAPI](https://img.shields.io/badge/-FastAPI-ffffff?logo=fastapi&logoColor=black)
+![Roboflow](https://img.shields.io/badge/-Roboflow-ffffff?logo=roboflow&logoColor=black)
+![Python](https://img.shields.io/badge/-Python-ffffff?logo=python&logoColor=black)
+![YOLO](https://img.shields.io/badge/-YOLO-ffffff?logo=yolo&logoColor=black)
+![Neon](https://img.shields.io/badge/-Neon-ffffff?logo=neon&logoColor=black)
 
 
 ### 🌐 Web UI & Interfaces
 
-
-
-### 🐳 DevOps & Utilities
-
-![Docker](https://img.shields.io/badge/-Docker-2496ed?logo=docker&logoColor=white)
+-
 
 ---
 
@@ -132,7 +100,7 @@ El proyecto incluye un sistema avanzado de procesamiento de videos que:
 
 
 <p align="center">
-  <img src=EL LINK DE LA IMAGEN" alt="System Architecture Diagram" width="700"/>
+  <img src=https://github.com/Yael-Parra/Brand_Detector_Project/issues/5#issuecomment-3245008872" alt="System Architecture Diagram" width="700"/>
 </p>
 
 
@@ -141,28 +109,31 @@ El proyecto incluye un sistema avanzado de procesamiento de videos que:
 ```
 📦 Brand_Detector_Project  
 ├── 📁 backend                                   
-│   └── 📁 database         
+│   └── 📁 database
+│   └── 📁 models
+│   └── 📁 services
+│   └── 📁 HACE FALTA CONTINUAR ESTO!
+│   └── 🗒️ main.py     
 │
+├── 📁 frontend
+│   └── 📁 public
+│   └── 📁 src
+│        └── 📁 components
+│        └── 📁 pages
+│        └── 🗒️ App.jsx
+│        └── 🗒️ main.jsx
+│        └── 🗒️ styles.css
 ├── README.md                
 ├── requirements.txt        
-├── .env                     
+├── .env_example                     
 ├── .gitignore              
-├── .dockerignore            
-├── docker-compose.yml       
-├── Dockerfile.backend       
-├── Dockerfile.frontend      
+  
 
 ```
 ---
 
 ## ✍ Deployment Instructions
 
-📋 Prerequisites
-
-Before you begin, make sure you have:
-
-    Python 3.8
-    Docker Desktop
 
 🧪 1. Clone the repository
 
@@ -174,16 +145,9 @@ Before you begin, make sure you have:
 Create a .env file in the project root and add your variables (e.g.):
 
   
-📦 3. Docker
+📦 3. Install the requirements
 
-    # Open Desktop Docker
-    docker compose build
-    docker compose up
-
-    # To check if everything is going well
-    Docker ps
-    
-    # To access to the front and back, you only have to click on the links you will see on the terminal
+    pip install -r requirements.txt
 
 
 ---
@@ -194,8 +158,8 @@ Feel free to explore, fork, or connect with us for ideas, feedback, or collabora
 
 | Name                  | GitHub                                                                                                                     | LinkedIn                                                                                                                                             |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Yael Parra**        | [![GitHub](https://img.shields.io/badge/GitHub-10b981?logo=github&logoColor=white)](https://github.com/Yael-Parra)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yael-parra/)                   |
-| **nombre**        | [![GitHub](https://img.shields.io/badge/GitHub-10b981?logo=github&logoColor=white)](https://github.com/Yael-Parra)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yael-parra/)                   |
-| **nombre**        | [![GitHub](https://img.shields.io/badge/GitHub-10b981?logo=github&logoColor=white)](https://github.com/Yael-Parra)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yael-parra/)                   |
-| **nombre**        | [![GitHub](https://img.shields.io/badge/GitHub-10b981?logo=github&logoColor=white)](https://github.com/Yael-Parra)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yael-parra/)                   |
-| **nombre**        | [![GitHub](https://img.shields.io/badge/GitHub-10b981?logo=github&logoColor=white)](https://github.com/Yael-Parra)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/yael-parra/)                   |
+| **Yael Parra**        | [![GitHub](https://img.shields.io/badge/GitHub-ffffff?logo=github&logoColor=black)](https://github.com/Yael-Parra)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=black)](https://www.linkedin.com/in/yael-parra/)                   |
+| **Max Belrtán**       | [![GitHub](https://img.shields.io/badge/GitHub-ffffff?logo=github&logoColor=black)](https://github.com/mr-melenas)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/max-beltran/)                   |
+| **Alla Haruty**       | [![GitHub](https://img.shields.io/badge/GitHub-ffffff?logo=github&logoColor=black)](https://github.com/alharuty)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/allaharuty/)                   |
+| **Stephany Ángeles**  | [![GitHub](https://img.shields.io/badge/GitHub-ffffff?logo=github&logoColor=black)](https://github.com/stephyangeles)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/stephyangeles/)                   |
+| **Orlando Alcalá**    | [![GitHub](https://img.shields.io/badge/GitHub-ffffff?logo=github&logoColor=black)](https://github.com/odar1997)         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/yael-parra/](https://www.linkedin.com/in/orlando-david-71417411b/))                   |
