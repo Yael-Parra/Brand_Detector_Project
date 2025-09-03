@@ -20,3 +20,7 @@ DETAIL:  Failing row contains (93, youtube, Anuncio Mazda 3 2025.mp4, 20.08, 202
 2025-09-03 12:20:38.643 | INFO     | backend.services.detection_image_youtube_slow:download_video:43 - Video descargado: data\uploads\Anuncio Mazda 3 2025.mp4
 2025-09-03 12:20:38.658 | INFO     | backend.services.detection_image_youtube_slow:start:66 - Hilo de procesamiento iniciado
 2025-09-03 12:25:33.224 | INFO     | backend.services.detection_image_youtube_slow:_process_video:121 - Procesamiento completado para video_id=96
+2025-09-03 14:29:03.265 | INFO     | backend.services.detection_image_youtube_slow:start:51 - Iniciando procesamiento para: https://www.youtube.com/watch?v=M5LuoSVDm_o
+2025-09-03 14:29:14.087 | INFO     | backend.services.detection_image_youtube_slow:download_video:43 - Video descargado: data\uploads\Nuevo Mazda CX-60 ｜ Crafted In Japan.mp4
+2025-09-03 14:29:14.239 | INFO     | backend.services.detection_image_youtube_slow:start:66 - Hilo de procesamiento iniciado
+2025-09-03 14:36:52.662 | INFO     | backend.services.detection_image_youtube_slow:_process_video:121 - Procesamiento completado para video_id=101
