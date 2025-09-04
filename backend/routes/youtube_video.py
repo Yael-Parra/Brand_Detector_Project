@@ -23,28 +23,38 @@ job_status: Dict[str, Dict] = {}
 
 @router.post("/process/youtube")
 def process_youtube(data: YoutubeRequest, background_tasks: BackgroundTasks):
-    """
-    Procesa un video de YouTube usando el script detection_image_youtube_slow.py y retorna las métricas.
-    Ahora ejecuta el procesamiento en segundo plano y devuelve un ID de trabajo.
-    """
-    # Generar un ID único para este trabajo usando timestamp para compatibilidad con frontend
     job_id = f"youtube-job-{int(datetime.now().timestamp() * 1000)}"
     
-    # Inicializar el estado del trabajo
     job_status[job_id] = {
         "status": "processing",
         "url": data.url,
         "start_time": datetime.now().isoformat(),
-        "detections": [],
-        "total_video_time_segs": 0
+        "detections": {},
+        "total_video_time_segs": 0,
     }
-    
-    # Ejecutar el script de procesamiento en segundo plano
-    background_tasks.add_task(
-        run_detection_script, data.url, job_id
-    )
-    
+
+    def run_video():
+        try:
+            from ..services.detection_image_youtube_slow import VideoProcessor
+            processor = VideoProcessor("best_v5.pt")
+            
+            def update_status(status_data):
+                if job_id in job_status:
+                    job_status[job_id].update(status_data)
+                    if "status" in status_data and status_data["status"] == "completed":
+                        job_status[job_id]["end_time"] = datetime.now().isoformat()
+
+            
+            processor.set_status_callback(update_status)
+            processor.start(data.url)
+            # Nota: no bloqueamos, hilo actualizará job_status
+        except Exception as e:
+            job_status[job_id]["status"] = "error"
+            job_status[job_id]["error"] = str(e)
+
+    background_tasks.add_task(run_video)
     return {"job_id": job_id, "status": "processing"}
+
 
 @router.get("/status/{job_id}")
 def get_job_status(job_id: str):
