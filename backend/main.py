@@ -197,12 +197,14 @@ from routes.youtube_video import router as youtube_router
 from routes.upload_image import router as upload_image_router
 from routes.upload_videos import router as upload_videos_router
 from routes.health import router as health_router
+from routes.stream import router as stream_router
 
 # Incluir routers
 app.include_router(health_router, prefix="", tags=["Health"])  # Health checks
 app.include_router(upload_image_router, prefix="")      # Imagenes
 app.include_router(upload_videos_router, prefix="")     # Videos locales
 app.include_router(youtube_router, prefix="")           # Videos de YouTube
+app.include_router(stream_router, prefix="", tags=["Webcam Streaming"])  # Streaming de webcam
 
 # =============================
 # Endpoints de status separados

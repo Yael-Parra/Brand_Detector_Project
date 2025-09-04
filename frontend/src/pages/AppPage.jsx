@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import ImageUploader from '../components/ImageUploader'
 import VideoUploader from '../components/VideoUploader'
 import YoutubeInput from '../components/YoutubeInput'
+import WebcamStream from '../components/WebcamStream'
 import ResultViewer from '../components/ResultViewer'
 import ProcessingStatus from '../components/ProcessingStatus'
 import AdvancedSettings from '../components/AdvancedSettings'
@@ -34,7 +35,8 @@ export default function AppPage() {
   const options = [
     { id: 0, title: 'Imagen', component: ImageUploader },
     { id: 1, title: 'Video', component: VideoUploader },
-    { id: 2, title: 'YouTube', component: YoutubeInput }
+    { id: 2, title: 'YouTube', component: YoutubeInput },
+    { id: 3, title: 'Webcam', component: WebcamStream }
   ]
 
   // Navegación carousel
@@ -76,6 +78,11 @@ export default function AppPage() {
       if (!validateYouTubeUrl(state.youtubeUrl)) {
         return
       }
+    }
+    if (state.activeOption === 3) {
+      // Webcam no requiere procesamiento tradicional - funciona en tiempo real
+      notificationActions.showInfo('La webcam funciona en tiempo real. Usa los controles del componente.')
+      return
     }
 
     actions.setLoading(true)
@@ -224,69 +231,71 @@ export default function AppPage() {
           </div>
 
           {/* =========================
-              Botón Analizar y Error
+              Botón Analizar y Error (No mostrar para Webcam)
           ========================= */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem', marginBottom: '2rem' }}>
-            {/* Botones de acción */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%', maxWidth: '300px' }}>
-              {/* Botón de análisis */}
-              <button 
-                className="button analyze-button" 
-                onClick={handleProcess}
-                disabled={state.loading || apiLoading}
-              >
-                {(state.loading || apiLoading) ? 'Procesando...' : 'Analizar'}
-              </button>
-              
-              {/* Botón de configuración avanzada */}
-              <button
-                onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
-                style={{
-                  width: '100%',
-                  padding: '0.75rem 1.5rem',
-                  fontSize: '0.95rem',
-                  color: 'var(--white)',
-                  backgroundColor: 'transparent',
-                  border: '1px solid var(--gray-500)',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  opacity: '0.8'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'var(--gray-700)';
-                  e.target.style.opacity = '1';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'transparent';
-                  e.target.style.opacity = '0.8';
-                }}
-              >
-                {showAdvancedSettings ? '🔧 Ocultar configuración' : '⚙️ Configuración avanzada'}
-              </button>
-            </div>
-            
-            {/* Estado del procesamiento */}
-            <ProcessingStatus />
-            
-            {/* Configuración avanzada */}
-            <AdvancedSettings 
-              isVisible={showAdvancedSettings}
-              onToggle={() => setShowAdvancedSettings(!showAdvancedSettings)}
-            />
-            
-            {state.error && state.jobStatus !== 'error' && (
-              <div style={{
-                color: 'var(--white)',
-                fontSize: '0.9rem',
-                marginTop: '0.5rem',
-                textAlign: 'center',
-                opacity: '0.8'
-              }}>
-                {state.error}
+          {state.activeOption !== 3 && (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem', marginBottom: '2rem' }}>
+              {/* Botones de acción */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%', maxWidth: '300px' }}>
+                {/* Botón de análisis */}
+                <button 
+                  className="button analyze-button" 
+                  onClick={handleProcess}
+                  disabled={state.loading || apiLoading}
+                >
+                  {(state.loading || apiLoading) ? 'Procesando...' : 'Analizar'}
+                </button>
+                
+                {/* Botón de configuración avanzada */}
+                <button
+                  onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1.5rem',
+                    fontSize: '0.95rem',
+                    color: 'var(--white)',
+                    backgroundColor: 'transparent',
+                    border: '1px solid var(--gray-500)',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    opacity: '0.8'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = 'var(--gray-700)';
+                    e.target.style.opacity = '1';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = 'transparent';
+                    e.target.style.opacity = '0.8';
+                  }}
+                >
+                  {showAdvancedSettings ? '🔧 Ocultar configuración' : '⚙️ Configuración avanzada'}
+                </button>
               </div>
-            )}
-          </div>
+              
+              {/* Estado del procesamiento */}
+              <ProcessingStatus />
+              
+              {/* Configuración avanzada */}
+              <AdvancedSettings 
+                isVisible={showAdvancedSettings}
+                onToggle={() => setShowAdvancedSettings(!showAdvancedSettings)}
+              />
+              
+              {state.error && state.jobStatus !== 'error' && (
+                <div style={{
+                  color: 'var(--white)',
+                  fontSize: '0.9rem',
+                  marginTop: '0.5rem',
+                  textAlign: 'center',
+                  opacity: '0.8'
+                }}>
+                  {state.error}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* =========================
