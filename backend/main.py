@@ -10,7 +10,8 @@ import cv2
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Body, File, UploadFile, Query
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+
+from .database.db_insertion_data import connect, disconnect, insert_video, insert_detection
 
 # =============================
 # Constantes y utilidades
@@ -19,23 +20,26 @@ load_dotenv()
 
 # Inicializa la aplicación FastAPI una sola vez.
 app = FastAPI(title="Brand Logo Detector API", version="1.0.0")
+
+# Configurar CORS para el frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),
+    allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),  # Permite todos los dominios si no hay .env
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Carpeta para uploads
 UPLOAD_DIR = Path("data/uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 # =============================
-# Persistencia
+# Persistencia en DB
 # =============================
 def persist_results(*, vtype: str, name: str, fps: float, total_secs: float, summary: dict):
     """
-    Guarda el video y sus detecciones (si las hay) en la base de datos.
+    Guarda el video o imagen y sus detecciones en la base de datos.
     Si no hay detecciones, inserta un placeholder.
     """
     from database.db_io import connect, disconnect, insert_video, insert_detection
@@ -56,6 +60,7 @@ def persist_results(*, vtype: str, name: str, fps: float, total_secs: float, sum
                 )
                 inserted += 1
         else:
+            # Insert placeholder si no hay detecciones
             insert_detection(
                 conn,
                 id_video=id_video,
@@ -81,9 +86,8 @@ def persist_results(*, vtype: str, name: str, fps: float, total_secs: float, sum
         disconnect(conn)
 
 # =============================
-# Rutas y Modelos
+# Endpoint base
 # =============================
-
 @app.get("/")
 def health():
     return {"status": "ok"}
@@ -96,146 +100,37 @@ async def get_status_endpoint(job_id: str):
     return await get_job_status(job_id)
 
 # =============================
-# Gestión de sesiones y endpoints de streaming
-# (Este código está comentado porque ahora se maneja en un router aparte)
+# Routers separados
 # =============================
+from .routes.youtube_video import router as youtube_router
+from .routes.upload_image import router as upload_image_router
+from .routes.upload_videos import router as upload_videos_router
 
-# _sessions = {}
-# _sessions_lock = threading.Lock()
-# _now = time.time
-# model = YOLO("yolov8n.pt") # Asumiendo que el modelo se carga aquí
-
-# class SessionIdReq(BaseModel):
-#     session_id: str
-
-# @app.post("/predict/session/start")
-# def start_session(name: Optional[str] = None):
-#     """Inicia una nueva sesión de streaming/captura."""
-#     sid = str(uuid.uuid4())
-#     with _sessions_lock:
-#         _sessions[sid] = {
-#             "name": name or "webcam",
-#             "start_time": _now(),
-#             "last_time": None,
-#             "total_frames": 0,
-#             "label_times": {},   # {label: segundos}
-#             "label_frames": {},  # {label: frames}
-#         }
-#     return {"session_id": sid}
-
-# @app.post("/predict/frame")
-# async def predict_frame(
-#     file: UploadFile = File(...),
-#     session_id: Optional[str] = Query(None)
-# ):
-#     """Recibe un frame, lo procesa y lo asocia a la sesión si corresponde."""
-#     content = await file.read()
-#     nparr = np.frombuffer(content, np.uint8)
-#     frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-#     if frame is None:
-#         return JSONResponse(status_code=400, content={"error": "Imagen inválida"})
-#     results = model.predict(source=frame, verbose=False)
-#     r0 = results[0]
-#     boxes = r0.boxes
-#     detections = []
-#     if boxes is not None and len(boxes) > 0:
-#         names = getattr(model, "names", None) or getattr(r0, "names", {})
-#         for i in range(len(boxes)):
-#             xyxy = r0.boxes.xyxy[i].tolist()
-#             cls_id = int(getattr(r0.boxes.cls[i], "item", lambda: r0.boxes.cls[i])())
-#             conf = float(r0.boxes.conf[i])
-#             label = names.get(cls_id, str(cls_id)) if isinstance(names, dict) else str(cls_id)
-#             detections.append({"bbox_xyxy": xyxy, "label": label, "confidence": conf})
-#     annotated = r0.plot()
-#     ok, buf = cv2.imencode(".jpg", annotated)
-#     img_b64 = base64.b64encode(buf).decode("ascii") if ok else ""
-#     # Acumular en sesión
-#     if session_id:
-#         with _sessions_lock:
-#             sess = _sessions.get(session_id)
-#             if sess:
-#                 now = _now()
-#                 if sess["last_time"] is None:
-#                     sess["last_time"] = now
-#                 else:
-#                     elapsed = now - sess["last_time"]
-#                     sess["last_time"] = now
-#                     for lbl in {d["label"] for d in detections}:
-#                         sess["label_times"][lbl] = sess["label_times"].get(lbl, 0.0) + elapsed
-#                         sess["label_frames"][lbl] = sess["label_frames"].get(lbl, 0) + 1
-#                 sess["total_frames"] += 1
-#     return {"detections": detections, "annotated_jpg_base64": img_b64}
-
-# @app.post("/predict/session/finish")
-# def finish_session(
-#     session_id_q: Optional[str] = Query(None),
-#     payload: Optional[SessionIdReq] = Body(None),
-# ):
-#     """Finaliza la sesión y guarda los resultados en la base de datos."""
-#     session_id = session_id_q or (payload.session_id if payload else None)
-#     if not session_id:
-#         raise HTTPException(
-#             status_code=422,
-#             detail="Falta session_id (pásalo como query ?session_id=... o como JSON {'session_id': '...'})"
-#         )
-#     with _sessions_lock:
-#         sess = _sessions.get(session_id)
-#         if not sess:
-#             raise HTTPException(404, "Sesión no encontrada")
-#         total_secs = max(0.0, _now() - sess["start_time"])
-#         total_frames = sess["total_frames"]
-#         fps = (total_frames / total_secs) if total_secs > 0 else 0.0
-#         summary_map: Dict[str, Dict[str, Any]] = {}
-#         for label, t in sess["label_times"].items():
-#             frames = sess["label_frames"].get(label, 0)
-#             pct = (t / total_secs * 100.0) if total_secs > 0 else 0.0
-#             summary_map[label] = {
-#                 "seconds": round(t, 3),
-#                 "frames": frames,
-#                 "percentage": round(pct, 2),
-#             }
-#         name = sess["name"]
-#         try:
-#             id_video = persist_results(
-#                 vtype="streaming",
-#                 name=name,
-#                 fps=fps,
-#                 total_secs=total_secs,
-#                 summary=summary_map,
-#             )
-#         except Exception as e:
-#             print(f"[persist] Error guardando en BD: {e}")
-#             raise HTTPException(status_code=500, detail=f"Error guardando en BD: {e}")
-#         del _sessions[session_id]
-#     detections_list = [
-#         {"label": lbl, **vals} for lbl, vals in summary_map.items()
-#     ]
-#     return {
-#         "id_video": id_video,
-#         "type": "streaming",
-#         "name": name,
-#         "fps_estimated": fps,
-#         "processed_secs": total_secs,
-#         "detections": detections_list,
-#     }
+# Incluir routers sin colisiones
+app.include_router(upload_image_router, prefix="")      # Imagenes
+app.include_router(upload_videos_router, prefix="")     # Videos locales
+app.include_router(youtube_router, prefix="")           # Videos de YouTube
 
 # =============================
-# Registro de routers
+# Endpoints de status separados
 # =============================
 
-from routes.youtube_video import router as youtube_router
-from routes.upload_image import router as upload_image_router
-from routes.upload_videos import router as upload_videos_router
-from routes.stream_youtube import router as stream_youtube_router
+# Status genérico para uploads (imagen o video local)
+@app.get("/status/{job_id}")
+async def get_upload_status(job_id: str):
+    """
+    Proxy para redirigir a la función de estado de upload_videos.
+    Esto solo aplica a videos subidos.
+    """
+    from .routes.upload_videos import get_job_status
+    return await get_job_status(job_id)
 
-# Registrar los routers con prefijos y tags para organizar la documentación.
-app.include_router(youtube_router, prefix="/stream", tags=["Streaming"])
-app.include_router(upload_image_router, prefix="/process", tags=["Image Processing"])
-app.include_router(upload_videos_router, prefix="/process", tags=["Video Processing"])
-app.include_router(stream_youtube_router, prefix="/stream", tags=["Streaming"])
-
-# Se eliminan las últimas líneas que sobrescribían la aplicación.
-# from fastapi import FastAPI
-# from routes import youtube_video
-# app = FastAPI(title="Brand Detector")
-# app.include_router(youtube_video.router)
+# Status específico para jobs de YouTube
+@app.get("/status/youtube/{job_id}")
+async def get_youtube_status(job_id: str):
+    """
+    Proxy para redirigir a la función de estado de youtube_video.
+    Esto solo aplica a jobs de YouTube.
+    """
+    from .routes.youtube_video import get_job_status
+    return get_job_status(job_id)
