@@ -8,9 +8,9 @@ import yt_dlp
 from urllib.parse import urlparse, parse_qs
 
 from .video_detection_service import VideoDetectionService, VideoMetrics, ProcessingStatus
-from backend.core.logging import get_logger
-from backend.core.exceptions import DetectionError, ValidationError
-from backend.database import db_insertion_data as db
+from core.logging import get_logger
+from core.exceptions import DetectionError, ValidationError
+from database import db_insertion_data as db
 
 logger = get_logger(__name__)
 
@@ -40,10 +40,18 @@ class YouTubeDetectionService(VideoDetectionService):
         # Información del video de YouTube
         self.youtube_info: Optional[Dict] = None
         self.downloaded_file: Optional[str] = None
+        
+        # Callback para actualizaciones de estado
+        self.status_callback: Optional[Callable] = None
+    
+    def set_status_callback(self, callback: Callable) -> None:
+        """Establece el callback para actualizaciones de estado."""
+        self.status_callback = callback
+        self._progress_callback = callback
     
     def process_youtube_url(self, youtube_url: str, **kwargs) -> Dict[str, Any]:
         """
-        Procesa un video de YouTube desde su URL.
+        Procesa un video de YouTube desde su URL con métricas avanzadas.
         
         Args:
             youtube_url: URL del video de YouTube
@@ -54,10 +62,13 @@ class YouTubeDetectionService(VideoDetectionService):
                 - frame_skip: int - Saltar frames para acelerar (default: 1)
                 - confidence_threshold: float - Umbral de confianza (default: 0.5)
                 - save_to_db: bool - Guardar en base de datos (default: True)
+                - calculate_metrics: bool - Calcular métricas avanzadas (default: True)
         
         Returns:
-            Diccionario con resultados del procesamiento
+            Diccionario con resultados del procesamiento y métricas avanzadas
         """
+        start_time = time.time()
+        
         try:
             # Validar URL
             if not self._is_valid_youtube_url(youtube_url):
@@ -67,36 +78,118 @@ class YouTubeDetectionService(VideoDetectionService):
             async_processing = kwargs.get('async_processing', True)
             quality = kwargs.get('quality', 'best')
             keep_file = kwargs.get('keep_file', False)
+            calculate_metrics = kwargs.get('calculate_metrics', True)
             
             # Actualizar configuración de calidad
             self._update_quality_settings(quality)
             
+            # Obtener información del video antes de descargar
+            logger.info(f"Obteniendo información del video: {youtube_url}")
+            video_info = self.get_video_info(youtube_url)
+            
             # Descargar video
+            download_start = time.time()
             logger.info(f"Iniciando descarga de YouTube: {youtube_url}")
             video_path = self._download_youtube_video(youtube_url)
+            download_time = time.time() - download_start
+            logger.info(f"Descarga completada en {download_time:.2f}s: {video_path}")
             
-            # Procesar como video normal
+            # Procesar como video normal con métricas
+            detection_start = time.time()
             kwargs['save_to_db'] = kwargs.get('save_to_db', True)
+            kwargs['calculate_metrics'] = calculate_metrics
+            
+            # Configurar callbacks para el procesamiento del video
+            if self.status_callback:
+                def progress_callback(progress_data):
+                    # Actualizar progreso con información específica de YouTube
+                    updated_data = {
+                        **progress_data,
+                        'youtube_info': video_info,
+                        'source_url': youtube_url,
+                        'video_title': video_info.get('title', 'Unknown')
+                    }
+                    self.status_callback(updated_data)
+                
+                def completion_callback(completion_data):
+                    # Actualizar estado final con información específica de YouTube
+                    final_data = {
+                        **completion_data,
+                        'youtube_info': video_info,
+                        'source_url': youtube_url,
+                        'video_title': video_info.get('title', 'Unknown')
+                    }
+                    self.status_callback(final_data)
+                
+                kwargs['progress_callback'] = progress_callback
+                kwargs['completion_callback'] = completion_callback
+            
+            logger.info(f"Iniciando procesamiento del video descargado: {video_path}")
+            logger.info(f"Configuración de procesamiento: async={async_processing}, callbacks configurados={self.status_callback is not None}")
             result = self.process(video_path, **kwargs)
+            detection_time = time.time() - detection_start
+            logger.info(f"Procesamiento completado en {detection_time:.2f}s")
+            
+            total_time = time.time() - start_time
+            
+            # Calcular métricas específicas de YouTube
+            youtube_metrics = {
+                "download_time": download_time,
+                "detection_time": detection_time,
+                "total_time": total_time,
+                "download_efficiency": video_info.get("duration", 0) / download_time if download_time > 0 else 0,
+                "processing_efficiency": result.get("video_info", {}).get("total_frames", 0) / detection_time if detection_time > 0 else 0
+            }
+            
+            # Combinar métricas existentes con métricas de YouTube
+            if "metrics" in result and calculate_metrics:
+                result["metrics"]["processing_times"].update({
+                    "download_time": download_time,
+                    "detection_time": detection_time,
+                    "total_time": total_time
+                })
+                result["metrics"]["youtube_specific"] = youtube_metrics
             
             # Agregar información específica de YouTube
             result.update({
-                "youtube_info": self.youtube_info,
+                "youtube_info": self.youtube_info or video_info,
                 "source_url": youtube_url,
                 "downloaded_file": video_path,
-                "file_kept": keep_file
+                "file_kept": keep_file,
+                "download_time": download_time,
+                "video_title": video_info.get("title", "Unknown"),
+                "video_duration": video_info.get("duration", 0)
             })
+            
+            # Actualizar callback con información completa
+            if self.status_callback:
+                self.status_callback({
+                    "status": "completed",
+                    "youtube_info": result["youtube_info"],
+                    "metrics": result.get("metrics", {}),
+                    "processing_time": total_time
+                })
             
             # Limpiar archivo si no se debe mantener
             if not keep_file and not async_processing:
                 self._cleanup_downloaded_file()
             
+            logger.info(f"Procesamiento de YouTube completado en {total_time:.2f}s")
             return result
             
         except Exception as e:
             logger.error(f"Error procesando YouTube URL: {e}")
             # Limpiar en caso de error
             self._cleanup_downloaded_file()
+            
+            # Notificar error via callback
+            if self.status_callback:
+                self.status_callback({
+                    "status": "error",
+                    "error": str(e),
+                    "processing_time": time.time() - start_time
+                })
+            
             raise DetectionError(f"Error procesando video de YouTube: {str(e)}")
     
     def _is_valid_youtube_url(self, url: str) -> bool:

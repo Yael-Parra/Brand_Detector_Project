@@ -6,9 +6,9 @@ from pathlib import Path
 from fastapi import UploadFile
 
 from .base_detection_service import BaseDetectionService
-from backend.core.logging import get_logger
-from backend.core.exceptions import DetectionError, ValidationError
-from backend.utils.file_validation import validate_image_file
+from core.logging import get_logger
+from core.exceptions import DetectionError, ValidationError
+from utils.file_validation import validate_image_file
 
 logger = get_logger(__name__)
 

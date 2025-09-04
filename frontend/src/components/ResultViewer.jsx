@@ -194,6 +194,22 @@ export default function ResultViewer({data: initialData, jobId}){
         } else if (statusData.status === 'error') {
           clearInterval(statusCheckInterval.current)
           setProcessingStatus(`Error: ${statusData.error || 'Error desconocido'}`)
+        } else if (statusData.status === 'not_found') {
+          // Manejar el caso cuando el job no se encuentra (servidor reiniciado)
+          clearInterval(statusCheckInterval.current)
+          setProcessingStatus('⚠️ Trabajo no encontrado - El servidor se reinició. Por favor, inicia un nuevo procesamiento.')
+          
+          // Mostrar mensaje informativo al usuario
+          console.warn('Job no encontrado:', statusData.message)
+          
+          // Limpiar el estado de procesamiento
+          setSummary(prev => ({
+            ...prev,
+            totalDetections: 0,
+            processingProgress: 0,
+            labelCounts: {},
+            detectionsList: []
+          }))
         }
     } catch (error) {
       console.error('Error al verificar estado:', error)

@@ -201,15 +201,22 @@ export default function AppPage() {
           <div className="active-uploader">
             <ActiveComponent 
               onResult={(r) => {
-                // Cuando se selecciona archivo (Imagen o Video)
-                setHasFile(true)
-                actions.setSelectedFile(r)
+                if (state.activeOption === 2) {
+                  // YouTube: manejar URL
+                  actions.setYoutubeUrl(r.url)
+                  setHasFile(r.isValid && r.url.length > 0)
+                } else {
+                  // Imagen/Video: manejar archivo
+                  setHasFile(true)
+                  actions.setSelectedFile(r)
+                }
                 setShowResults(false)
                 actions.setError(null)
               }}
               onUrlChange={state.activeOption === 2 ? (url) => {
                 // Cuando se ingresa YouTube
                 actions.setYoutubeUrl(url)
+                setHasFile(url.length > 0 && url.match(/^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/) !== null)
                 setShowResults(false)
                 actions.setError(null)
               } : undefined}

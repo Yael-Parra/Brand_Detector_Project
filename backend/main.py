@@ -6,10 +6,10 @@ import numpy as np
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.config.settings import settings
-from backend.core.logging import app_logger, get_logger
-from backend.core.exceptions import setup_exception_handlers, DatabaseError
-from backend.core.middleware import (
+from config.settings import settings
+from core.logging import app_logger, get_logger
+from core.exceptions import setup_exception_handlers, DatabaseError
+from core.middleware import (
     LoggingMiddleware, 
     SecurityHeadersMiddleware, 
     RequestSizeLimitMiddleware,
@@ -17,7 +17,7 @@ from backend.core.middleware import (
     ErrorHandlingMiddleware,
     RateLimitMiddleware
 )
-from backend.database.db_insertion_data import connect, disconnect, insert_video, insert_detection
+from database.db_insertion_data import connect, disconnect, insert_video, insert_detection
 
 # =============================
 # Configuración de la aplicación
@@ -193,10 +193,10 @@ def health():
 # =============================
 # Routers separados
 # =============================
-from .routes.youtube_video import router as youtube_router
-from .routes.upload_image import router as upload_image_router
-from .routes.upload_videos import router as upload_videos_router
-from .routes.health import router as health_router
+from routes.youtube_video import router as youtube_router
+from routes.upload_image import router as upload_image_router
+from routes.upload_videos import router as upload_videos_router
+from routes.health import router as health_router
 
 # Incluir routers
 app.include_router(health_router, prefix="", tags=["Health"])  # Health checks

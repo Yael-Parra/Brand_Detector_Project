@@ -4,9 +4,9 @@ from ultralytics import YOLO
 import cv2
 import numpy as np
 from pathlib import Path
-from backend.config.settings import get_settings
-from backend.core.logging import get_logger
-from backend.core.exceptions import DetectionError, ModelLoadError
+from config.settings import get_settings
+from core.logging import get_logger
+from core.exceptions import DetectionError, ModelLoadError
 
 settings = get_settings()
 logger = get_logger(__name__)

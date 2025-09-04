@@ -9,10 +9,10 @@ from fastapi import UploadFile
 from dataclasses import dataclass
 
 from .base_detection_service import BaseDetectionService
-from backend.core.logging import get_logger
-from backend.core.exceptions import DetectionError, ValidationError
-from backend.utils.file_validation import validate_video_file
-from backend.database import db_insertion_data as db
+from core.logging import get_logger
+from core.exceptions import DetectionError, ValidationError
+from utils.file_validation import validate_video_file
+from database import db_insertion_data as db
 
 logger = get_logger(__name__)
 

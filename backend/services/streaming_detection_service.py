@@ -7,8 +7,8 @@ from collections import defaultdict, deque
 from dataclasses import dataclass
 
 from .base_detection_service import BaseDetectionService
-from backend.core.logging import get_logger
-from backend.core.exceptions import DetectionError, ValidationError
+from core.logging import get_logger
+from core.exceptions import DetectionError, ValidationError
 
 logger = get_logger(__name__)
 

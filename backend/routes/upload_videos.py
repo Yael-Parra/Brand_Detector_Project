@@ -219,7 +219,7 @@ async def get_video_url(job_id: str, force_original: bool = False, force_process
                     import importlib.util
                     # Importación absoluta usando la ruta del archivo
                     sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-                    from backend.main import app
+                    from main import app
                 
                 # Usar el directorio temporal del backend
                 temp_dir = create_temp_directory()

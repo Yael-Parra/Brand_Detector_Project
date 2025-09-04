@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.requests import Request
 import traceback
 
-from backend.core.logging import get_logger
+from core.logging import get_logger
 
 logger = get_logger("exceptions")
 
@@ -225,7 +225,7 @@ async def general_exception_handler(request: Request, exc: Exception) -> JSONRes
     )
     
     # En producción, no exponer detalles internos
-    from backend.config.settings import settings
+    from config.settings import settings
     
     if settings.environment == "production":
         message = "An internal server error occurred"
