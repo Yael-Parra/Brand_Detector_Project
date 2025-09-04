@@ -6,6 +6,7 @@ import ErrorBoundary from './components/ErrorBoundary'
 import Inicio from './pages/Inicio'
 import AppPage from './pages/AppPage'
 import Nosotros from './pages/Nosotros'
+import CamV2 from './components/CamV2'
 import { AppProvider } from './contexts/AppContext'
 import { NotificationProvider } from './contexts/NotificationContext'
 
@@ -33,6 +34,7 @@ export default function App(){
         <nav className={`nav ${menuOpen ? 'active' : ''}`}>
           <Link to="/" onClick={()=>setMenuOpen(false)} className="">Inicio</Link>
           <Link to="/app" onClick={()=>setMenuOpen(false)} className="">App</Link>
+          <Link to="/cam-v2" onClick={()=>setMenuOpen(false)} className="">Cam V2</Link>
           <Link to="/nosotros" onClick={()=>setMenuOpen(false)} className="">Nosotros</Link>
         </nav>
 
@@ -47,6 +49,7 @@ export default function App(){
             <Routes>
               <Route path="/" element={<Inicio />} />
               <Route path="/app" element={<AppPage />} />
+              <Route path="/cam-v2" element={<CamV2 />} />
               <Route path="/nosotros" element={<Nosotros />} />
             </Routes>
           </main>

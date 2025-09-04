@@ -3,6 +3,7 @@ import ImageUploader from '../components/ImageUploader'
 import VideoUploader from '../components/VideoUploader'
 import YoutubeInput from '../components/YoutubeInput'
 import WebcamStream from '../components/WebcamStream'
+import CamV2 from '../components/CamV2'
 import ResultViewer from '../components/ResultViewer'
 import ProcessingStatus from '../components/ProcessingStatus'
 import AdvancedSettings from '../components/AdvancedSettings'
@@ -36,7 +37,8 @@ export default function AppPage() {
     { id: 0, title: 'Imagen', component: ImageUploader },
     { id: 1, title: 'Video', component: VideoUploader },
     { id: 2, title: 'YouTube', component: YoutubeInput },
-    { id: 3, title: 'Webcam', component: WebcamStream }
+    { id: 3, title: 'Webcam', component: WebcamStream },
+    { id: 4, title: 'cam_v2', component: CamV2 }
   ]
 
   // Navegación carousel
@@ -82,6 +84,11 @@ export default function AppPage() {
     if (state.activeOption === 3) {
       // Webcam no requiere procesamiento tradicional - funciona en tiempo real
       notificationActions.showInfo('La webcam funciona en tiempo real. Usa los controles del componente.')
+      return
+    }
+    if (state.activeOption === 4) {
+      // cam_v2 no requiere procesamiento tradicional - funciona con endpoints directos
+      notificationActions.showInfo('Cam V2 funciona con endpoints directos. Usa los controles del componente.')
       return
     }
 
