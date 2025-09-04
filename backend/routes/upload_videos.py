@@ -447,6 +447,11 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
         
         label_frames = {}
         frames_with_label = {}  # Seguimiento de frames donde aparece cada etiqueta
+        label_first_appearance = {}  # Primer frame donde aparece cada etiqueta
+        label_last_appearance = {}   # Último frame donde aparece cada etiqueta
+        label_total_duration = {}    # Tiempo total de aparición por etiqueta
+        frame_detection_density = []  # Densidad de detecciones por frame
+        processing_times = []        # Tiempos de procesamiento por frame
         frame_idx = 0
         total_detections = 0
         
@@ -455,10 +460,13 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
             ret, frame = cap.read()
             if not ret:
                 break
-                
+            
+            frame_start_time = time.time()
+            
             # Procesar el frame con YOLO
             results = model(frame)
             frame_detections = 0
+            frame_labels = set()  # Etiquetas únicas en este frame
             
             # Dibujar las detecciones en el frame (solo confianza > 50%)
             for r in results:
@@ -478,6 +486,14 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
                         if label not in frames_with_label:
                             frames_with_label[label] = set()
                         frames_with_label[label].add(frame_idx)
+                        
+                        # Registrar primera y última aparición
+                        if label not in label_first_appearance:
+                            label_first_appearance[label] = frame_idx
+                        label_last_appearance[label] = frame_idx
+                        
+                        # Agregar etiqueta al conjunto de este frame
+                        frame_labels.add(label)
                         
                         frame_detections += 1
                         
@@ -501,6 +517,15 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
             
             # Escribir el frame procesado en el video de salida
             out.write(frame)
+            
+            # Calcular tiempo de procesamiento del frame
+            frame_end_time = time.time()
+            frame_processing_time = frame_end_time - frame_start_time
+            processing_times.append(frame_processing_time)
+            
+            # Calcular densidad de detecciones del frame
+            frame_density = frame_detections / max(len(frame_labels), 1) if frame_labels else 0
+            frame_detection_density.append(frame_density)
             
             # Actualizar contadores
             frame_idx += 1
@@ -825,9 +850,34 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
         end_time = time.time()
         processed_secs = end_time - start_time
         
+        # Calcular métricas avanzadas
+        avg_processing_time_per_frame = sum(processing_times) / len(processing_times) if processing_times else 0
+        max_processing_time_per_frame = max(processing_times) if processing_times else 0
+        min_processing_time_per_frame = min(processing_times) if processing_times else 0
+        
+        avg_detection_density = sum(frame_detection_density) / len(frame_detection_density) if frame_detection_density else 0
+        max_detection_density = max(frame_detection_density) if frame_detection_density else 0
+        
+        # Calcular duración total de aparición por etiqueta
+        for label in label_frames.keys():
+            if label in label_first_appearance and label in label_last_appearance:
+                duration_frames = label_last_appearance[label] - label_first_appearance[label] + 1
+                label_total_duration[label] = duration_frames / fps if fps > 0 else 0
+        
         # Generar resumen de detecciones
         from ..services.yolo_service import summarize_counts
         detections_summary = summarize_counts(label_frames, frame_idx, frames_with_label, fps)
+        
+        # Agregar métricas avanzadas al resumen
+        for label in detections_summary.keys():
+            if label in label_total_duration:
+                detections_summary[label]['total_duration_seconds'] = label_total_duration[label]
+            if label in label_first_appearance:
+                detections_summary[label]['first_appearance_frame'] = label_first_appearance[label]
+                detections_summary[label]['first_appearance_time'] = label_first_appearance[label] / fps if fps > 0 else 0
+            if label in label_last_appearance:
+                detections_summary[label]['last_appearance_frame'] = label_last_appearance[label]
+                detections_summary[label]['last_appearance_time'] = label_last_appearance[label] / fps if fps > 0 else 0
         
         # Actualizar el estado final del trabajo con el mutex
         with video_job_status_lock:
@@ -839,7 +889,20 @@ def process_video_in_background(video_path: str, job_id: str, filename: str):
                     "labels": label_frames,  # Mantener el conteo de etiquetas en el resultado final
                     "fps_estimated": fps,
                     "processed_secs": processed_secs,
-                    "progress": 100
+                    "progress": 100,
+                    # Métricas avanzadas
+                    "advanced_metrics": {
+                        "avg_processing_time_per_frame": avg_processing_time_per_frame,
+                        "max_processing_time_per_frame": max_processing_time_per_frame,
+                        "min_processing_time_per_frame": min_processing_time_per_frame,
+                        "avg_detection_density": avg_detection_density,
+                        "max_detection_density": max_detection_density,
+                        "total_processing_speed_fps": frame_idx / processed_secs if processed_secs > 0 else 0,
+                        "detection_efficiency": total_detections / frame_idx if frame_idx > 0 else 0,
+                        "video_duration_seconds": frame_idx / fps if fps > 0 else 0,
+                        "processing_speed_ratio": (frame_idx / fps) / processed_secs if processed_secs > 0 and fps > 0 else 0
+                    },
+                    "label_durations": label_total_duration
                 })
                 
                 # Imprimir resumen final de etiquetas detectadas

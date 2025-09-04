@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import VideoMetrics from './VideoMetrics'
 
 export default function ResultViewer({data: initialData, jobId}){
   const canvasRef = useRef()
@@ -937,6 +938,15 @@ export default function ResultViewer({data: initialData, jobId}){
               }
             }}
           />
+          
+          {/* Componente de métricas de video */}
+          {jobId && (data.video_url || processingVideoUrl) && (
+            <VideoMetrics 
+              jobId={jobId} 
+              isVisible={processingStatus === 'Procesamiento completado'}
+            />
+          )}
+          
           <div style={{marginTop: '1.5rem'}}>
             <div style={{marginBottom: '1rem', padding: '0.5rem', backgroundColor: '#2a2a2a', borderRadius: '5px'}}>
               <h4 style={{margin: '0 0 0.5rem 0', color: 'var(--white)'}}>Información del video actual:</h4>

@@ -9,7 +9,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.config.settings import settings
 from backend.core.logging import app_logger, get_logger
 from backend.core.exceptions import setup_exception_handlers, DatabaseError
-from backend.core.middleware import LoggingMiddleware, SecurityHeadersMiddleware, RequestSizeLimitMiddleware
+from backend.core.middleware import (
+    LoggingMiddleware, 
+    SecurityHeadersMiddleware, 
+    RequestSizeLimitMiddleware,
+    EnhancedCORSMiddleware,
+    ErrorHandlingMiddleware,
+    RateLimitMiddleware
+)
 from backend.database.db_insertion_data import connect, disconnect, insert_video, insert_detection
 
 # =============================
@@ -56,19 +63,18 @@ app = FastAPI(
 # Configurar manejo de errores
 setup_exception_handlers(app)
 
-# Configurar CORS
+# Middleware setup (orden importante: de más específico a más general)
+app.add_middleware(LoggingMiddleware)  # Primero para loggear todo
+app.add_middleware(ErrorHandlingMiddleware)  # Manejo de errores
+app.add_middleware(RateLimitMiddleware, requests_per_minute=120)  # Rate limiting
+app.add_middleware(SecurityHeadersMiddleware)  # Headers de seguridad
+app.add_middleware(RequestSizeLimitMiddleware)  # Límite de tamaño
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.cors_origins,
-    allow_credentials=True,
-    allow_methods=settings.cors_methods,
-    allow_headers=settings.cors_headers,
+    EnhancedCORSMiddleware,
+    allowed_origins=settings.cors_origins,
+    allowed_methods=settings.cors_methods,
+    allowed_headers=settings.cors_headers
 )
-
-# Configurar middlewares personalizados
-app.add_middleware(RequestSizeLimitMiddleware)
-app.add_middleware(SecurityHeadersMiddleware)
-app.add_middleware(LoggingMiddleware)
 
 # Carpeta para uploads (usando configuración centralizada)
 UPLOAD_DIR = Path(settings.upload_dir)
@@ -190,8 +196,10 @@ def health():
 from .routes.youtube_video import router as youtube_router
 from .routes.upload_image import router as upload_image_router
 from .routes.upload_videos import router as upload_videos_router
+from .routes.health import router as health_router
 
-# Incluir routers sin colisiones
+# Incluir routers
+app.include_router(health_router, prefix="", tags=["Health"])  # Health checks
 app.include_router(upload_image_router, prefix="")      # Imagenes
 app.include_router(upload_videos_router, prefix="")     # Videos locales
 app.include_router(youtube_router, prefix="")           # Videos de YouTube
