@@ -1,25 +1,29 @@
 import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import ImageUploader from './components/ImageUploader'
-import VideoUploader from './components/VideoUploader'
-import YoutubeInput from './components/YoutubeInput'
-import ResultViewer from './components/ResultViewer'
 import CursorFollower from './components/CursorFollower'
+import NotificationContainer from './components/NotificationContainer'
+import ErrorBoundary from './components/ErrorBoundary'
 import Inicio from './pages/Inicio'
 import AppPage from './pages/AppPage'
 import Nosotros from './pages/Nosotros'
+import { AppProvider } from './contexts/AppContext'
+import { NotificationProvider } from './contexts/NotificationContext'
 
 export default function App(){
-  const [data, setData] = useState(null)
-  const [jobId, setJobId] = useState(null)
   const [menuOpen, setMenuOpen] = useState(false)
 
   const toggleMenu = () => setMenuOpen(!menuOpen)
+  
   return (
-    <Router>
-    <div className="app">
-      {/* Seguidor del cursor con logo 6.png */}
-      <CursorFollower />
+    <NotificationProvider>
+      <AppProvider>
+        <Router>
+          <ErrorBoundary>
+            <div className="app">
+              {/* Seguidor del cursor con logo 6.png */}
+              <CursorFollower />
+              {/* Contenedor de notificaciones */}
+              <NotificationContainer />
       
       <header className="header">
         <div className="logo">
@@ -40,17 +44,20 @@ export default function App(){
       </header>
 
       <main className="main-content">
-        <Routes>
-          <Route path="/" element={<Inicio />} />
-          <Route path="/app" element={<AppPage data={data} setData={setData} setJobId={setJobId} jobId={jobId} />} />
-          <Route path="/nosotros" element={<Nosotros />} />
-        </Routes>
-      </main>
+            <Routes>
+              <Route path="/" element={<Inicio />} />
+              <Route path="/app" element={<AppPage />} />
+              <Route path="/nosotros" element={<Nosotros />} />
+            </Routes>
+          </main>
 
-      <footer className="footer">
-        <p>Brand Detector • LogiFind © 2025 • Powered by AI</p>
-      </footer>
-    </div>
-    </Router>
+          <footer className="footer">
+            <p>Brand Detector • LogiFind © 2025 • Powered by AI</p>
+          </footer>
+            </div>
+          </ErrorBoundary>
+        </Router>
+      </AppProvider>
+    </NotificationProvider>
   )
 }
