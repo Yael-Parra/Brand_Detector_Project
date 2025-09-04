@@ -15,6 +15,8 @@ const WebcamStream = () => {
   const [cameraStatus, setCameraStatus] = useState(null);
   const [streamingMode, setStreamingMode] = useState('websocket'); // 'websocket' o 'mjpeg'
   const [fps, setFps] = useState(5); // FPS para WebSocket
+  const [isInitializing, setIsInitializing] = useState(false);
+  const [cameraError, setCameraError] = useState(null);
   
   const { addNotification } = useNotification();
 
@@ -38,6 +40,9 @@ const WebcamStream = () => {
 
   // Inicializar cámara del usuario
   const initializeCamera = useCallback(async () => {
+    setIsInitializing(true);
+    setCameraError(null);
+    
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ 
         video: { 
@@ -50,12 +55,38 @@ const WebcamStream = () => {
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         streamRef.current = stream;
+        
+        console.log('Stream asignado:', stream);
+        console.log('VideoRef actual:', videoRef.current);
+        
+        // Esperar a que el video esté listo
+        videoRef.current.onloadedmetadata = () => {
+          console.log('Video metadata cargada');
+          setIsInitializing(false);
+          addNotification('Cámara inicializada correctamente', 'success');
+        };
+        
+        // También manejar el evento onloadeddata como respaldo
+        videoRef.current.onloadeddata = () => {
+          console.log('Video data cargada');
+          if (isInitializing) {
+            setIsInitializing(false);
+            addNotification('Cámara inicializada correctamente', 'success');
+          }
+        };
       }
       
-      addNotification('Cámara inicializada correctamente', 'success');
     } catch (error) {
       console.error('Error accessing camera:', error);
-      addNotification('Error al acceder a la cámara: ' + error.message, 'error');
+      const errorMessage = error.name === 'NotAllowedError' 
+        ? 'Permiso de cámara denegado. Por favor, permite el acceso a la cámara.'
+        : error.name === 'NotFoundError'
+        ? 'No se encontró ninguna cámara disponible.'
+        : 'Error al acceder a la cámara: ' + error.message;
+      
+      setCameraError(errorMessage);
+      setIsInitializing(false);
+      addNotification(errorMessage, 'error');
     }
   }, [addNotification]);
 
@@ -179,6 +210,10 @@ const WebcamStream = () => {
       videoRef.current.srcObject = null;
     }
     
+    // Limpiar estados
+    setIsInitializing(false);
+    setCameraError(null);
+    
     try {
       await fetch('/webcam/release', { method: 'POST' });
     } catch (error) {
@@ -191,12 +226,14 @@ const WebcamStream = () => {
   // Efectos
   useEffect(() => {
     checkCameraStatus();
+    // Inicializar cámara automáticamente al montar el componente
+    initializeCamera();
     
     return () => {
       stopStreaming();
       releaseCamera();
     };
-  }, []);
+  }, [checkCameraStatus, initializeCamera]);
 
   useEffect(() => {
     if (isStreaming && streamingMode === 'websocket') {
@@ -285,13 +322,68 @@ const WebcamStream = () => {
         <div className="space-y-3">
           <h3 className="text-lg font-semibold text-white">Cámara Original</h3>
           <div className="relative bg-black rounded-lg overflow-hidden">
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              muted
-              className="w-full h-auto max-h-96 object-contain"
-            />
+            {(() => {
+              console.log('Render conditions:', {
+                isInitializing,
+                cameraError,
+                hasStream: !!streamRef.current,
+                videoRef: !!videoRef.current
+              });
+              
+              if (isInitializing) {
+                return (
+                  <div className="w-full h-96 flex flex-col items-center justify-center text-white">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
+                    <p>Inicializando cámara...</p>
+                    <p className="text-sm text-gray-300 mt-2">Por favor, permite el acceso a la cámara</p>
+                  </div>
+                );
+              }
+              
+              if (cameraError) {
+                return (
+                  <div className="w-full h-96 flex flex-col items-center justify-center text-red-400">
+                    <div className="text-6xl mb-4">📷</div>
+                    <p className="text-center px-4">{cameraError}</p>
+                    <button
+                      onClick={initializeCamera}
+                      className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      Reintentar
+                    </button>
+                  </div>
+                );
+              }
+              
+              if (!streamRef.current) {
+                return (
+                  <div className="w-full h-96 flex flex-col items-center justify-center text-gray-400">
+                    <div className="text-6xl mb-4">📹</div>
+                    <p>Cámara no inicializada</p>
+                    <button
+                      onClick={initializeCamera}
+                      className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      Inicializar Cámara
+                    </button>
+                  </div>
+                );
+              }
+              
+              return (
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  muted
+                  className="w-full h-auto max-h-96 object-contain"
+                  onLoadedMetadata={() => console.log('Video element metadata loaded')}
+                  onLoadedData={() => console.log('Video element data loaded')}
+                  onCanPlay={() => console.log('Video can play')}
+                  onPlay={() => console.log('Video started playing')}
+                />
+              );
+            })()}
             <canvas
               ref={canvasRef}
               style={{ display: 'none' }}
