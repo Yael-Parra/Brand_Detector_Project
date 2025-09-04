@@ -4,9 +4,9 @@ from typing import List, Optional
 
 from fastapi import UploadFile
 
-from backend.config.settings import settings
-from backend.core.logging import get_logger
-from backend.core.exceptions import FileProcessingError, ValidationError
+from config.settings import settings
+from core.logging import get_logger
+from core.exceptions import FileProcessingError, ValidationError
 
 logger = get_logger("file_validation")
 

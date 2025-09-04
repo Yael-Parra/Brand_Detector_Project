@@ -60,7 +60,13 @@ const VideoMetrics = ({ jobId, isVisible = true }) => {
     labels = {},
     frame_count = 0,
     progress = 0,
-    status = 'unknown'
+    status = 'unknown',
+    metrics: advancedMetrics = {},
+    youtube_info = null,
+    download_time = 0,
+    video_title = '',
+    video_duration = 0,
+    processing_fps = 0
   } = metrics;
 
   const totalVideoTime = calculateTotalVideoTime(total_frames, fps_estimated);
@@ -162,7 +168,79 @@ const VideoMetrics = ({ jobId, isVisible = true }) => {
             <div><strong>Densidad:</strong> {total_frames > 0 ? (totalDetections / total_frames * 100).toFixed(1) : 0}%</div>
           </div>
         </div>
+
+        {/* Métricas específicas de YouTube */}
+        {youtube_info && (
+          <div style={{
+            backgroundColor: 'var(--gray-800)',
+            padding: '1rem',
+            borderRadius: '8px'
+          }}>
+            <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--primary-color)' }}>📺 YouTube</h4>
+            <div style={{ fontSize: '0.9rem', lineHeight: '1.4' }}>
+              <div><strong>Tiempo descarga:</strong> {formatTime(download_time)}</div>
+              <div><strong>Duración original:</strong> {formatTime(video_duration)}</div>
+              <div><strong>FPS procesamiento:</strong> {processing_fps.toFixed(1)}</div>
+              {advancedMetrics.youtube_specific && (
+                <div><strong>Eficiencia descarga:</strong> {(advancedMetrics.youtube_specific.download_efficiency || 0).toFixed(2)}x</div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Información del Video de YouTube */}
+      {youtube_info && video_title && (
+        <div style={{
+          marginTop: '1rem',
+          backgroundColor: 'var(--gray-800)',
+          padding: '1rem',
+          borderRadius: '8px'
+        }}>
+          <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--primary-color)' }}>📹 Información del Video</h4>
+          <div style={{ fontSize: '0.9rem', lineHeight: '1.4' }}>
+            <div><strong>Título:</strong> {video_title}</div>
+            {youtube_info.uploader && <div><strong>Canal:</strong> {youtube_info.uploader}</div>}
+            {youtube_info.view_count && <div><strong>Visualizaciones:</strong> {youtube_info.view_count.toLocaleString()}</div>}
+            {youtube_info.upload_date && <div><strong>Fecha subida:</strong> {youtube_info.upload_date}</div>}
+          </div>
+        </div>
+      )}
+
+      {/* Métricas Avanzadas */}
+      {advancedMetrics.processing_times && (
+        <div style={{
+          marginTop: '1rem',
+          backgroundColor: 'var(--gray-800)',
+          padding: '1rem',
+          borderRadius: '8px'
+        }}>
+          <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--primary-color)' }}>⚡ Rendimiento</h4>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+            gap: '0.5rem',
+            fontSize: '0.9rem'
+          }}>
+            {advancedMetrics.processing_times.download_time > 0 && (
+              <div><strong>T. Descarga:</strong> {formatTime(advancedMetrics.processing_times.download_time)}</div>
+            )}
+            {advancedMetrics.processing_times.detection_time > 0 && (
+              <div><strong>T. Detección:</strong> {formatTime(advancedMetrics.processing_times.detection_time)}</div>
+            )}
+            {advancedMetrics.processing_times.total_time > 0 && (
+              <div><strong>T. Total:</strong> {formatTime(advancedMetrics.processing_times.total_time)}</div>
+            )}
+            {advancedMetrics.efficiency_metrics && (
+              <>
+                <div><strong>FPS Proc.:</strong> {(advancedMetrics.efficiency_metrics.frames_per_second || 0).toFixed(1)}</div>
+                <div><strong>Det./seg:</strong> {(advancedMetrics.efficiency_metrics.detections_per_second || 0).toFixed(1)}</div>
+                <div><strong>Conf. Prom.:</strong> {formatPercentage(advancedMetrics.efficiency_metrics.avg_confidence || 0)}</div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Detalles por Etiqueta */}
       {Object.keys(labels).length > 0 && (

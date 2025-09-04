@@ -7,7 +7,7 @@ from pathlib import Path
 import yt_dlp
 import threading
 import traceback
-from backend.database import db_insertion_data as db
+from database import db_insertion_data as db
 
 logger.add("logs/video_processor.log", rotation="5 MB")
 
@@ -91,10 +91,13 @@ class VideoProcessor:
                 results = self.model(frame, verbose=False)
                 boxes = results[0].boxes
                 for box in boxes:
-                    cls_id = int(box.cls[0])
-                    label = self.model.names[cls_id]
-                    self.metrics["detections"].setdefault(label, 0)
-                    self.metrics["detections"][label] += 1
+                    # Aplicar el mismo criterio que los videos regulares: solo confianza > 0.5
+                    confidence = float(box.conf[0]) if hasattr(box, 'conf') else 0.0
+                    if confidence > 0.5:
+                        cls_id = int(box.cls[0])
+                        label = self.model.names[cls_id]
+                        self.metrics["detections"].setdefault(label, 0)
+                        self.metrics["detections"][label] += 1
 
                 # Callback de progreso
                 if self.progress_callback:

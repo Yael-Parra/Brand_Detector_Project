@@ -1,0 +1,128 @@
+{
+  "youtube-job-1756985603275": {
+    "status": "error",
+    "url": "https://www.youtube.com/watch?v=OAn40128fy8&ab_channel=Nikolos",
+    "start_time": "2025-09-04T13:33:23.275364",
+    "detections": {},
+    "total_video_time_segs": 0,
+    "frame_count": 801,
+    "progress": 0,
+    "processing_fps": 0,
+    "video_info": {
+      "fps": 25.0,
+      "total_frames": 801,
+      "duration_secs": 32.04
+    },
+    "metrics": {},
+    "youtube_info": {
+      "title": "(HD) Toyota Commercial - It's a Trap! (Toyota Corolla)",
+      "duration": 32,
+      "duration_string": "32",
+      "uploader": "Nikolos",
+      "view_count": 226937,
+      "upload_date": "20200801",
+      "description": "Funny Toyota Corolla advertisement. Video quality improved.",
+      "thumbnail": "https://i.ytimg.com/vi_webp/OAn40128fy8/maxresdefault.webp",
+      "video_id": "OAn40128fy8",
+      "webpage_url": "https://www.youtube.com/watch?v=OAn40128fy8",
+      "formats_available": 22,
+      "is_live": false
+    },
+    "end_time": "2025-09-04T13:33:29.033783",
+    "video_url": "",
+    "db_id": null,
+    "video_title": "(HD) Toyota Commercial - It's a Trap! (Toyota Corolla)",
+    "source_url": "https://www.youtube.com/watch?v=OAn40128fy8&ab_channel=Nikolos",
+    "error": "No se pudo cargar el modelo: [Errno 2] No such file or directory: 'best_v5.pt'"
+  },
+  "youtube-job-1756986500039": {
+    "status": "completed",
+    "url": "https://www.youtube.com/watch?v=OAn40128fy8&ab_channel=Nikolos",
+    "start_time": "2025-09-04T13:48:20.039026",
+    "detections": {
+      "logo_toyota": 162,
+      "logo_mazda": 1
+    },
+    "total_video_time_segs": 0,
+    "frame_count": 801,
+    "progress": 100.0,
+    "processing_fps": 0,
+    "video_info": {
+      "fps": 25.0,
+      "total_frames": 801,
+      "duration_secs": 32.04
+    },
+    "metrics": {},
+    "youtube_info": {
+      "title": "(HD) Toyota Commercial - It's a Trap! (Toyota Corolla)",
+      "duration": 32,
+      "duration_string": "32",
+      "uploader": "Nikolos",
+      "view_count": 226937,
+      "upload_date": "20200801",
+      "description": "Funny Toyota Corolla advertisement. Video quality improved.",
+      "thumbnail": "https://i.ytimg.com/vi_webp/OAn40128fy8/maxresdefault.webp",
+      "video_id": "OAn40128fy8",
+      "webpage_url": "https://www.youtube.com/watch?v=OAn40128fy8",
+      "formats_available": 22,
+      "is_live": false
+    },
+    "end_time": "2025-09-04T13:48:26.535807",
+    "video_url": "",
+    "db_id": null,
+    "video_title": "(HD) Toyota Commercial - It's a Trap! (Toyota Corolla)",
+    "source_url": "https://www.youtube.com/watch?v=OAn40128fy8&ab_channel=Nikolos"
+  },
+  "youtube-job-1756987139996": {
+    "status": "completed",
+    "url": "https://www.youtube.com/watch?v=OAn40128fy8&ab_channel=Nikolos",
+    "start_time": "2025-09-04T13:58:59.996734",
+    "detections": {
+      "logo_toyota": 162,
+      "logo_mazda": 1
+    },
+    "total_video_time_segs": 0,
+    "frame_count": 801,
+    "progress": 100.0,
+    "processing_fps": 0,
+    "video_info": {
+      "fps": 25.0,
+      "total_frames": 801,
+      "duration_secs": 32.04
+    },
+    "metrics": {},
+    "youtube_info": {
+      "title": "(HD) Toyota Commercial - It's a Trap! (Toyota Corolla)",
+      "duration": 32,
+      "duration_string": "32",
+      "uploader": "Nikolos",
+      "view_count": 226937,
+      "upload_date": "20200801",
+      "description": "Funny Toyota Corolla advertisement. Video quality improved.",
+      "thumbnail": "https://i.ytimg.com/vi_webp/OAn40128fy8/maxresdefault.webp",
+      "video_id": "OAn40128fy8",
+      "webpage_url": "https://www.youtube.com/watch?v=OAn40128fy8",
+      "formats_available": 22,
+      "is_live": false
+    },
+    "end_time": "2025-09-04T13:59:06.473310",
+    "video_url": "",
+    "db_id": null,
+    "video_title": "(HD) Toyota Commercial - It's a Trap! (Toyota Corolla)",
+    "source_url": "https://www.youtube.com/watch?v=OAn40128fy8&ab_channel=Nikolos"
+  },
+  "youtube-job-1756988651728": {
+    "status": "error",
+    "url": "https://www.youtube.com/watch?v=OAn40128fy8&ab_channel=Nikolos",
+    "start_time": "2025-09-04T14:24:11.728489",
+    "detections": 163,
+    "frame_count": 800,
+    "progress": 99.87515605493134,
+    "total_frames": 801,
+    "video_title": "(HD) Toyota Commercial - It's a Trap! (Toyota Corolla)",
+    "source": "youtube",
+    "video_path": "backend\\temp_videos\\youtube\\youtube-job-1756988651728.mp4",
+    "end_time": "2025-09-04T14:26:31.419411",
+    "processed_video_path": "E:\\My documents\\Cursos\\Bootcamp IA\\Brand_Detector_Project\\backend\\temp_videos\\processed_youtube-job-1756988651728_web.mp4"
+  }
+}

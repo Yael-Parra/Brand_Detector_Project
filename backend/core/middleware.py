@@ -9,7 +9,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp
 from starlette.middleware.cors import CORSMiddleware
 
-from backend.core.logging import get_logger
+from core.logging import get_logger
 
 logger = get_logger("middleware")
 
@@ -112,7 +112,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         
         # Solo en producción, agregar HSTS
-        from backend.config.settings import settings
+        from config.settings import settings
         if settings.environment == "production":
             response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
         
@@ -124,7 +124,7 @@ class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
     
     def __init__(self, app: ASGIApp, max_size: int = None):
         super().__init__(app)
-        from backend.config.settings import settings
+        from config.settings import settings
         self.max_size = max_size or settings.max_file_size
     
     async def dispatch(self, request: Request, call_next: Callable) -> Response:

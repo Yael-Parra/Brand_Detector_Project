@@ -6,9 +6,9 @@ from .image_detection_service import ImageDetectionService
 from .video_detection_service import VideoDetectionService
 from .youtube_detection_service import YouTubeDetectionService
 from .streaming_detection_service import StreamingDetectionService
-from backend.core.logging import get_logger
-from backend.core.exceptions import DetectionError, ValidationError
-from backend.config.settings import get_settings
+from core.logging import get_logger
+from core.exceptions import DetectionError, ValidationError
+from config.settings import get_settings
 
 logger = get_logger(__name__)
 settings = get_settings()

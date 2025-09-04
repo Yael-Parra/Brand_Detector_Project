@@ -16,6 +16,7 @@ node_modules/
 
 # logs
 data/uploads/
+backend/data/uploads/
 
 runs/
 
