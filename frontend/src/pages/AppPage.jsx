@@ -1,20 +1,32 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import ImageUploader from '../components/ImageUploader'
 import VideoUploader from '../components/VideoUploader'
 import YoutubeInput from '../components/YoutubeInput'
 import ResultViewer from '../components/ResultViewer'
+import ProcessingStatus from '../components/ProcessingStatus'
+import AdvancedSettings from '../components/AdvancedSettings'
+import { useApp } from '../contexts/AppContext'
+import { useNotification } from '../contexts/NotificationContext'
+import { useApi } from '../hooks/useApi'
+import { useJobPolling } from '../hooks/useJobPolling'
+import { useFileValidation } from '../hooks/useFileValidation'
 
-export default function AppPage({data, setData, setJobId, jobId}) {
+export default function AppPage() {
   // ===========================
-  // Estados de la UI
+  // Contextos y hooks
   // ===========================
-  const [activeOption, setActiveOption] = useState(0)   // 0=Imagen, 1=Video, 2=YouTube
-  const [youtubeUrl, setYoutubeUrl] = useState('')      // URL ingresada por el usuario
-  const [loading, setLoading] = useState(false)         // Spinner de procesamiento
+  const { state, actions } = useApp()
+  const { actions: notificationActions } = useNotification()
+  const { uploadFile, processYouTube, loading: apiLoading } = useApi()
+  const { startPolling } = useJobPolling()
+  const { validateFile, validateYouTubeUrl } = useFileValidation()
+
+  // ===========================
+  // Estados locales de la UI
+  // ===========================
   const [hasFile, setHasFile] = useState(false)         // Indica si se seleccionó archivo
-  const [selectedFile, setSelectedFile] = useState(null)// Archivo seleccionado
   const [showResults, setShowResults] = useState(false)// Mostrar resultados en UI
-  const [errorMessage, setErrorMessage] = useState('')  // Mensajes de error
+  const [showAdvancedSettings, setShowAdvancedSettings] = useState(false) // Mostrar configuración avanzada
 
   // ===========================
   // Opciones del carousel
@@ -26,134 +38,131 @@ export default function AppPage({data, setData, setJobId, jobId}) {
   ]
 
   // Navegación carousel
-  const nextOption = () => setActiveOption((prev) => (prev + 1) % options.length)
-  const prevOption = () => setActiveOption((prev) => (prev - 1 + options.length) % options.length)
+  const nextOption = () => {
+    const newOption = (state.activeOption + 1) % options.length
+    actions.setActiveOption(newOption)
+  }
+  const prevOption = () => {
+    const newOption = (state.activeOption - 1 + options.length) % options.length
+    actions.setActiveOption(newOption)
+  }
 
   // ===========================
   // Función principal de procesamiento
   // ===========================
   const handleProcess = async () => {
-    setErrorMessage('')
+    actions.setError(null)
 
-    // Validaciones por tipo de input
-    if (activeOption === 0 && !hasFile) {
-      setErrorMessage('Por favor, selecciona una imagen primero')
-      return
+    // Validaciones mejoradas por tipo de input
+    if (state.activeOption === 0) {
+      if (!hasFile || !state.selectedFile) {
+        notificationActions.showError('Por favor, selecciona una imagen primero')
+        return
+      }
+      if (!validateFile(state.selectedFile, 'image')) {
+        return
+      }
     }
-    if (activeOption === 1 && !hasFile) {
-      setErrorMessage('Por favor, selecciona un video primero')
-      return
+    if (state.activeOption === 1) {
+      if (!hasFile || !state.selectedFile) {
+        notificationActions.showError('Por favor, selecciona un video primero')
+        return
+      }
+      if (!validateFile(state.selectedFile, 'video')) {
+        return
+      }
     }
-    if (activeOption === 2 && !youtubeUrl.trim()) {
-      setErrorMessage('Por favor, ingresa un enlace de YouTube primero')
-      return
+    if (state.activeOption === 2) {
+      if (!validateYouTubeUrl(state.youtubeUrl)) {
+        return
+      }
     }
 
-    setLoading(true)
+    actions.setLoading(true)
 
     try {
-      if (activeOption === 2) {
+      if (state.activeOption === 2) {
         // -----------------------
         // Procesamiento YouTube
         // -----------------------
-        const response = await fetch('http://localhost:8000/process/youtube', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url: youtubeUrl })
-        })
-
-        if (!response.ok) throw new Error(`Error al procesar el video: ${response.statusText}`)
-        const result = await response.json()
-        if (result.error) throw new Error(result.error)
+        const { data: result, error } = await processYouTube(state.youtubeUrl)
+        
+        if (error) {
+          actions.setError(error)
+          return
+        }
 
         // Guardamos la info inicial y job_id
         const sample = {
-          video_url: youtubeUrl,
+          video_url: state.youtubeUrl,
           detections: result.detections || [],
           total_video_time_segs: result.total_video_time_segs || 0
         }
 
-        setJobId(result.job_id || `youtube-job-${Date.now()}`)
-        setData(sample)
+        actions.setResults(sample)
         setShowResults(true)
+        
+        // Iniciar polling si hay job_id
+        if (result.job_id) {
+          startPolling(result.job_id)
+        }
 
-        // ===========================
-        // Polling para estado del job de YouTube
-        // ===========================
-        const interval = setInterval(async () => {
-          try {
-            const statusResp = await fetch(`http://localhost:8000/status/${result.job_id}`)
-            const statusData = await statusResp.json()
-            if (statusData.status === 'completed') {
-              setData(prev => ({ ...prev, detections: statusData.detections || [] }))
-              clearInterval(interval)
-            } else if (statusData.status === 'error') {
-              setErrorMessage(`Error procesando video: ${statusData.error}`)
-              clearInterval(interval)
-            }
-          } catch (err) {
-            console.error('Error polling YouTube job:', err)
-            clearInterval(interval)
-          }
-        }, 3000) // cada 3s
-
-      } else if (activeOption === 1) {
+      } else if (state.activeOption === 1) {
         // -----------------------
         // Procesamiento Video local
         // -----------------------
-        if (!selectedFile) throw new Error('No se ha seleccionado ningún archivo de video')
-
-        const formData = new FormData()
-        formData.append('file', selectedFile)
-
-        const response = await fetch('http://localhost:8000/predict/mp4', { method: 'POST', body: formData })
-        if (!response.ok) throw new Error(`Error al procesar el video: ${response.statusText}`)
-        const result = await response.json()
+        const { data: result, error } = await uploadFile(state.selectedFile, 'video')
+        
+        if (error) {
+          actions.setError(error)
+          return
+        }
 
         const sample = {
-          video_file: selectedFile.name,
-          video_url: URL.createObjectURL(selectedFile),
+          video_file: state.selectedFile.name,
+          video_url: URL.createObjectURL(state.selectedFile),
           detections: result.detections || []
         }
 
-        setJobId(result.job_id || `video-job-${Date.now()}`)
-        setData(sample)
+        actions.setResults(sample)
         setShowResults(true)
+        
+        // Iniciar polling si hay job_id
+        if (result.job_id) {
+          startPolling(result.job_id)
+        }
 
       } else {
         // -----------------------
         // Procesamiento Imagen
         // -----------------------
-        if (!selectedFile) throw new Error('No se ha seleccionado ninguna imagen')
-
-        const formData = new FormData()
-        formData.append('file', selectedFile)
-
-        const response = await fetch('http://localhost:8000/process/image', { method: 'POST', body: formData })
-        if (!response.ok) throw new Error(`Error al procesar la imagen: ${response.statusText}`)
-        const result = await response.json()
+        const { data: result, error } = await uploadFile(state.selectedFile, 'image')
+        
+        if (error) {
+          actions.setError(error)
+          return
+        }
 
         const sample = {
-          image_url: URL.createObjectURL(selectedFile),
+          image_url: URL.createObjectURL(state.selectedFile),
           detections: result.detections || [],
           annotated_jpg_base64: result.annotated_jpg_base64,
           original_jpg_base64: result.original_jpg_base64
         }
 
-        setJobId(null)
-        setData(sample)
+        actions.setResults(sample)
         setShowResults(true)
       }
     } catch (error) {
       console.error('Error al procesar:', error)
-      setErrorMessage(`Error: ${error.message}`)
+      actions.setError(error.message)
     } finally {
-      setLoading(false)
+      actions.setLoading(false)
     }
   }
 
   // Componente activo según carousel
-  const ActiveComponent = options[activeOption].component
+  const ActiveComponent = options[state.activeOption].component
 
   return (
     <div className="page-container">
@@ -176,8 +185,8 @@ export default function AppPage({data, setData, setJobId, jobId}) {
               {options.map((option, index) => (
                 <div 
                   key={option.id}
-                  className={`carousel-item ${index === activeOption ? 'active' : ''}`}
-                  onClick={() => setActiveOption(index)}
+                  className={`carousel-item ${index === state.activeOption ? 'active' : ''}`}
+                  onClick={() => actions.setActiveOption(index)}
                 >
                   <h3>{option.title}</h3>
                 </div>
@@ -194,15 +203,15 @@ export default function AppPage({data, setData, setJobId, jobId}) {
               onResult={(r) => {
                 // Cuando se selecciona archivo (Imagen o Video)
                 setHasFile(true)
-                setSelectedFile(r)
+                actions.setSelectedFile(r)
                 setShowResults(false)
-                setErrorMessage('')
+                actions.setError(null)
               }}
-              onUrlChange={activeOption === 2 ? (url) => {
+              onUrlChange={state.activeOption === 2 ? (url) => {
                 // Cuando se ingresa YouTube
-                setYoutubeUrl(url)
+                actions.setYoutubeUrl(url)
                 setShowResults(false)
-                setErrorMessage('')
+                actions.setError(null)
               } : undefined}
             />
           </div>
@@ -211,14 +220,55 @@ export default function AppPage({data, setData, setJobId, jobId}) {
               Botón Analizar y Error
           ========================= */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem', marginBottom: '2rem' }}>
-            <button 
-              className="button analyze-button" 
-              onClick={handleProcess}
-              disabled={loading}
-            >
-              {loading ? 'Procesando...' : 'Analizar'}
-            </button>
-            {errorMessage && (
+            {/* Botones de acción */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%', maxWidth: '300px' }}>
+              {/* Botón de análisis */}
+              <button 
+                className="button analyze-button" 
+                onClick={handleProcess}
+                disabled={state.loading || apiLoading}
+              >
+                {(state.loading || apiLoading) ? 'Procesando...' : 'Analizar'}
+              </button>
+              
+              {/* Botón de configuración avanzada */}
+              <button
+                onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 1.5rem',
+                  fontSize: '0.95rem',
+                  color: 'var(--white)',
+                  backgroundColor: 'transparent',
+                  border: '1px solid var(--gray-500)',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  opacity: '0.8'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'var(--gray-700)';
+                  e.target.style.opacity = '1';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.opacity = '0.8';
+                }}
+              >
+                {showAdvancedSettings ? '🔧 Ocultar configuración' : '⚙️ Configuración avanzada'}
+              </button>
+            </div>
+            
+            {/* Estado del procesamiento */}
+            <ProcessingStatus />
+            
+            {/* Configuración avanzada */}
+            <AdvancedSettings 
+              isVisible={showAdvancedSettings}
+              onToggle={() => setShowAdvancedSettings(!showAdvancedSettings)}
+            />
+            
+            {state.error && state.jobStatus !== 'error' && (
               <div style={{
                 color: 'var(--white)',
                 fontSize: '0.9rem',
@@ -226,7 +276,7 @@ export default function AppPage({data, setData, setJobId, jobId}) {
                 textAlign: 'center',
                 opacity: '0.8'
               }}>
-                {errorMessage}
+                {state.error}
               </div>
             )}
           </div>
@@ -235,9 +285,9 @@ export default function AppPage({data, setData, setJobId, jobId}) {
         {/* =========================
             Results Section
         ========================= */}
-        {showResults && (
+        {showResults && state.results && (
           <div className="results-section">
-            <ResultViewer data={data} jobId={jobId} />
+            <ResultViewer data={state.results} jobId={state.jobId} />
           </div>
         )}
       </div>
